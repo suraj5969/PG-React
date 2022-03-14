@@ -1,0 +1,6 @@
+SELECT [id]
+        ,[name]
+        ,[salary]
+        ,[email]
+        ,[password]
+FROM [dbo].[users]

@@ -1,0 +1,11 @@
+SELECT [id]
+      ,[proposal_no]
+      ,[type_of_oracle_license]
+      ,[num_of_users]
+      ,[edition]
+      ,[server_license]
+      ,[oracle_license]
+      ,[maintenance]
+      ,[total]
+  FROM [dbo].[affinity_server_popup_values]
+  WHERE [proposal_no] = @proposal_no

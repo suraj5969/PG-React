@@ -1,0 +1,24 @@
+UPDATE [dbo].[client_profile]
+   SET [client_name] = @c_name
+      ,[client_number] = @c_number
+      ,[opp_number] = @c_opp_no
+      ,[opp_name] = @c_opp_name
+      ,[num_of_users] = @c_nou
+      ,[num_of_earners] = @c_nofe
+      ,[objective] = @objective
+      ,[commercial_objective] = @commercial_objective
+      ,[upsell] = @c_upsell
+      ,[address] = @c_address
+      ,[country] = @c_country
+      ,[solution_specialist_id] = @c_solspeclist
+      ,[duration] = @duration
+      ,[end_valid_date] = @c_pvaliddate
+      ,[quick_start] = @c_qstart
+      ,[current_software_id] = @c_soft_curr
+      ,[hours_from_capital] = @c_closet_time
+      ,[time_inc_in_project] = @c_pro_deltime
+      ,[traning_method] = @c_tr_method
+      ,[bpa_setup] = @c_bpa_setup
+      ,[special_conditions] = @special_condition
+      ,[currency] = @currency
+    WHERE [proposal_no]  = @proposal_no

@@ -1,0 +1,122 @@
+.Mui-disabled {
+    opacity: 1;
+    cursor: not-allowed !important;
+    -webkit-text-fill-color: #afaeae;
+    background-color: #eeedee;
+}
+
+/* 
+.affinity-server-popup .Mui-disabled {
+    opacity: 1;
+    cursor: not-allowed !important;
+    -webkit-text-fill-color: #afaeae;
+    background-color: #f8f5f8;
+    padding: 0;
+} */
+
+.Mui-disabled::placeholder {
+    color: #3f3f3f !important;
+    -webkit-text-fill-color: #3f3f3f;
+}
+
+.Mui-disabled::-ms-input-placeholder {
+    color: #3f3f3f !important;
+    -webkit-text-fill-color: #3f3f3f;
+}
+
+/* #client Info and Additional info styles */
+.client-name-autocomplete .MuiAutocomplete-noOptions {
+    display: none;
+}
+
+.client-name-autocomplete .MuiAutocomplete-option {
+    font-size: 0.95rem;
+}
+
+
+.color-red {
+    color: red !important;
+}
+
+.color-green {
+    color: #36da16 !important;
+}
+
+@media (min-width: 760px){
+    .lh-760-16px {
+        line-height: 16px !important;
+    }
+}
+
+@media (min-width: 760px) and (max-width: 900px) {
+    .lh-760-to-900-16px {
+        line-height: 16px !important;
+    }
+}
+
+@media (min-width: 760px) and (max-width: 1259px) {
+    .lh-768-to-1260-16px {
+        line-height: 16px !important;
+    }
+}
+
+@media (min-width: 760px) and (max-width: 1375px) {
+    .lh-768-to-1375-16px {
+        line-height: 16px !important;
+    }
+}
+
+@media (min-width: 1500px) {
+    .lh-1500-auto {
+        line-height: auto !important;
+    }
+}
+
+.react-datepicker-wrapper .react-datepicker__input-container input {
+    padding: 16.5px 14px;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1.9px solid rgba(212, 212, 212, 0.8);
+    width: 100%
+}
+
+.react-datepicker-wrapper .react-datepicker__input-container input:hover {
+    border-color: rgba(0, 0, 0, 0.8);
+}
+
+/* # End of client info and additional info styles. */
+
+/* # start of subtables styles.  */
+
+.subtable .MuiTableCell-root {
+    padding: 8px !important;
+}
+
+
+@media (max-width: 1000px) {
+    .tables-tab .css-19kzrtu {
+        padding: 24px 0px;
+    }
+}
+
+@media (min-width: 1340px) {
+    .tables-tab .css-19kzrtu {
+        padding: 24px 0px;
+    }
+}
+
+.subtable .MuiSelect-select {
+    padding: 5px 3px 5px 5px !important;
+    text-align: left !important;
+}
+
+.affinity-popup-select .MuiSelect-select {
+    padding: 7px 6px;
+}
+
+@media (max-width: 760px) {
+    .subtabs-container.css-xekmof-MuiContainer-root {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}

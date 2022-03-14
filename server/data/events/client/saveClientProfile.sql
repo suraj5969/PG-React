@@ -1,0 +1,54 @@
+
+INSERT INTO [dbo].[client_profile]
+        (
+            [proposal_no]
+      ,[client_name]
+      ,[client_number]
+      ,[opp_number]
+      ,[opp_name]
+      ,[num_of_users]
+      ,[num_of_earners]
+      ,[objective]
+      ,[commercial_objective]
+      ,[upsell]
+      ,[address]
+      ,[country]
+      ,[solution_specialist_id]
+      ,[duration]
+      ,[end_valid_date]
+      ,[quick_start]
+      ,[current_software_id]
+      ,[hours_from_capital]
+      ,[time_inc_in_project]
+      ,[traning_method]
+      ,[bpa_setup]
+      ,[special_conditions]
+      ,[currency]
+        )
+
+VALUES
+    (   
+        @proposal_no,
+        @c_name,
+        @c_number,
+        @c_opp_no,
+        @c_opp_name,
+        @c_nou,
+        @c_nofe,
+        @objective,
+        @commercial_objective,
+        @c_upsell,
+        @c_address,
+        @c_country,
+        @c_solspeclist,
+        @duration,
+        @c_pvaliddate,
+        @c_qstart,
+        @c_soft_curr,
+        @c_closet_time,
+        @c_pro_deltime,
+        @c_tr_method,
+        @c_bpa_setup,
+        @special_condition,
+        @currency
+    )

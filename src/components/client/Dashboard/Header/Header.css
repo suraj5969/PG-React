@@ -1,0 +1,14 @@
+.header-button {
+    margin: 0.2rem 0.4rem !important;
+    text-transform: none !important;
+    background: #008080 !important;
+}
+
+/* @media (min-width:900px and max-width: 1150px) {
+    .header-button {
+        margin: 0.2rem 0rem !important;
+    }
+} */
+
+
+
