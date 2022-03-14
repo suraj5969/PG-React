@@ -23,7 +23,7 @@ export default function NewProposal() {
     const history = useHistory();
     const { defaultClientProfile, defaultInfo, defaultAttendingCourses, defaultServices,
         defaultOptionalServices, defaultMiscellaneous, defaultNotes, defaultUpfrontCost,
-        defaultOngoingMnt, defaultRepayment } = DefaultValues;
+        defaultOngoingMnt, defaultRepayment, defaultDiscountTable } = DefaultValues;
 
     React.useEffect(() => {
         document.title = 'New Proposal';
@@ -58,7 +58,7 @@ export default function NewProposal() {
                 console.log('getAllEmpowerModulesAPI no working');
             }
             else {
-                if (typeof result.data === 'object' && result.data.length > 0 ) {
+                if (typeof result.data === 'object' && result.data.length > 0) {
                     const modules = result.data.map((empower) => ({ empower_name: empower.empower_name, id: empower.id, checked: false }));
                     setEmpowerModules({
                         empowerModules: modules,
@@ -88,6 +88,7 @@ export default function NewProposal() {
     const [upfrontCost, setUpfrontCost] = React.useState(defaultUpfrontCost);
     const [ongoingMnt, setOngoingMnt] = React.useState(defaultOngoingMnt);
     const [repaymentCalc, setRepaymentCalc] = React.useState(defaultRepayment);
+    const [discountTable, setDiscountTable] = React.useState(defaultDiscountTable);
 
     const [mandatoryFields, setMandatoryFields] = React.useState({
         clientName: true,
@@ -250,6 +251,7 @@ export default function NewProposal() {
             upfrontCost: upfrontCost,
             ongoingMnt: ongoingMnt,
             repaymentCalc: repaymentCalc,
+            discountTable: discountTable,
             affinityMobilePopUpValue: affinityMobilePopUpValue,
             empowerModules: empowerModules,
             settlementPopUpValue: settlementPopUpValue,
@@ -287,6 +289,7 @@ export default function NewProposal() {
                     upfrontCost: upfrontCost,
                     ongoingMnt: ongoingMnt,
                     repaymentCalc: repaymentCalc,
+                    discountTable: discountTable,
                     affinityMobilePopUpValue: affinityMobilePopUpValue,
                     empowerModules: empowerModules,
                     settlementPopUpValue: settlementPopUpValue,
@@ -396,6 +399,8 @@ export default function NewProposal() {
                     setScopingStudyPopUpValue={setScopingStudyPopUpValue}
                     affinityServerPopupValues={affinityServerPopupValues}
                     setAffinityServerPopupValues={setAffinityServerPopupValues}
+                    discountTable={discountTable}
+                    setDiscountTable={setDiscountTable}
                 />
 
 

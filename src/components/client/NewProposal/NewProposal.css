@@ -42,7 +42,7 @@
     color: #36da16 !important;
 }
 
-@media (min-width: 760px){
+@media (min-width: 760px) {
     .lh-760-16px {
         line-height: 16px !important;
     }

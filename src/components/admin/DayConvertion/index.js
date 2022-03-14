@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function DayConvertion(props) {
 
+    React.useEffect(() => {
+        document.title = 'Day Conversion'
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

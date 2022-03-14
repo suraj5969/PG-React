@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function GSTpercentage(props) {
 
+    React.useEffect(() => {
+        document.title = 'GST Percentage';
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

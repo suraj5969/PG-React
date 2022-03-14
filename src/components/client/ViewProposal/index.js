@@ -29,7 +29,7 @@ function ViewProposal() {
 
     const { defaultClientProfile, defaultInfo, defaultAttendingCourses, defaultServices,
         defaultOptionalServices, defaultMiscellaneous, defaultNotes, defaultUpfrontCost,
-        defaultOngoingMnt, defaultRepayment } = DefaultValues;
+        defaultOngoingMnt, defaultRepayment, defaultDiscountTable } = DefaultValues;
 
     React.useEffect(() => {
         document.title = 'View Proposal'
@@ -50,6 +50,7 @@ function ViewProposal() {
     const [upfrontCost, setUpfrontCost] = React.useState(defaultUpfrontCost);
     const [ongoingMnt, setOngoingMnt] = React.useState(defaultOngoingMnt);
     const [repaymentCalc, setRepaymentCalc] = React.useState(defaultRepayment);
+    const [discountTable, setDiscountTable] = React.useState(defaultDiscountTable);
 
     const [affinityMobilePopUpValue, setAffinityMobilePopUpValue] = React.useState('');
     const [settlementPopUpValue, setSettlementPopUpValue] = React.useState('');
@@ -140,7 +141,7 @@ function ViewProposal() {
             else {
                 if (ProposalDetails.data instanceof Array && ProposalDetails.data.length > 0) {
                     const data = ProposalDetails.data[0];
-console.log(data)
+                    // console.log(data)
                     const rights = JSON.parse(sessionStorage.getItem('rights')) || {};
                     if (Number(rights.can_view) !== 1 && Number(data.createdBy) !== user_id) {
                         toast.error("You cannot view this proposal", {
@@ -304,6 +305,21 @@ console.log(data)
                         repaymentValues.repayments[repaymentsRows[i]].lexisCare = data.repaymentCalc.repayments[i].lexis_care;
                     }
                     setRepaymentCalc(repaymentValues);
+
+                    // console.log(data.discountTable)
+                    let discountTableValues = {};
+                    const discuntTableRows = ["softwareDis", "serviceDis", "lexisCareDis", "totalDis"];
+                    for (let i = 0; i < data.discountTable?.length && i < discuntTableRows.length; i++) {
+                        discountTableValues[discuntTableRows[i]] = {};
+                        discountTableValues[discuntTableRows[i]].label = data.discountTable[i].label;
+                        discountTableValues[discuntTableRows[i]].totalAmount = data.discountTable[i].amt_without_discount;
+                        discountTableValues[discuntTableRows[i]].discountAmount = data.discountTable[i].discount_amount;
+                        discountTableValues[discuntTableRows[i]].amountAfterDiscount = data.discountTable[i].amt_with_discount;
+                        discountTableValues[discuntTableRows[i]].discountPercent = data.discountTable[i].discount_percent;
+                    }
+                    if (Object.keys(discountTableValues).length > 3) {
+                        setDiscountTable(discountTableValues);
+                    }
 
                     setAffinityMobilePopUpValue(Number(data.affinityMobilePopUpValue[0]?.num_of_users));
                     setSettlementPopUpValue(Number(data.settlementPopUpValue[0]?.no_of_licenses));
@@ -548,6 +564,8 @@ console.log(data)
                                 setScopingStudyPopUpValue={setScopingStudyPopUpValue}
                                 affinityServerPopupValues={affinityServerPopupValues}
                                 setAffinityServerPopupValues={setAffinityServerPopupValues}
+                                discountTable={discountTable}
+                                setDiscountTable={setDiscountTable}
                             />
                             {
                                 Number(rights.can_approve) === 1

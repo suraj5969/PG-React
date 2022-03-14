@@ -6,6 +6,10 @@ import DataTable from './DataTable.js';
 
 function UserManagement(props) {
 
+    React.useEffect(() => {
+        document.title = 'User Management';
+    }, []);
+
     const {setNavopen} = props;
 
     const styles = useStyles();

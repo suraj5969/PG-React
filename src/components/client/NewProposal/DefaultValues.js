@@ -133,7 +133,7 @@ const defaultMiscellaneous = {
 
 
 // const date = new Date();
-const defaultNotes =[];
+const defaultNotes = [];
 //  [{
 //     note_no: 1,
 //     user_id: sessionStorage.getItem('user_id') || -1,
@@ -197,6 +197,19 @@ const defaultOngoingMnt = {
     totalCostMonth: { ...upfrontCostRow, label: 'Total Cost Per Month For Each User', percentDiscount: '-', discountItemcost: '-', discountAmount: '-' },
 }
 
+const discountTableRow = {
+    label: '',
+    totalAmount: 0,
+    discountAmount: 0,
+    amountAfterDiscount: 0,
+    discountPercent: 0,
+}
+const defaultDiscountTable = {
+    softwareDis: { ...discountTableRow, label: 'Software License Subtotal' },
+    serviceDis: { ...discountTableRow, label: 'Professional Service Subtotal' },
+    lexisCareDis: { ...discountTableRow, label: 'Lexis Care 0 Year Subtotal' },
+    totalDis: { ...discountTableRow, label: 'Total 0 Year Contract Value' }
+}
 
 const defaultRepayment = {
     totalsTable: {
@@ -292,6 +305,7 @@ const DefaultValues = {
     defaultUpfrontCost: defaultUpfrontCost,
     defaultOngoingMnt: defaultOngoingMnt,
     defaultRepayment: defaultRepayment,
+    defaultDiscountTable: defaultDiscountTable,
 };
 
 

@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function WorkflowApproval(props) {
 
+    React.useEffect(() => {
+        document.title = 'Workflow Approval'
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

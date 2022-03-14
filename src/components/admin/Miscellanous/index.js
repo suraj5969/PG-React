@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function Miscellaneous(props) {
 
+    React.useEffect(() => {
+        document.title = 'Miscellaneous'
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

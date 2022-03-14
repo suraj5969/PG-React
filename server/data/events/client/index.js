@@ -136,7 +136,7 @@ const getUserNameByID = async (user_id) => {
         const userName = await pool.request()
             .input('user_id', sql.Int, user_id)
             .query(sqlQueries.getUserNameByID);
-            // console.log(userName);
+        // console.log(userName);
         return userName.recordset;
     } catch (error) {
         return error.message;
@@ -313,6 +313,28 @@ const getRepaymentMaintenanceDetails = async (proposal_no) => {
         const getRepaymentDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getRepaymentMaintenanceDetails);
+        return getRepaymentDetails.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const getRepaymentDiscount = async (proposal_no) => {
+    try {
+        const query = `SELECT [id]
+                        ,[proposal_no]
+                        ,[label]
+                        ,[amt_without_discount]
+                        ,[discount_amount]
+                        ,[amt_with_discount]
+                        ,[discount_percent]
+                    FROM [dbo].[repayment_discount]
+                    WHERE [proposal_no]=@proposal_no`;
+        let pool = await sql.connect(config.sql);
+        // const sqlQueries = await utils.loadSqlQueries('client');
+        const getRepaymentDetails = await pool.request()
+            .input('proposal_no', sql.VarChar(50), proposal_no)
+            .query(query);
         return getRepaymentDetails.recordset;
     } catch (error) {
         return error.message;
@@ -1283,6 +1305,44 @@ const saveOngoingMaintenance = async (values) => {
     }
 }
 
+const saveRepaymentDiscount = async (values) => {
+    try {
+        // console.log('events called')
+        const { proposalNo, softwareDis, serviceDis, lexisCareDis, totalDis } = values;
+
+        let pool = await sql.connect(config.sql);
+
+        const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
+        // Columns must correspond with type we have created in database.
+        tvp.columns.add('proposal_no', sql.VarChar(50))
+        tvp.columns.add('label', sql.VarChar(550))
+        tvp.columns.add('amt_without_discount', sql.VarChar(20))
+        tvp.columns.add('discount_amount', sql.VarChar(20))
+        tvp.columns.add('amt_with_discount', sql.VarChar(20))
+        tvp.columns.add('discount_percent', sql.VarChar(20))
+
+        tvp.rows.add(proposalNo, softwareDis.label, softwareDis.totalAmount, softwareDis.discountAmount, softwareDis.amountAfterDiscount, softwareDis.discountPercent)
+
+        tvp.rows.add(proposalNo, serviceDis.label, serviceDis.totalAmount, serviceDis.discountAmount, serviceDis.amountAfterDiscount, serviceDis.discountPercent)
+
+        tvp.rows.add(proposalNo, lexisCareDis.label, lexisCareDis.totalAmount, lexisCareDis.discountAmount, lexisCareDis.amountAfterDiscount, lexisCareDis.discountPercent)
+
+        tvp.rows.add(proposalNo, totalDis.label, totalDis.totalAmount, totalDis.discountAmount, totalDis.amountAfterDiscount, totalDis.discountPercent)
+
+
+        const request = new sql.Request()
+        request.input('tvp', tvp)
+        let resultData;
+        request.execute('repay_discount_insert_procedure', (err, result) => {
+            // ... error checks 
+            resultData = result;
+        })
+        return resultData;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const saveRepaymentCalc = async (values) => {
     try {
         // console.log('events called')
@@ -1583,7 +1643,7 @@ const editProposalDetails = async (proposal_no, edited_by, edited_reason) => {
             .input('edited_date', sql.SmallDateTime, new Date())
             .input('edited_reason', sql.VarChar(555), edited_reason)
             .query(sqlQueries.editProposalDetails);
-            // console.log( new Date(), 'in edit proposal function')
+        // console.log( new Date(), 'in edit proposal function')
         return editDetails.rowsAffected;
     } catch (error) {
         return error.message;
@@ -2053,6 +2113,45 @@ const editOngoingMaintenance = async (values) => {
     }
 }
 
+
+const editRepaymentDiscount = async (values) => {
+    try {
+        // console.log('events called')
+        const { proposalNo, softwareDis, serviceDis, lexisCareDis, totalDis } = values;
+
+        let pool = await sql.connect(config.sql);
+
+        const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
+        // Columns must correspond with type we have created in database.
+        tvp.columns.add('proposal_no', sql.VarChar(50))
+        tvp.columns.add('label', sql.VarChar(550))
+        tvp.columns.add('amt_without_discount', sql.VarChar(20))
+        tvp.columns.add('discount_amount', sql.VarChar(20))
+        tvp.columns.add('amt_with_discount', sql.VarChar(20))
+        tvp.columns.add('discount_percent', sql.VarChar(20))
+
+        tvp.rows.add(proposalNo, softwareDis.label, softwareDis.totalAmount, softwareDis.discountAmount, softwareDis.amountAfterDiscount, softwareDis.discountPercent)
+
+        tvp.rows.add(proposalNo, serviceDis.label, serviceDis.totalAmount, serviceDis.discountAmount, serviceDis.amountAfterDiscount, serviceDis.discountPercent)
+
+        tvp.rows.add(proposalNo, lexisCareDis.label, lexisCareDis.totalAmount, lexisCareDis.discountAmount, lexisCareDis.amountAfterDiscount, lexisCareDis.discountPercent)
+
+        tvp.rows.add(proposalNo, totalDis.label, totalDis.totalAmount, totalDis.discountAmount, totalDis.amountAfterDiscount, totalDis.discountPercent)
+
+
+        const request = new sql.Request()
+        request.input('tvp', tvp)
+        let resultData;
+        request.execute('repay_discount_edit_procedure', (err, result) => {
+            // ... error checks 
+            resultData = result;
+        })
+        return resultData;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const editRepaymentCalc = async (values) => {
     try {
         // console.log('events called')
@@ -2334,6 +2433,7 @@ module.exports = {
     getOptionalServices,
     getUpfrontCostDetails,
     getRepaymentCalcDetails,
+    getRepaymentDiscount,
     getRepaymentMaintenanceDetails,
     getRepaymentSoftwareServices,
     getMiscellaneous,
@@ -2380,6 +2480,7 @@ module.exports = {
     saveUpfrontCost,
     saveOngoingMaintenance,
     saveRepaymentCalc,
+    saveRepaymentDiscount,
     saveAffinityMobilePopup,
     saveSettlementPopup,
     saveEmpowerPopup,
@@ -2395,6 +2496,7 @@ module.exports = {
     editSalesNotes,
     editUpfrontCost,
     editOngoingMaintenance,
+    editRepaymentDiscount,
     editRepaymentCalc,
     editAffinityMobilePopup,
     editSettlementPopup,

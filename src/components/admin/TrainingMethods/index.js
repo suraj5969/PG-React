@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function TrainingMethods(props) {
 
+    React.useEffect(() => {
+        document.title = 'Training Methods'
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

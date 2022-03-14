@@ -6,6 +6,10 @@ import { useStyles } from '../Globals/styles';
 
 function MigrationOptions(props) {
 
+    React.useEffect(() => {
+        document.title = 'Migration Options';
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

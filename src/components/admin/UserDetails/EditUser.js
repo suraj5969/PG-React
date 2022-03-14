@@ -12,6 +12,10 @@ import Loader from '../Loader';
 toast.configure();
 function EditUserDetails() {
 
+    React.useEffect(() => {
+        document.title = 'Edit User';
+    }, []);
+
     const { id } = useParams();
     const styles = useStyles();
     const history = useHistory();

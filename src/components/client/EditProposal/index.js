@@ -24,14 +24,14 @@ import DefaultValues from '../NewProposal/DefaultValues';
 toast.configure();
 
 function EditProposal() {
-    
+
     const { defaultClientProfile, defaultInfo, defaultAttendingCourses, defaultServices,
         defaultOptionalServices, defaultMiscellaneous, defaultNotes, defaultUpfrontCost,
-        defaultOngoingMnt, defaultRepayment } = DefaultValues;
+        defaultOngoingMnt, defaultRepayment, defaultDiscountTable } = DefaultValues;
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         document.title = 'Edit Proposal'
-    },[]);
+    }, []);
 
     const history = useHistory();
     const { proposal_no } = useParams();
@@ -48,6 +48,7 @@ function EditProposal() {
     const [upfrontCost, setUpfrontCost] = React.useState(defaultUpfrontCost);
     const [ongoingMnt, setOngoingMnt] = React.useState(defaultOngoingMnt);
     const [repaymentCalc, setRepaymentCalc] = React.useState(defaultRepayment);
+    const [discountTable, setDiscountTable] = React.useState(defaultDiscountTable);
 
     const [affinityMobilePopUpValue, setAffinityMobilePopUpValue] = React.useState('');
     const [settlementPopUpValue, setSettlementPopUpValue] = React.useState('');
@@ -294,6 +295,21 @@ function EditProposal() {
                     }
                     setRepaymentCalc(repaymentValues);
 
+                    let discountTableValues = {};
+                    const discuntTableRows = ["softwareDis", "serviceDis", "lexisCareDis", "totalDis"];
+                    for (let i = 0; i < data.discountTable?.length && i < discuntTableRows.length; i++) {
+                        discountTableValues[discuntTableRows[i]] = {};
+                        discountTableValues[discuntTableRows[i]].label = data.discountTable[i].label;
+                        discountTableValues[discuntTableRows[i]].totalAmount = data.discountTable[i].amt_without_discount;
+                        discountTableValues[discuntTableRows[i]].discountAmount = data.discountTable[i].discount_amount;
+                        discountTableValues[discuntTableRows[i]].amountAfterDiscount = data.discountTable[i].amt_with_discount;
+                        discountTableValues[discuntTableRows[i]].discountPercent = data.discountTable[i].discount_percent;
+                    }
+                    if (Object.keys(discountTableValues).length > 3) {
+                        setDiscountTable(discountTableValues);
+                    }
+
+
                     setAffinityMobilePopUpValue(Number(data.affinityMobilePopUpValue[0]?.num_of_users));
                     setSettlementPopUpValue(Number(data.settlementPopUpValue[0]?.no_of_licenses));
                     setScopingStudyPopUpValue(Number(data.scopingStudyPopUpValue[0]?.hrs_required));
@@ -525,6 +541,7 @@ function EditProposal() {
             upfrontCost: upfrontCost,
             ongoingMnt: ongoingMnt,
             repaymentCalc: repaymentCalc,
+            discountTable: discountTable,
             affinityMobilePopUpValue: affinityMobilePopUpValue,
             empowerModules: empowerModules,
             settlementPopUpValue: settlementPopUpValue,
@@ -557,6 +574,7 @@ function EditProposal() {
                     upfrontCost: upfrontCost,
                     ongoingMnt: ongoingMnt,
                     repaymentCalc: repaymentCalc,
+                    discountTable: discountTable,
                     affinityMobilePopUpValue: affinityMobilePopUpValue,
                     empowerModules: empowerModules,
                     settlementPopUpValue: settlementPopUpValue,
@@ -645,6 +663,8 @@ function EditProposal() {
                                 setScopingStudyPopUpValue={setScopingStudyPopUpValue}
                                 affinityServerPopupValues={affinityServerPopupValues}
                                 setAffinityServerPopupValues={setAffinityServerPopupValues}
+                                discountTable={discountTable}
+                                setDiscountTable={setDiscountTable}
                             />
 
                             <Box sx={{

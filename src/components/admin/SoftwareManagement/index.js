@@ -16,6 +16,10 @@ import editSoftwareAPI from '../../../apis/admin/editSoftwareAPI';
 toast.configure();
 function SoftwareManagement(props) {
 
+    React.useEffect(() => {
+        document.title = 'Software Management';
+    }, []);
+
     // const history = useHistory();
 
     const [Values, setValues] = React.useState([]);

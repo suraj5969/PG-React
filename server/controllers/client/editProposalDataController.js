@@ -70,9 +70,19 @@ const editOngoingMaintenance = async (values) => {
         return error.message;
     }
 }
+
 const editRepaymentCalc = async (values) => {
     try {
         const result = await eventData.editRepaymentCalc(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const editRepaymentDiscount = async (values) => {
+    try {
+        const result = await eventData.editRepaymentDiscount(values);
         return result;
     } catch (error) {
         return error.message;
@@ -187,6 +197,7 @@ const editProposalData = async (req, res, next) => {
         const upfrontCost = await editUpfrontCost({ proposalNo, ...values.upfrontCost });
         const ongoingMaintenance = await editOngoingMaintenance({ proposalNo, ...values.ongoingMnt });
         const repaymentCalc = await editRepaymentCalc({ proposalNo, ...values.repaymentCalc });
+        const repaymentDiscount = await editRepaymentDiscount({ proposalNo, ...values.discountTable });
         // console.log(clientProfile,attendingCourses, defaultServices, repaymentCalc,'repaymentCalc');
 
         const affnityMobPopupValue = await editAffinityMobPopupValue({ proposalNo, affinityMobilePopUpValue: values.affinityMobilePopUpValue });
@@ -203,7 +214,7 @@ const editProposalData = async (req, res, next) => {
             country: values.clientProfile.country,
             objective: values.clientProfile.objective,
             upsell: values.clientProfile.upsell,
-            discount: values.upfrontCost.subTotal.percentDiscount,
+            discount: values.discountTable.totalDis.discountPercent,
         })
 
         res.send('working');

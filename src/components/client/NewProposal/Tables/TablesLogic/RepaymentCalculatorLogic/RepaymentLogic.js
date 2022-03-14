@@ -3,13 +3,16 @@ import getYearUpliftPercentAPI from '../../../../../../apis/client/getYearUplift
 
 function RepaymentLogic(props) {
 
-    const { clientProfile, upfrontCost, ongoingMnt, repaymentCalc, setRepaymentCalc } = props;
+    const { clientProfile, upfrontCost, ongoingMnt, repaymentCalc, setRepaymentCalc
+        , discountTable, setDiscountTable, } = props;
 
     const { totalsTable, mntTable, repayments } = repaymentCalc;
 
     const { software, services, sTotal, } = totalsTable;
 
-    const { year1, year2, year3, year4, year5, } = mntTable;
+    const { year1, year2, year3, year4, year5, mntTotal } = mntTable;
+
+    const { softwareDis, serviceDis, lexisCareDis, totalDis } = discountTable;
 
     const { initPayment, month1, month2, month3, month4, month5,
         month6, month7, month8, month9, month10,
@@ -21,7 +24,6 @@ function RepaymentLogic(props) {
         month46, month47, month48, month49, month50, month51, month52,
         month53, month54, month55, month56, month57, month58, month59,
         month60, } = repayments;
-
 
     // useEffect for payments for initPayment
     React.useEffect(() => {
@@ -241,7 +243,7 @@ function RepaymentLogic(props) {
                 console.log('getYearUpliftPercentAPI no working');
             }
             else {
-                if (typeof uplift.data === 'object' && uplift.data.length > 0 ) {
+                if (typeof uplift.data === 'object' && uplift.data.length > 0) {
                     setUpliftPercent(Number(uplift.data[0].value) / 100)
                 }
             }
@@ -514,6 +516,91 @@ function RepaymentLogic(props) {
             }
         }))
     }, [year1.discounted, year2.discounted, year3.discounted, year4.discounted, year5.discounted, setRepaymentCalc])
+
+    //useEffect for dicountTable fields
+    React.useEffect(() => {
+        const dis = Number(software.cost) - Number(software.gcrmEntries);
+        const disPercent = (dis / Number(software.cost)) * 100;
+        setDiscountTable((prevValues) => ({
+            ...prevValues,
+            softwareDis: {
+                ...prevValues.softwareDis,
+                totalAmount: software.cost,
+                discountAmount: dis,
+                amountAfterDiscount: software.gcrmEntries,
+                discountPercent: isFinite(disPercent) ? disPercent.toFixed(2) : 0,
+            }
+        }))
+    }, [software.cost, software.gcrmEntries])
+
+    React.useEffect(() => {
+        const dis = Number(services.cost) - Number(services.gcrmEntries);
+        const disPercent = (dis / Number(services.cost)) * 100;
+        setDiscountTable((prevValues) => ({
+            ...prevValues,
+            serviceDis: {
+                ...prevValues.serviceDis,
+                totalAmount: services.cost,
+                discountAmount: dis,
+                amountAfterDiscount: services.gcrmEntries,
+                discountPercent: isFinite(disPercent) ? disPercent.toFixed(2) : 0,
+            }
+        }))
+    }, [services.cost, services.gcrmEntries])
+
+    React.useEffect(() => {
+        const dis = Number(mntTotal.RRP) - Number(mntTotal.discounted);
+        const disPercent = (dis / Number(mntTotal.RRP)) * 100;
+        setDiscountTable((prevValues) => ({
+            ...prevValues,
+            lexisCareDis: {
+                ...prevValues.lexisCareDis,
+                totalAmount: mntTotal.RRP,
+                discountAmount: dis,
+                amountAfterDiscount: mntTotal.discounted,
+                discountPercent: isFinite(disPercent) ? disPercent.toFixed(2) : 0,
+            }
+        }))
+    }, [mntTotal.RRP, mntTotal.discounted])
+
+    React.useEffect(() => {
+        const totalAmt = Number(softwareDis.totalAmount) + Number(serviceDis.totalAmount) + Number(lexisCareDis.totalAmount);
+        const totalDis = Number(softwareDis.discountAmount) + Number(serviceDis.discountAmount) + Number(lexisCareDis.discountAmount);
+        const amtAfterDis = Number(softwareDis.amountAfterDiscount) + Number(serviceDis.amountAfterDiscount) + Number(lexisCareDis.amountAfterDiscount);
+        const disPercent = (totalDis / totalAmt) * 100;
+
+        setDiscountTable((prevValues) => ({
+            ...prevValues,
+            totalDis: {
+                ...prevValues.totalDis,
+                totalAmount: totalAmt,
+                discountAmount: totalDis,
+                amountAfterDiscount: amtAfterDis,
+                discountPercent: isFinite(disPercent) ? disPercent.toFixed(2) : 0,
+            }
+        }))
+    }, [softwareDis.totalAmount, serviceDis.totalAmount, lexisCareDis.totalAmount,
+    softwareDis.discountAmount, serviceDis.discountAmount, lexisCareDis.discountAmount,
+    softwareDis.amountAfterDiscount, serviceDis.amountAfterDiscount, lexisCareDis.amountAfterDiscount,])
+
+    const monthsToYear = {
+        '36 Months': 3,
+        '48 Months': 4,
+        '60 Months': 5,
+    }
+    React.useEffect(() => {
+        setDiscountTable((prevValues) => ({
+            ...prevValues,
+            lexisCareDis: {
+                ...prevValues.lexisCareDis,
+                label: `Lexis Care ${monthsToYear[clientProfile.duration] ? monthsToYear[clientProfile.duration] : 0} Year Subtotal`,
+            },
+            totalDis: {
+                ...prevValues.totalDis,
+                label: `Total ${monthsToYear[clientProfile.duration] ? monthsToYear[clientProfile.duration] : 0} Year Contract Value`,
+            },
+        }))
+    }, [clientProfile.duration])
 
     // useEffect for payments for initPayment
     React.useEffect(() => {

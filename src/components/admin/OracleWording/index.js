@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function OracleWording(props) {
 
+    React.useEffect(() => {
+        document.title = 'Oracle Wording';
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

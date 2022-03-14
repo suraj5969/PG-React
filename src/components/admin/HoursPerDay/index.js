@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function HoursPerDay(props) {
 
+    React.useEffect(() => {
+        document.title = 'Hours Per Day';
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

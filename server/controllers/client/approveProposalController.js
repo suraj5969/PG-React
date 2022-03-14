@@ -20,7 +20,7 @@ const approveProposal = async (req, res, next) => {
         const getClientDiscount = await eventData.getClientDiscount(proposal_no);
 
         const status = Number(proposalStatus[0]?.status_id);
-        const discount = Number(getClientDiscount[0]?.percent_discount);
+        const discount = Number(getClientDiscount[0]?.discount_percent);
 
         let approversIds = {};
         if (clientProfile[0]?.country === 'Australia') {

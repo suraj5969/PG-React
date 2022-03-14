@@ -82,6 +82,15 @@ const saveRepaymentCalc = async (values) => {
     }
 }
 
+const saveRepaymentDiscount = async (values) => {
+    try {
+        const result = await eventData.saveRepaymentDiscount(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const saveAffinityMobPopupValue = async (values) => {
     try {
         const result = await eventData.saveAffinityMobilePopup(values);
@@ -199,6 +208,7 @@ const saveProposalData = async (req, res, next) => {
         const upfrontCost = await saveUpfrontCost({ proposalNo, ...values.upfrontCost });
         const ongoingMaintenance = await saveOngoingMaintenance({ proposalNo, ...values.ongoingMnt });
         const repaymentCalc = await saveRepaymentCalc({ proposalNo, ...values.repaymentCalc });
+        const repaymentDiscount = await saveRepaymentDiscount({ proposalNo, ...values.discountTable });
         // console.log(repaymentCalc,'repaymentCalc');
 
         const affnityMobPopupValue = await saveAffinityMobPopupValue({ proposalNo, affinityMobilePopUpValue: values.affinityMobilePopUpValue });
@@ -214,7 +224,7 @@ const saveProposalData = async (req, res, next) => {
             country: values.clientProfile.country,
             objective: values.clientProfile.objective,
             upsell: values.clientProfile.upsell,
-            discount: values.upfrontCost.subTotal.percentDiscount,
+            discount: values.discountTable.totalDis.discountPercent,
         })
 
         res.send(saveProposalData);

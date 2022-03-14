@@ -13,6 +13,10 @@ toast.configure();
 
 function NewUser() {
 
+    React.useEffect(() => {
+        document.title = 'Add User'
+    }, []);
+
     const styles = useStyles();
     const history = useHistory();
 

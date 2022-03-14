@@ -91,6 +91,14 @@ const getRepaymentCalc = async (proposal_no) => {
         return error.message;
     }
 }
+const getRepaymentDiscount = async (proposal_no) => {
+    try {
+        const values = await eventData.getRepaymentDiscount(proposal_no);
+        return values;
+    } catch (error) {
+        return error.message;
+    }
+}
 
 const getAffinityMobPopupValue = async (proposal_no) => {
     try {
@@ -159,6 +167,7 @@ const getProposalData = async (req, res, next) => {
         const repaySoftServices = await getRepaymentSoftwareServices(proposal_no);
         const repayMaintenance = await getRepaymentMaintenance(proposal_no);
         const repaymentCalc = await getRepaymentCalc(proposal_no);
+        const discountTable = await getRepaymentDiscount(proposal_no);
 
         const affnityMobPopupValue = await getAffinityMobPopupValue(proposal_no);
         const settlementPopupValue = await getSettlementPopupValue(proposal_no);
@@ -247,6 +256,7 @@ const getProposalData = async (req, res, next) => {
                 mntTable: repayMaintenance,
                 repayments: repaymentCalc
             },
+            discountTable: discountTable,
 
             affinityMobilePopUpValue: affnityMobPopupValue,
             settlementPopUpValue: settlementPopupValue,

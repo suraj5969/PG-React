@@ -216,6 +216,8 @@ export default function SubTabs(props) {
                             // ongoingMnt={props.ongoingMnt}
                             repaymentCalc={props.repaymentCalc}
                             setRepaymentCalc={props.setRepaymentCalc}
+                            discountTable={props.discountTable}
+                            setDiscountTable={props.setDiscountTable}
                             viewMode={props.viewMode}
                         />
                     </TabPanel>
@@ -273,6 +275,8 @@ export default function SubTabs(props) {
                             ongoingMnt={props.ongoingMnt}
                             repaymentCalc={props.repaymentCalc}
                             setRepaymentCalc={props.setRepaymentCalc}
+                            discountTable={props.discountTable}
+                            setDiscountTable={props.setDiscountTable}
                         />
                     </>
                     : null

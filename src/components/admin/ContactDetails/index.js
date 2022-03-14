@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function ContactDetails(props) {
 
+    React.useEffect(() => {
+        document.title = 'Contact Details'
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

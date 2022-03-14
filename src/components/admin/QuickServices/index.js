@@ -6,6 +6,10 @@ import DataTable from './DataTable';
 
 function QuickServices(props) {
 
+    React.useEffect(() => {
+        document.title = 'Quick Start Services';
+    }, []);
+
     const {setNavopen} = props;
     const styles = useStyles();
     

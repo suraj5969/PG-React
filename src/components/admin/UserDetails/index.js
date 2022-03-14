@@ -12,6 +12,10 @@ import Loader from '../Loader';
 toast.configure();
 function UserDetails() {
 
+    React.useEffect(() => {
+        document.title = 'User Details';
+    }, []);
+
     let { id } = useParams();
 
     const styles = useStyles();

@@ -10,6 +10,8 @@ function RepaymentCalculatorLogic(props) {
                 ongoingMnt={props.ongoingMnt}
                 repaymentCalc={props.repaymentCalc}
                 setRepaymentCalc={props.setRepaymentCalc}
+                discountTable={props.discountTable}
+                setDiscountTable={props.setDiscountTable}
             />
         </>
     )
