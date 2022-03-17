@@ -4,10 +4,59 @@ import getProductInfoByIdAPI from '../../../../../../apis/client/getProductInfoB
 
 function MiscellaneousLogic(props) {
 
-    const { clientProfile, miscellaneous, setMiscellaneous } = props;
+    const { clientProfile, miscellaneous, setMiscellaneous,
+        affinityServerPopupValues, setAffinityServerPopupValues } = props;
 
     const { affinityServer, scopingStudy, propertyPresidency } = miscellaneous;
 
+
+    const [productInfos, setProductInfos] = React.useState({})
+    React.useEffect(() => {
+        (async () => {
+            const product = await getProductInfoByIdAPI('1532488');
+            if (product.status !== 200) {
+                console.log('getProductInfoByIdAPI api not working')
+            }
+            else {
+                if (typeof product.data === 'object' && product.data.length > 0) {
+                    const values = {};
+                    product.data.forEach((product) => {
+                        values[product.BU_NAME] = product.STD_UNIT_PRICE_AMT
+                    })
+                    setProductInfos((prevValues) => ({
+                        ...prevValues,
+                        "1532488": values
+                    }))
+                }
+            }
+        })();
+    }, [])
+
+    React.useEffect(() => {
+        if (affinityServerPopupValues.typeOfLicense === 'Named User') {
+            const numOfUsers = clientProfile.numOfUsers;
+            const users = Number(numOfUsers) < 10 ? 10
+                : Number(numOfUsers) % 5 === 0 ? Number(numOfUsers)
+                    : Number(numOfUsers) + (5 - (Number(numOfUsers) % 5));
+
+            setAffinityServerPopupValues((prevValues) => ({
+                ...prevValues,
+                numOfUsers: users,
+                serverLicense: '',
+            }));
+
+            if (clientProfile.country !== '' && productInfos['1532488']) {
+                const price = users * Number(productInfos['1532488'][clientProfile.country]);
+                setAffinityServerPopupValues((prevValues) => ({
+                    ...prevValues,
+                    oracleLicense: (price).toFixed(2),
+                    maintenance: (price * 0.25).toFixed(2),
+                    total: (price + price * 0.25).toFixed(2)
+                }));
+            }
+        }
+
+    }, [clientProfile.numOfUsers, clientProfile.country])
 
     // affinityServer CPU pop up values 
     React.useEffect(() => {

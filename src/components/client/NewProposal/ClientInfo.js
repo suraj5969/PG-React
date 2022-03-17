@@ -671,7 +671,7 @@ export default function ClientInfo(props) {
                         </Stack>
                         <Stack spacing={1} className={styles.col2}>
                             <Box sx={{ display: "flex", alignItems: 'center' }}>
-                                <Typography variant="subtitle1" className="lh-760-to-900-16px">Number of Free Earners  </Typography>
+                                <Typography variant="subtitle1" className="lh-760-to-900-16px">Number of Fee Earners  </Typography>
 
                                 <Tooltip TransitionComponent={Fade} placement="top" color='primary' title='This is an integer field which accepts only integer values.' arrow>
                                     <HelpOutlineRoundedIcon fontSize="small" sx={{ width: '.8em', mx: 0.5 }} />

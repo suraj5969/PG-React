@@ -215,7 +215,7 @@ const getDocfile = async (req, res, next) => {
             let price = 0;
             price = Number(upfrontCostDetails[1]?.cost);
             return {
-                label: `Affinity Workstation licenses for ${clientProfile[0]?.num_of_users} concurrent use`,
+                label: `Affinity Workstation licenses for ${clientProfile[0]?.num_of_users} concurrent users`,
                 price: `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
                 modules_selected: false
 
@@ -565,7 +565,7 @@ const getDocfile = async (req, res, next) => {
             const price = Number(repaymentCalcDetails[1]?.payment);
             return {
                 year: `Year 1`,
-                initial_pay: `$${repaymentCalcDetails[0]?.payment}`,
+                initial_pay: `$${Number(repaymentCalcDetails[0]?.payment).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
                 month: `$${(price * 12).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
                 lexis_month: `$${Number(repayMaintenanceDetails[0]?.discounted).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
             }
@@ -731,19 +731,19 @@ const getDocfile = async (req, res, next) => {
                         }
                     }
                 }
-                let users = clientProfile[0]?.num_of_users;
-                if (miscellaneous[0]?.included !== '') {
-                    users = Number(users) < 10 ? 10
-                        : Number(users) % 5 === 0 ? Number(users)
-                            : Number(users) + (5 - (Number(users) % 5));
-                }
+                const users = clientProfile[0]?.num_of_users;
+                // if (miscellaneous[0]?.included !== '') {
+                //     users = Number(users) < 10 ? 10
+                //         : Number(users) % 5 === 0 ? Number(users)
+                //             : Number(users) + (5 - (Number(users) % 5));
+                // }
                 const value = Number(repaymentCalcDetails[61]?.payment) + Number(repaymentCalcDetails[61]?.lexis_care) - Number(repaymentCalcDetails[0]?.payment);
                 return `$${(value / (month * Number(users))).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }(),
             repay_years: repay_table(),
 
             monthTotal: function () {
-                const value = Number(repaymentCalcDetails[61]?.payment);
+                const value = Number(repaymentCalcDetails[61]?.payment) - Number(repaymentCalcDetails[0]?.payment);
                 return `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }(),
             lexisMonthTotal: function () {

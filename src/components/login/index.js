@@ -60,7 +60,7 @@ function Login() {
         const credentials = { email: values.email, password: values.password }
         const apiResult = await verifyAPI(credentials);
         // console.log('after verifyAPI', apiResult);
-        if (apiResult.status === 200 && apiResult.data instanceof Array && typeof apiResult.data[0] === "object") {
+        if (apiResult.status === 200 && apiResult.data instanceof Array) {
             if (apiResult.data?.length > 0) {
                 if (Number(apiResult.data[0]?.is_active) === 1) {
                     setValues({ ...values, isValidated: true, isLoading: false });

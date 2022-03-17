@@ -47,6 +47,8 @@ function ImplementationLogic(props) {
                 setMiscellaneous={props.setMiscellaneous}
                 // miscellaneousPopupsState={props.miscellaneousPopupsState}
                 setMiscellenousPopupsState={props.setMiscellenousPopupsState}
+                affinityServerPopupValues={props.affinityServerPopupValues}
+                setAffinityServerPopupValues={props.setAffinityServerPopupValues}
             />
         </>
     )

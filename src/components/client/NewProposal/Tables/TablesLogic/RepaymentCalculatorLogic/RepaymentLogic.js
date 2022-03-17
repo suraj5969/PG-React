@@ -584,6 +584,7 @@ function RepaymentLogic(props) {
     softwareDis.amountAfterDiscount, serviceDis.amountAfterDiscount, lexisCareDis.amountAfterDiscount,])
 
     const monthsToYear = {
+        'Upfront': 1,
         '36 Months': 3,
         '48 Months': 4,
         '60 Months': 5,
