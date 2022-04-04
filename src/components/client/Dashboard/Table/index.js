@@ -1,9 +1,13 @@
 import React from "react";
-import MaterialTable from "material-table";
+import MaterialTable, { MTableToolbar } from "material-table";
 import Header from "../Header";
 import getDashboardDataAPI from "../../../../apis/client/getDashboardDataAPI";
 import archiveProposalAPI from "../../../../apis/client/archiveProposalAPI";
 import editProposalDetailsAPI from "../../../../apis/client/editProposalDetailsAPI";
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 // import getSingleUserDetailsAPI from "../../../../apis/admin/getSingleUserDetailsAPI";
 import Loader from '../../../admin/Loader';
 import { useHistory } from 'react-router-dom';
@@ -65,6 +69,7 @@ export default function Table() {
   const [tableData, setTableData] = React.useState([]);
   const [allData, setAllData] = React.useState([]);
   const [isData, setIsData] = React.useState(false);
+  const [countrySelected, setCountrySelected] = React.useState('Australia');
   const [reRender, setReRender] = React.useState(false);
 
   const [filterOptions, setFilterOptions] = React.useState({
@@ -87,6 +92,8 @@ export default function Table() {
         filters['next_approver_id'] = filterOptions.nextApproverID;
         count++;
       }
+      // console.log(filterOptions.nextApproverID, 'next approver');
+
       if (filterOptions.solutionSpecialistID !== 0) {
         filters['solution_specialist_id'] = filterOptions.solutionSpecialistID;
         count++;
@@ -95,16 +102,20 @@ export default function Table() {
         filters['lifecycle_id'] = filterOptions.lifecycleID;
         count++;
       }
+      filters['country'] = countrySelected;
+      // if (countrySelected !== '') {
+      //   count++;
+      // }
 
-      if (count > 0) {
-        const FilteredData = lodashFilter(allData, filters);
-        setTableData(FilteredData);
-      }
-      else {
-        setTableData(allData);
-      }
+      const FilteredData = lodashFilter(allData, filters);
+      setTableData(FilteredData);
+      // if (count > 0) {
+      // }
+      // else {
+      //   setTableData(allData);
+      // }
     }
-  }, [filterOptions, isData, allData])
+  }, [filterOptions, isData, allData, countrySelected])
 
 
   React.useEffect(() => {
@@ -116,7 +127,7 @@ export default function Table() {
         console.log('getDashboardDataAPI not working')
       }
       else {
-        if (typeof result.data === 'object' && result.data.length > 0) {
+        if (result.data instanceof Array && result.data.length > 0) {
           if (isMounted) {
             setTableData(result.data);
             setAllData(result.data);
@@ -184,6 +195,8 @@ export default function Table() {
 
   const rights = JSON.parse(sessionStorage.getItem('rights')) || {};
   const user_id = Number(sessionStorage.getItem('user_id')) || -1;
+  const solution_specialist = String(sessionStorage.getItem('solution_specialist')).trim().toLowerCase();
+  const role = Number(sessionStorage.getItem('role'));
 
   return (
     <>
@@ -196,18 +209,34 @@ export default function Table() {
               statusType={statusType}
             />
 
-            <Header setFilterOptions={setFilterOptions} />
+            <Header setFilterOptions={setFilterOptions} countrySelected={countrySelected} />
             <div style={{ width: "100%", maxWidth: '1500px', margin: '0 auto' }}>
               <MaterialTable
                 icons={tableIcons}
-                // components={{
-                //   Toolbar: props => {
-                //     let _props = { ...props, toolbarButtonAlignment: "left" }
-                //     return (
-                //       <MTableToolbar  {..._props} />
-                //     )
-                //   }
-                // }}
+                components={{
+                  Toolbar: props => {
+                    // let _props = { ...props, toolbarButtonAlignment: "right" }
+                    return (
+                      <>
+                        <FormControl style={{ position: 'absolute', zIndex: '10', top: '15px' }} sx={{ mx: 2, width: 150 }}>
+                          <InputLabel id="country-select">Country</InputLabel>
+                          <Select
+                            id="country-select"
+                            value={countrySelected}
+                            label="Country"
+                            variant="outlined"
+                            onChange={(e) => setCountrySelected(e.target.value)}
+                          >
+                            {/* <MenuItem value=''>All</MenuItem> */}
+                            <MenuItem value="Australia">Australia</MenuItem>
+                            <MenuItem value="New Zealand">New Zealand</MenuItem>
+                          </Select>
+                        </FormControl>
+                        <MTableToolbar {...props} />
+                      </>
+                    )
+                  }
+                }}
                 localization={{
                   header: {
                     actions: 'Operations',
@@ -221,23 +250,22 @@ export default function Table() {
                 }}
                 actions={[
                   // {
-                  //   icon: () => <Typography variant="h6" sx={{p:0}}>Show</Typography>,
+                  //   icon: () => <Typography variant="h6" sx={{ p: 0 }}>Show</Typography>,
                   //   isFreeAction: true,
-                  //   disabled:true
+                  //   disabled: true
                   // },
                   // {
                   //   icon: () => {
-                  //     return <FormControl sx={{p:0}}>
+                  //     return <FormControl variant="standard" sx={{ p: 0 }}>
                   //       <Select
-                  //         // labelId="approval-status"
-                  //         id="approval-status-select"
-                  //         value={numberOfRows}
-                  //         label="Approval Status"
-                  //         onChange={handleRowsEntriesChange}
+                  //         id="country-select"
+                  //         value={countrySelected}
+                  //         label="Country"
+                  //         variant="outlined"
+                  //         onChange={(e) => setCountrySelected(e.target.value)}
                   //       >
-                  //         <MenuItem value={10}>10</MenuItem>
-                  //         <MenuItem value={12}>12</MenuItem>
-                  //         <MenuItem value={15}>15</MenuItem>
+                  //         <MenuItem value="Australia">Australia</MenuItem>
+                  //         <MenuItem value="New Zealand">New Zealand</MenuItem>
                   //       </Select>
                   //     </FormControl>
                   //   },
@@ -247,11 +275,10 @@ export default function Table() {
                   //   isFreeAction: true
                   // },
                   // {
-                  //   icon: () => <Typography variant="h6" sx={{p:0}}>entires</Typography>,
+                  //   icon: () => <Typography variant="h6" sx={{ p: 0 }}>entires</Typography>,
                   //   isFreeAction: true,
-                  //   disabled:true
+                  //   disabled: true
                   // },
-
                   (rowData) => {
                     return {
                       icon: () => <VisibilityIcon />,
@@ -263,8 +290,8 @@ export default function Table() {
                   (rowData) => {
                     return {
                       icon: () => <EditIcon />,
-                      disabled: Number(rowData.lock_proposal) === 1 || (Number(rights.edit_other) !== 1 && Number(rowData.created_by) !== user_id),
-                      tooltip: rowData.lock_proposal === 1 ? 'Cannot Edit this Proposal' : 'Edit Proposal',
+                      disabled: Number(rowData.lock_proposal) === 1 || Number(rowData.lifecycle_id) === 2 || (Number(rights.edit_other) !== 1 && Number(rowData.created_by) !== user_id),
+                      tooltip: Number(rowData.lock_proposal) === 1 || Number(rowData.lifecycle_id) === 2 || (Number(rights.edit_other) !== 1 && Number(rowData.created_by) !== user_id) ? 'Cannot Edit this Proposal' : 'Edit Proposal',
                       onClick: (event, row) => {
                         if (Number(row.status_id) === 8) {
                           setStatusType('Approved');
@@ -285,8 +312,8 @@ export default function Table() {
                   (rowData) => {
                     return {
                       icon: () => <ArchiveOutlinedIcon />,
-                      disabled: rowData.lifecycle_id === 2,
-                      tooltip: rowData.lifecycle_id === 2 ? 'Proposal Already Archived' : 'Archive Proposal',
+                      disabled: rowData.lifecycle_id === 2 || solution_specialist !== 'yes' || role !== 1,
+                      tooltip: rowData.lifecycle_id === 2 || solution_specialist !== 'yes' || role !== 1 ? 'Cannot Archive this Proposal' : 'Archive Proposal',
                       onClick: async (event, row) => {
                         const archive = await archiveProposalAPI(row.proposal_no);
                         if (archive.status !== 200) {

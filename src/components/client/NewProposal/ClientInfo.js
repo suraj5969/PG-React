@@ -177,7 +177,7 @@ export default function ClientInfo(props) {
         if (editMode && clientProfile.clientNumber) {
             const fetchData = async () => {
                 const names = await getClientNameByNumberAPI(clientProfile.clientNumber);
-                console.log(names, 'client names edit mode')
+                // console.log(names, 'client names edit mode')
                 if (names.status !== 200) {
                     console.log('getClientNameByNumberAPI api not working')
                 }
@@ -365,7 +365,7 @@ export default function ClientInfo(props) {
                     countryspecialist.push(specialist)
                 }
             })
-            setCountrySolutionSpeciaist(countryspecialist);
+            setCountrySolutionSpeciaist(allSolutionSpecialist);
 
             if (sessionStorage.getItem('solution_specialist') && sessionStorage.getItem('user_id') &&
                 sessionStorage.getItem('country')) {

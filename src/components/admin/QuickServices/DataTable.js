@@ -226,9 +226,10 @@ function DataTable(props) {
                                                     }
                                                 }}
                                                 variant="outlined"
-                                                label="Enter new service here"
-                                                inputProps={{ maxLength: 40, tabIndex: 1 }}
-                                                error={!conditions.isServiceNameCorrect}
+                                                label="Service name"
+                                                // inputProps={{ maxLength: 40, tabIndex: 1 }}
+                                                // error={!conditions.isServiceNameCorrect}
+                                                disabled
                                             />
                                             {
                                                 conditions.isServiceNameCorrect

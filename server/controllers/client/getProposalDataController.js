@@ -208,21 +208,37 @@ const getProposalData = async (req, res, next) => {
 
         } else if (clientProfile[0]?.country === 'New Zealand') {
             approversIds['salesManager'] = workflow[0]?.nz_user_id;
-            approversIds['commLead'] = workflow[1]?.nz_user_id; //you will get null here
+            approversIds['commLead'] = workflow[1]?.nz_user_id;
             approversIds['cfo'] = workflow[2]?.nz_user_id;
-            approversIds['opsTeam'] = workflow[3]?.nz_user_id; // you will get null here
+            approversIds['opsTeam'] = workflow[3]?.nz_user_id;
 
             if (status === 4) {
                 nextApproverId = approversIds['salesManager'];
+            } else if (status === 5) {
+                nextApproverId = approversIds['commLead'];
             } else if (status === 6) {
                 nextApproverId = approversIds['cfo'];
+            } else if (status === 7) {
+                nextApproverId = approversIds['opsTeam'];
                 generateDoc = true;
             } else if (status === 8) {
                 generateDoc = true;
-                // if (approversIds['cfo'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal) {
-                //     showLockProposal = true;
-                // }
+                if (approversIds['opsTeam'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal))) {
+                    showLockProposal = true;
+                }
             }
+
+            // if (status === 4) {
+            //     nextApproverId = approversIds['salesManager'];
+            // } else if (status === 6) {
+            //     nextApproverId = approversIds['cfo'];
+            //     generateDoc = true;
+            // } else if (status === 8) {
+            //     generateDoc = true;
+            //     // if (approversIds['cfo'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal) {
+            //     //     showLockProposal = true;
+            //     // }
+            // }
         }
 
         const propStatus = {
@@ -232,7 +248,7 @@ const getProposalData = async (req, res, next) => {
             '4': 'Pending for Sales Approval',
             '5': 'Pending for Commercial Lead Approval',
             '6': 'Pending for CFO Approval',
-            '7': 'Pending for Ops Team Approval',
+            '7': 'Pending for Ops Team Verification',
             '8': 'Approved',
         }
 

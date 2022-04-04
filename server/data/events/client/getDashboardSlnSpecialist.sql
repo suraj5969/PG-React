@@ -5,6 +5,5 @@ SELECT [user_id]
     WHERE [user_id] IN (
         SELECT [solution_specialist_id]
         FROM [dbo].[client_profile]
-        WHERE [country] = @country
         GROUP BY [solution_specialist_id]
     )

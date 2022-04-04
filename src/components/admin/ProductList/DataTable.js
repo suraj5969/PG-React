@@ -68,7 +68,7 @@ function DataTable(props) {
             <Table className={styles.table}>
                 <TableHead className={styles.tableHead}>
                     <TableRow key={uuid()} className={styles.tableHeadRow}>
-                        <TableCell align="center">Product Name</TableCell>
+                        <TableCell align="left">Product Name</TableCell>
                         <TableCell align="center">Product ID (ISBN)</TableCell>
                         <TableCell align="center">STD Unit Price</TableCell>
                         <TableCell align="center">EFF Start Date</TableCell>
@@ -79,7 +79,7 @@ function DataTable(props) {
                     {
                         copiedRows.map((row) => (
                             <TableRow key={uuid()} className={styles.tableRow}>
-                                <TableCell align="center">
+                                <TableCell align="left">
                                     {row.prdct_name}
                                 </TableCell>
                                 <TableCell align="center">{row.PRDCT_ID}</TableCell>

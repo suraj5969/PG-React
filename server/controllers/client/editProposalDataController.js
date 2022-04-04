@@ -164,7 +164,7 @@ const editApprovalStatus = async (values) => {
             result = await eventData.setApprovalStatus(values.proposalNo, 2);
         } else if ((values.objective === 'Upsell' && values.upsell === 'Upgrade') ||
             (values.country === 'Australia' && Number(values.discount) <= 20) ||
-            (values.country === 'New Zealand' && Number(values.discount) <= 5)) {
+            (values.country === 'New Zealand' && Number(values.discount) <= 20)) {
             // status = 8; // for approved proposal status
             result = await eventData.setApprovalStatus(values.proposalNo, 8);
             // console.log(result,'ser approval');

@@ -1,24 +1,34 @@
 .MuiTableSortLabel-root .MuiTableSortLabel-icon {
-    opacity: 0.5 !important;
+  opacity: 0.5 !important;
 }
 
-.MuiTableSortLabel-root .MuiTableSortLabel-icon:hover, .MuiTableSortLabel-root .MuiTableSortLabel-icon:focus{
-    opacity: 1 !important;
+.MuiTableSortLabel-root .MuiTableSortLabel-icon:hover,
+.MuiTableSortLabel-root .MuiTableSortLabel-icon:focus {
+  opacity: 1 !important;
 }
-.MuiTableSortLabel-root.MuiTableSortLabel-active.MuiTableSortLabel-root.MuiTableSortLabel-active .MuiTableSortLabel-icon {
-    color: white !important;
+.MuiTableSortLabel-root.MuiTableSortLabel-active.MuiTableSortLabel-root.MuiTableSortLabel-active
+  .MuiTableSortLabel-icon {
+  color: white !important;
 }
 
-.MuiTableSortLabel-root.MuiTableSortLabel-active{
-    color: white !important;
+.MuiTableSortLabel-root.MuiTableSortLabel-active {
+  color: white !important;
 }
-.MuiTableSortLabel-root.MuiTableSortLabel-active:hover{
-    color: white !important;
+.MuiTableSortLabel-root.MuiTableSortLabel-active:hover {
+  color: white !important;
 }
 
 .MuiButtonBase-root.MuiTableSortLabel-root {
-    color: white !important;
+  color: white !important;
 }
-.MuiButtonBase-root.MuiTableSortLabel-root:hover, .MuiButtonBase-root.MuiTableSortLabel-root:focus {
-    color: white !important;
+
+.MuiButtonBase-root.MuiTableSortLabel-root:hover,
+.MuiButtonBase-root.MuiTableSortLabel-root:focus {
+  color: white !important;
+}
+
+@media screen and (min-width: 600px) {
+  .MuiToolbar-regular {
+    min-height: 84px !important;
+  }
 }

@@ -9,6 +9,7 @@ const getEvents = async () => {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('admin');
         const data = await pool.request().query(sqlQueries.getDataEvent);
+        // pool.close();
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -22,6 +23,7 @@ const getOneUserDeatils = async (id) => {
         const oneUser = await pool.request()
             .input('id', sql.Int, id)
             .query(sqlQueries.getOneUser);
+        // pool.close();
         return oneUser.recordset;
     } catch (error) {
         return error.message;
@@ -37,6 +39,7 @@ const verifyUser = async (email, password) => {
             .input('password', sql.VarChar(20), password)
             .query(sqlQueries.verifyUser);
         // console.log(verifyUser)
+        // pool.close();
         return verifyUser.recordset;
     } catch (error) {
         console.log(error)
@@ -52,6 +55,7 @@ const forgotPassword = async (email) => {
             .input('email', sql.VarChar(50), email)
             .query(sqlQueries.forgotPassword);
         // console.log(forgotPassword);
+        // pool.close();
         return forgotPassword.recordset;
     } catch (error) {
         return error.message;
@@ -67,6 +71,7 @@ const insertToken = async (email, token) => {
             .input('token', sql.VarChar(255), token)
             .query(sqlQueries.insertToken);
         // console.log(insertToken);
+        // pool.close();
         return insertToken.rowsAffected;
     }
     catch (error) {
@@ -83,6 +88,7 @@ const passwordReset = async (user_id, currentPass, newPass) => {
         const password = await pool.request().query(query);
         // console.log(password, 'password');
         if (currentPass !== password.recordset[0]['password']) {
+            // pool.close();
             return {
                 status: 203,
                 message: "Current password dosen't match",
@@ -93,6 +99,8 @@ const passwordReset = async (user_id, currentPass, newPass) => {
             .input('newPass', sql.VarChar(50), newPass)
             .input('user_id', sql.Int, user_id)
             .query(sqlQueries.passwordReset);
+        // pool.close();
+
         if (passwordReset.rowsAffected.length > 0) {
             return {
                 status: 200,
@@ -111,13 +119,14 @@ const resetPasswordToken = async (token) => {
     try {
         let pool = await sql.connect(config.sql);
 
-            const query = `SELECT [forgot_pass] FROM [dbo].[users]
+        const query = `SELECT [forgot_pass] FROM [dbo].[users]
                                 WHERE [forgot_pass] = @token AND 
                                 DATEDIFF(MINUTE, [forgot_pass_expiry], GETDATE()) < 60`;
         const passwordToken = await pool.request()
             .input('token', sql.VarChar(255), token)
             .query(query);
         // console.log(passwordToken, 'passwordToken');
+        // pool.close();
         return passwordToken.recordset;
 
     } catch (error) {
@@ -139,9 +148,11 @@ const resetPassword = async (token, newPassword) => {
                 .input('token', sql.VarChar(255), token)
                 .query(query);
             // console.log(passwordToken, 'passwordToken');
+            // pool.close();
             return passwordToken.rowsAffected;
         }
         else {
+            // pool.close();
             return 0;
         }
 
@@ -156,6 +167,7 @@ const getAllUsers = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getAllUsers = await pool.request()
             .query(sqlQueries.getAllUsers);
+        // pool.close();
         return getAllUsers.recordset;
     } catch (error) {
         return error.message;
@@ -170,6 +182,7 @@ const toggleActive = async (id, is_active) => {
             .input('id', sql.Int, id)
             .input('is_active', sql.VarChar(30), is_active)
             .query(sqlQueries.toggleActive);
+        // pool.close();
         return toggleActive.recordset;
     } catch (error) {
         return error.message;
@@ -200,6 +213,7 @@ const updateUser = async (user_id, values) => {
             .input('gets_notified', sql.Int, values.gets_notified)
             .input('date_updated', sql.SmallDateTime, values.date_updated)
             .query(sqlQueries.updateUser);
+        // pool.close();
         return updateUser.recordset;
     } catch (error) {
         return error.message;
@@ -216,6 +230,7 @@ const updateWorkflow = async (row_id, values) => {
             .input('row_id', row_id)
             .query(sqlQueries.updateWorkflow);
         // console.log(response);
+        // pool.close();
         return response.recordset;
     } catch (error) {
         return error.message;
@@ -230,6 +245,7 @@ const addUser = async (values) => {
             .input('email', sql.VarChar(50), values.email)
             .query(sqlQueries.getOneUserWithMail);
         if (oneUser.recordset.length > 0) {
+            // pool.close();
             return { status: 205, data: "This Email Address Already exists in the system. Please Enter some other email id." };
         } else {
             const addUser = await pool.request()
@@ -255,6 +271,7 @@ const addUser = async (values) => {
                 .input('role_id', sql.Int, values.role_id)
                 .query(sqlQueries.addUser);
             // console.log(addUser);
+        // pool.close();
             return addUser.recordset;
         }
     } catch (error) {
@@ -269,6 +286,7 @@ const deleteUser = async (id) => {
         const deleteUser = await pool.request()
             .input('user_id', sql.Int, id)
             .query(sqlQueries.deleteUser);
+        // pool.close();
         return deleteUser.recordset;
     } catch (error) {
         return error.message;
@@ -281,6 +299,7 @@ const getMigrations = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getMigrations = await pool.request()
             .query(sqlQueries.getMigrations);
+        // pool.close();
         return getMigrations.recordset;
     } catch (error) {
         return error.message;
@@ -301,6 +320,7 @@ const editMigrations = async (migration_id, values) => {
             .input('comments', sql.VarChar(555), values.comments)
             .input('date_updated', sql.SmallDateTime, new Date())
             .query(sqlQueries.editMigrations);
+        // pool.close();
         return editMigrations.recordset;
     } catch (error) {
         return error.message;
@@ -314,6 +334,7 @@ const getSingleMigrations = async (migration_id) => {
         const singleMigration = await pool.request()
             .input('migration_id', sql.Int, Number(migration_id))
             .query(sqlQueries.getSingleMigration);
+        // pool.close();
         return singleMigration.recordset;
     } catch (error) {
         return error.message;
@@ -326,6 +347,7 @@ const getTrainings = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getTrainings = await pool.request()
             .query(sqlQueries.getTrainings);
+        // pool.close();
         return getTrainings.recordset;
     } catch (error) {
         return error.message;
@@ -342,6 +364,7 @@ const editTrainings = async (id, values) => {
             .input('dateModified', sql.SmallDateTime, new Date())
             .input('HOURS', sql.VarChar(255), values.HOURS)
             .query(sqlQueries.editTrainings);
+        // pool.close();
         return editTrainings.recordset;
     } catch (error) {
         return error.message;
@@ -354,6 +377,7 @@ const getProductList = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getProductList = await pool.request()
             .query(sqlQueries.getProductList);
+        // pool.close();
         return getProductList.recordset;
     } catch (error) {
         return error.message;
@@ -366,6 +390,7 @@ const getSoftwares = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getSoftwares = await pool.request()
             .query(sqlQueries.getSoftwares);
+        // pool.close();
         return getSoftwares.recordset;
     } catch (error) {
         return error.message;
@@ -379,6 +404,7 @@ const deleteSoftware = async (id) => {
         const deleteSoftware = await pool.request()
             .input('id', sql.Int, id)
             .query(sqlQueries.deleteSoftware);
+        // pool.close();
         return deleteSoftware.recordset;
     } catch (error) {
         return error.message;
@@ -393,6 +419,7 @@ const addSoftware = async (values) => {
             .input('soft_name', sql.VarChar(150), values.soft_name)
             .input('version', sql.VarChar(50), values.version)
             .query(sqlQueries.addSoftware);
+        // pool.close();
         return addSoftware.recordset;
     } catch (error) {
         return error.message;
@@ -408,6 +435,7 @@ const editSoftware = async (id, values) => {
             .input('soft_name', sql.VarChar(150), values.soft_name)
             .input('version', sql.VarChar(50), values.version)
             .query(sqlQueries.editSoftware);
+        // pool.close();
         return editSoftware.recordset;
     } catch (error) {
         return error.message;
@@ -420,6 +448,7 @@ const getWorkflow = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getWorkflow = await pool.request()
             .query(sqlQueries.getWorkflow);
+        // pool.close();
         return getWorkflow.recordset;
     } catch (error) {
         return error.message;
@@ -432,6 +461,7 @@ const getQuickServices = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getTrainings = await pool.request()
             .query(sqlQueries.getQuickServices);
+        // pool.close();
         return getTrainings.recordset;
     } catch (error) {
         return error.message;
@@ -444,9 +474,10 @@ const editQuickServices = async (id, values) => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const editQuickServices = await pool.request()
             .input('id', sql.BigInt, id)
-            .input('service_name', sql.VarChar(100), values.service_name)
+            // .input('service_name', sql.VarChar(100), values.service_name)
             .input('nofhrs', sql.VarChar(50), values.nofhrs)
             .query(sqlQueries.editQuickServices);
+        // pool.close();
         return editQuickServices.recordset;
     } catch (error) {
         return error.message;
@@ -460,6 +491,7 @@ const deleteService = async (id) => {
         const deleteService = await pool.request()
             .input('id', sql.Int, id)
             .query(sqlQueries.deleteService);
+        // pool.close();
         return deleteService.recordset;
     } catch (error) {
         return error.message;
@@ -472,6 +504,7 @@ const getContactDetails = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getContactDetails = await pool.request()
             .query(sqlQueries.getContactDetails);
+        // pool.close();
         return getContactDetails.recordset;
     } catch (error) {
         return error.message;
@@ -488,6 +521,7 @@ const editContactDetails = async (id, values) => {
             .input('phone_no', sql.VarChar(50), values.phone_no)
             .input('email', sql.VarChar(100), values.email)
             .query(sqlQueries.editContactDetails);
+        // pool.close();
         return editContactDetails.recordset;
     } catch (error) {
         return error.message;
@@ -500,6 +534,7 @@ const getGSTpercentage = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getGSTpercentage = await pool.request()
             .query(sqlQueries.getGSTpercentage);
+        // pool.close();
         return getGSTpercentage.recordset;
     } catch (error) {
         return error.message;
@@ -515,6 +550,7 @@ const editGSTpercentage = async (id, values) => {
             .input('country_name', sql.VarChar(100), values.country_name)
             .input('gst_percentage', sql.Real, values.gst_percentage)
             .query(sqlQueries.editGSTpercentage);
+        // pool.close();
         return editGSTpercentage.recordset;
     } catch (error) {
         return error.message;
@@ -527,6 +563,7 @@ const getDayConversions = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getDayConversions = await pool.request()
             .query(sqlQueries.getDayConversions);
+        // pool.close();
         return getDayConversions.recordset;
     } catch (error) {
         return error.message;
@@ -542,6 +579,7 @@ const editDayConversions = async (id, values) => {
             .input('DAY_NAME', sql.VarChar(255), values.DAY_NAME)
             .input('NO_OF_DAYS', sql.VarChar(255), values.NO_OF_DAYS)
             .query(sqlQueries.editDayConversions);
+        // pool.close();
         return editDayConversions.recordset;
     } catch (error) {
         return error.message;
@@ -554,6 +592,7 @@ const getHoursPerDay = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getHoursPerDay = await pool.request()
             .query(sqlQueries.getHoursPerDay);
+        // pool.close();
         return getHoursPerDay.recordset;
     } catch (error) {
         return error.message;
@@ -569,6 +608,7 @@ const editHoursPerDay = async (id, values) => {
             .input('location', sql.VarChar(100), values.location)
             .input('hrs_per_days', sql.VarChar(50), values.hrs_per_days)
             .query(sqlQueries.editHoursPerDay);
+        // pool.close();
         return editHoursPerDay.recordset;
     } catch (error) {
         return error.message;
@@ -581,6 +621,7 @@ const getOracleWordings = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getOracleWordings = await pool.request()
             .query(sqlQueries.getOracleWordings);
+        // pool.close();
         return getOracleWordings.recordset;
     } catch (error) {
         return error.message;
@@ -596,6 +637,7 @@ const editOracleWordings = async (id, values) => {
             .input('wordings', sql.VarChar(1000), values.wordings)
             .input('value', sql.VarChar(sql.MAX), values.value)
             .query(sqlQueries.editOracleWordings);
+        // pool.close();
         return editOracleWordings.recordset;
     } catch (error) {
         return error.message;
@@ -608,6 +650,7 @@ const getMiscellanous = async () => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const getMiscellanous = await pool.request()
             .query(sqlQueries.getMiscellanous);
+        // pool.close();
         return getMiscellanous.recordset;
     } catch (error) {
         return error.message;
@@ -623,6 +666,7 @@ const editMiscellanous = async (id, values) => {
             .input('name', sql.VarChar(100), values.name)
             .input('value', sql.VarChar(50), values.value)
             .query(sqlQueries.editMiscellanous);
+        // pool.close();
         return editMiscellanous.recordset;
     } catch (error) {
         return error.message;

@@ -77,7 +77,7 @@ function DataTable(props) {
     }, [Values, isData, searchName]);
 
     React.useEffect(() => {
-        if (popAUSuserId !== -1 && popRole?.length > 0) {
+        if (popAUSuserId !== -1 && popNZuserId !== -1 && popRole?.length > 0) {
             setPopsEntered(true);
         }
         else {
@@ -94,12 +94,12 @@ function DataTable(props) {
                 }
             }
             setpopAUSuserId(Values[pos].aus_user_id);
-            if (iskey === 4 || iskey === 6) {
-                setpopNZuserId(-1);
-            }
-            else {
+            // if (iskey === 4 || iskey === 6) {
+            //     setpopNZuserId(-1);
+            // }
+            // else {
                 setpopNZuserId(Values[pos].nz_user_id);
-            }
+            // }
             setpopRole(Values[pos].role);
         }
     }, [iskey, Values])
@@ -120,7 +120,7 @@ function DataTable(props) {
                 })
             } else {
                 toast.success("Successfully Updated!", {
-                    autoClose: 1500,
+                    autoClose: 2000,
                 })
             }
         } else {
@@ -175,8 +175,7 @@ function DataTable(props) {
                                                 </TableCell>
                                                 <TableCell align="center">
                                                     {
-                                                        // as NZ dont have commercial lead and Ops team
-                                                        index === 1 || index === 3 ? '- - - - -' : item.nz_user_name
+                                                        item.nz_user_name
                                                     }
                                                 </TableCell>
                                             </TableRow>
@@ -217,12 +216,12 @@ function DataTable(props) {
                                                 id="input-ausrole-updtae"
                                                 value={popAUSuserId}
                                                 onChange={(e) => {
-                                                    for (let i = 0; i < Values.length; i++) {
-                                                        if (Values[i].aus_user_id === e.target.value || Values[i].nz_user_id === e.target.value) {
-                                                            alert('Selected user is already a approver. Please select some other person');
-                                                            return;
-                                                        }
-                                                    }
+                                                    // for (let i = 0; i < Values.length; i++) {
+                                                    //     if (Values[i].aus_user_id === e.target.value || Values[i].nz_user_id === e.target.value) {
+                                                    //         alert('Selected user is already a approver. Please select some other person');
+                                                    //         return;
+                                                    //     }
+                                                    // }
                                                     setpopAUSuserId(e.target.value)
                                                 }}
                                                 className={styles.inputPOP}
@@ -237,34 +236,32 @@ function DataTable(props) {
                                             </Select>
                                         </FormControl>
                                         {
-                                            popNZuserId !== -1
-                                                ? <FormControl className={styles.formControl}>
-                                                    <InputLabel id="input-nzrole">New Zealand</InputLabel>
-                                                    <Select
-                                                        labelId="input-nzrole-update"
-                                                        id="input-nzrole-updtae"
-                                                        value={popNZuserId}
-                                                        onChange={(e) => {
-                                                            for (let i = 0; i < Values.length; i++) {
-                                                                if (Values[i].aus_user_id === e.target.value || Values[i].nz_user_id === e.target.value) {
-                                                                    alert('Selected user is already a approver. Please select some other person');
-                                                                    return;
-                                                                }
-                                                            }
-                                                            setpopNZuserId(e.target.value)
-                                                        }}
-                                                        className={styles.inputPOP}
-                                                        MenuProps={{ classes: { list: styles.menuList } }}
-                                                    // disabled={country !== 'New Zealand'}
-                                                    >
-                                                        {
-                                                            allUsers.map((user) => (
-                                                                <MenuItem key={user.user_id} value={user.user_id}>{user.fname + ' ' + user.lname}</MenuItem>
-                                                            ))
-                                                        }
-                                                    </Select>
-                                                </FormControl>
-                                                : null
+                                            <FormControl className={styles.formControl}>
+                                                <InputLabel id="input-nzrole">New Zealand</InputLabel>
+                                                <Select
+                                                    labelId="input-nzrole-update"
+                                                    id="input-nzrole-updtae"
+                                                    value={popNZuserId}
+                                                    onChange={(e) => {
+                                                        // for (let i = 0; i < Values.length; i++) {
+                                                        //     if (Values[i].aus_user_id === e.target.value || Values[i].nz_user_id === e.target.value) {
+                                                        //         alert('Selected user is already a approver. Please select some other person');
+                                                        //         return;
+                                                        //     }
+                                                        // }
+                                                        setpopNZuserId(e.target.value)
+                                                    }}
+                                                    className={styles.inputPOP}
+                                                    MenuProps={{ classes: { list: styles.menuList } }}
+                                                // disabled={country !== 'New Zealand'}
+                                                >
+                                                    {
+                                                        allUsers.map((user) => (
+                                                            <MenuItem key={user.user_id} value={user.user_id}>{user.fname + ' ' + user.lname}</MenuItem>
+                                                        ))
+                                                    }
+                                                </Select>
+                                            </FormControl>
                                         }
                                         {
                                             isPopsEntered
@@ -288,7 +285,7 @@ function DataTable(props) {
                                                         setpopAUSuserId(-1);
                                                         setpopRole('');
                                                         setpopNZuserId(-1);
-                                                        updateTable(iskey, { aus_user_id: popAUSuserId, nz_user_id: popNZuserId !== -1 ? popNZuserId : null })
+                                                        updateTable(iskey, { aus_user_id: popAUSuserId, nz_user_id: popNZuserId })
                                                     }}
                                                 >save</Button>
                                                 : <Button

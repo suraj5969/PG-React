@@ -83,7 +83,7 @@ function Links() {
                 className={styles.listItem}
             >
                 <HeadsetMicRoundedIcon className={styles.icon} />
-                <Typography variant={'h6'} className={styles.linkText}>Quick Start Service</Typography>
+                <Typography variant={'h6'} className={styles.linkText}>Quick Start Services</Typography>
             </Button>
             <Button
                 to="/admin/contact-details"

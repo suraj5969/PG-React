@@ -11,6 +11,7 @@ const getClientDiscount = async (proposal_no) => {
         const getClientDiscount = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getClientDiscount);
+        // pool.close();
         return getClientDiscount.recordset;
     } catch (error) {
         return error.message;
@@ -24,6 +25,7 @@ const getProposalStatus = async (proposal_no) => {
         const getProposalStatus = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getProposalStatus);
+        // pool.close();
         return getProposalStatus.recordset;
     } catch (error) {
         return error.message;
@@ -38,6 +40,7 @@ const lockProposal = async (proposal_no) => {
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .input('lock_proposal', sql.Int, 1)
             .query(sqlQueries.lockProposal);
+        // pool.close();
         return lock.recordset;
     } catch (error) {
         return error.message;
@@ -57,6 +60,7 @@ const setApprovalStatus = async (proposal_no, status) => {
                 .input('status', sql.Int, status)
                 .query(sqlQueries.setApprovalStatus);
             // console.log(setApprovalStatus,'setApprovalStatus')
+            // pool.close();
             return setApprovalStatus.rowsAffected;
         }
 
@@ -82,6 +86,7 @@ const updateApprovalStatus = async (proposal_no, new_status, status, approver_id
                 .input('s_manager_approved_date', sql.SmallDateTime, new Date())
                 .input('s_manager_id', sql.Int, approver_id)
                 .query(sqlQueries.setSalesApprovalStatus);
+            // pool.close();
             return setApprovalStatus.rowsAffected;
         } else if (Number(status) === 5) {
             const setApprovalStatus = await pool.request()
@@ -90,6 +95,7 @@ const updateApprovalStatus = async (proposal_no, new_status, status, approver_id
                 .input('comm_approved_date', sql.SmallDateTime, new Date())
                 .input('comm_approver_id', sql.Int, approver_id)
                 .query(sqlQueries.setCommercialApprovalStatus);
+            // pool.close();
             return setApprovalStatus.rowsAffected;
         } else if (Number(status) === 6) {
             const setApprovalStatus = await pool.request()
@@ -98,6 +104,7 @@ const updateApprovalStatus = async (proposal_no, new_status, status, approver_id
                 .input('cfo_approved_date', sql.SmallDateTime, new Date())
                 .input('cfo_approver_id', sql.Int, approver_id)
                 .query(sqlQueries.setCFOApprovalStatus);
+            // pool.close();
             return setApprovalStatus.rowsAffected;
         } else if (Number(status) === 7) {
             const setApprovalStatus = await pool.request()
@@ -107,6 +114,7 @@ const updateApprovalStatus = async (proposal_no, new_status, status, approver_id
                 .input('ops_approver_id', sql.Int, approver_id)
                 .query(sqlQueries.setOPSApprovalStatus);
             // console.log(setApprovalStatus,'setApprovalStatus ')
+            // pool.close();
             return setApprovalStatus.rowsAffected;
         }
 
@@ -123,6 +131,7 @@ const getApproverMailID = async (user_id) => {
         const getApproverMailID = await pool.request()
             .input('user_id', sql.Int, user_id)
             .query(sqlQueries.getApproverMailID);
+        // pool.close()
         return getApproverMailID.recordset;
     } catch (error) {
         return error.message;
@@ -137,6 +146,7 @@ const getUserNameByID = async (user_id) => {
             .input('user_id', sql.Int, user_id)
             .query(sqlQueries.getUserNameByID);
         // console.log(userName);
+        // pool.close();
         return userName.recordset;
     } catch (error) {
         return error.message;
@@ -150,6 +160,7 @@ const getProposalDetails = async (proposal_no) => {
         const getProposalDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getProposalDetails);
+        // pool.close();
         return getProposalDetails.recordset;
     } catch (error) {
         return error.message;
@@ -163,6 +174,7 @@ const saveProposal = async (proposal_no) => {
         const saveProposal = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.saveProposal);
+        // pool.close();
         return saveProposal.recordset;
     } catch (error) {
         return error.message;
@@ -176,6 +188,7 @@ const getApproversList = async (proposal_no) => {
         const getApproversList = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getApproversList);
+        // pool.close();
         return getApproversList.recordset;
     } catch (error) {
         return error.message;
@@ -208,6 +221,7 @@ const rejectProposal = async (proposal_no, rejected_by, rejected_reason) => {
             .input('rejected_reason', sql.VarChar(555), rejected_reason)
             .query(sqlQueries.rejectProposal);
         // console.log(rejectProposal);
+        // pool.close();
         return rejectProposal.recordset;
     } catch (error) {
         return error.message;
@@ -221,6 +235,7 @@ const getProposalDetailsForDoc = async (proposal_no) => {
         const getProposalDetailsForDoc = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getProposalDetailsForDoc);
+        // pool.close()
         return getProposalDetailsForDoc.recordset;
     } catch (error) {
         return error.message;
@@ -234,6 +249,7 @@ const getUserDetailsWithID = async (user_id) => {
         const getUserDetailsWithID = await pool.request()
             .input('user_id', sql.Int, user_id)
             .query(sqlQueries.getUserDetailsWithID);
+        // pool.close()
         return getUserDetailsWithID.recordset;
     } catch (error) {
         return error.message;
@@ -247,6 +263,7 @@ const getEmpowerModuleDetails = async (proposal_no) => {
         const getModuleDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getModuleDetails);
+        // pool.close()
         return getModuleDetails.recordset;
     } catch (error) {
         return error.message;
@@ -260,6 +277,7 @@ const getOptionalServices = async (proposal_no) => {
         const getOptionalServices = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getOptionalServices);
+        // pool.close()
         return getOptionalServices.recordset;
     } catch (error) {
         return error.message;
@@ -273,6 +291,7 @@ const getUpfrontCostDetails = async (proposal_no) => {
         const getUpfrontCostDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getUpfrontCostDetails);
+        // pool.close()
         return getUpfrontCostDetails.recordset;
     } catch (error) {
         return error.message;
@@ -286,6 +305,7 @@ const getOngoingMainDetails = async (proposal_no) => {
         const values = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getOngoingMainDetails);
+        // pool.close()
         return values.recordset;
     } catch (error) {
         return error.message;
@@ -299,6 +319,7 @@ const getRepaymentCalcDetails = async (proposal_no) => {
         const getRepaymentCalcDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getRepaymentCalcDetails);
+        // pool.close()
         return getRepaymentCalcDetails.recordset;
     } catch (error) {
         return error.message;
@@ -313,6 +334,7 @@ const getRepaymentMaintenanceDetails = async (proposal_no) => {
         const getRepaymentDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getRepaymentMaintenanceDetails);
+        // pool.close()
         return getRepaymentDetails.recordset;
     } catch (error) {
         return error.message;
@@ -335,6 +357,7 @@ const getRepaymentDiscount = async (proposal_no) => {
         const getRepaymentDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(query);
+        // pool.close();
         return getRepaymentDetails.recordset;
     } catch (error) {
         return error.message;
@@ -348,6 +371,7 @@ const getMiscellaneous = async (proposal_no) => {
         const getRepaymentDetails = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getMiscellaneous);
+        // pool.close()
         return getRepaymentDetails.recordset;
     } catch (error) {
         return error.message;
@@ -361,6 +385,7 @@ const getScopingStudyPopupValue = async (proposal_no) => {
         const value = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getScopingStudyPopupValue);
+        // pool.close()
         return value.recordset;
     } catch (error) {
         return error.message;
@@ -374,6 +399,7 @@ const getUpfrontDiscounts = async (proposal_no) => {
         const value = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getUpfrontDiscounts);
+        // pool.close()
         return value.recordset;
     } catch (error) {
         return error.message;
@@ -388,6 +414,7 @@ const getAffinityServerPopupValues = async (proposal_no) => {
         const values = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getAffinityServerPopupValues);
+        // pool.close()
         return values.recordset;
     } catch (error) {
         return error.message;
@@ -402,6 +429,7 @@ const getClientProfile = async (proposal_no) => {
         const clientProfile = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getClientProfile);
+        // pool.close()
         return clientProfile.recordset;
     } catch (error) {
         return error.message;
@@ -415,6 +443,7 @@ const getAttendingCourses = async (proposal_no) => {
         const attending = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getAttendingCourses);
+        // pool.close()
         return attending.recordset;
     } catch (error) {
         return error.message;
@@ -428,6 +457,7 @@ const getDefaultServices = async (proposal_no) => {
         const values = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getDefaultServices);
+        // pool.close()
         return values.recordset;
     } catch (error) {
         return error.message;
@@ -441,6 +471,7 @@ const getSalesNotes = async (proposal_no) => {
         const notes = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getSalesNotes);
+        // pool.close()
         return notes.recordset;
     } catch (error) {
         return error.message;
@@ -454,6 +485,7 @@ const getAffinityMobPopupValue = async (proposal_no) => {
         const value = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getAffinityMobilePopupValue);
+        // pool.close()
         return value.recordset;
     } catch (error) {
         return error.message;
@@ -467,6 +499,7 @@ const getSettlementPopupValue = async (proposal_no) => {
         const value = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getSettlementPopupValue);
+        // pool.close()
         return value.recordset;
     } catch (error) {
         return error.message;
@@ -480,6 +513,7 @@ const getRepaymentSoftwareServices = async (proposal_no) => {
         const value = await pool.request()
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getRepaymentSoftwareServices);
+        // pool.close()
         return value.recordset;
     } catch (error) {
         return error.message;
@@ -498,7 +532,7 @@ const getClientNamesBySearch = async (searchtext) => {
             ' WHERE [acct_name] LIKE N\'%' + search + '%\'';
         const data = await pool.request()
             .query(query);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -517,7 +551,7 @@ const getClientNameByNumber = async (clientNumber) => {
             ` WHERE [acct_id] = '${clientNumber}'`;
         const data = await pool.request()
             .query(query);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -533,7 +567,7 @@ const getOpportunities = async (clientNumber) => {
         const data = await pool.request()
             .input('clientNumber', sql.VarChar(150), clientNumber)
             .query(sqlQueries.getOpportunitiesData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -548,7 +582,7 @@ const getCountryAddress = async (clientNumber) => {
         const data = await pool.request()
             .input('clientNumber', sql.VarChar(15), clientNumber)
             .query(sqlQueries.getCountryAddressData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -564,8 +598,7 @@ const getQuickStartInfo = async () => {
         const data = await pool.request()
             // .input('service_id', sql.Int, serviceId)
             .query(sqlQueries.getQuickStartData);
-        // console.log(searchtext);
-        // console.log(query);
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -580,8 +613,7 @@ const getDayConversionInfo = async (dayId) => {
         const data = await pool.request()
             .input('day_id', sql.Int, dayId)
             .query(sqlQueries.getDayConversionData);
-        // console.log(searchtext);
-        // console.log(query);
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -595,7 +627,7 @@ const getAllSolutionSpecialist = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getAllSolutionSpecialistData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -609,7 +641,7 @@ const getAllSoftwares = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getAllSoftwaresData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -623,7 +655,7 @@ const getAllCountries = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getAllCountriesData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -639,8 +671,7 @@ const getHrsPerDayByCountry = async (countryName) => {
         const data = await pool.request()
             .input('country_name', sql.VarChar(30), countryName)
             .query(sqlQueries.getHrsPerDayByCountryData);
-        // console.log(searchtext);
-        // console.log(query);
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -655,7 +686,7 @@ const getAllDataMigrationOptions = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getAllDataMigrationOptionsData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -670,7 +701,7 @@ const getGSTPercentages = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getGSTPercentagesData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -685,8 +716,7 @@ const getProductInfoById = async (productId) => {
         const data = await pool.request()
             .input('product_id', sql.VarChar(30), String(productId))
             .query(sqlQueries.getProductInfoByIdData);
-        // console.log(searchtext);
-        // console.log(query);
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -700,7 +730,7 @@ const getAllEmpowerModules = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getAllEmpowerModulesData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -714,7 +744,7 @@ const getYearUpliftPercent = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getYearUpliftPercentData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -728,7 +758,7 @@ const getOracleWording = async () => {
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
             .query(sqlQueries.getOracleWording);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -743,7 +773,7 @@ const getDashboardData = async (country) => {
         const data = await pool.request()
             .input('country', sql.VarChar(50), country)
             .query(sqlQueries.getDashboardData);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -759,7 +789,7 @@ const archiveProposal = async (proposal_no) => {
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .input('lifecycle_id', sql.VarChar(50), 2) //2 as lifecycle_id for archive is 2
             .query(sqlQueries.archiveProposal);
-
+        // pool.close()
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -779,6 +809,7 @@ const activateProposal = async (proposal_no) => {
             .input('lifecycle_id', sql.VarChar(50), 1) //1 as lifecycle_id for active is 1
             .query(query);
 
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -790,9 +821,10 @@ const getDashboardSlnSpecialist = async (country) => {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('client');
         const data = await pool.request()
-            .input('country', sql.VarChar(50), country)
+            // .input('country', sql.VarChar(50), country)
             .query(sqlQueries.getDashboardSlnSpecialist);
 
+        // pool.close();
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -807,6 +839,7 @@ const getProposalCounter = async () => {
         const data = await pool.request()
             .query(sqlQueries.getProposalCounterData);
 
+        // pool.close();
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -829,6 +862,7 @@ const saveProposalDetails = async (values) => {
             .input('lifecycle_id', sql.Int, values.lifecycleId)
             .query(sqlQueries.saveProposalDetails);
         // console.log(data);
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -868,6 +902,7 @@ const saveClientProfile = async (values) => {
             .input('currency', sql.VarChar(10), values.currency)
             .query(sqlQueries.saveClientProfile);
         // console.log(data);
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -893,15 +928,10 @@ const saveAttendingCourses = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('attending_insert_procedure', (err, result) => {
-            // ... error checks
-
-            // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        const result = await request.execute('attending_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -963,15 +993,10 @@ const saveDefaultServices = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('default_insert_procedure', (err, result) => {
-            // ... error checks
-
-            // console.log(err, 'attending insert') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending insert') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // request.execute('default_insert_procedure')
+        const result = await request.execute('default_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1059,15 +1084,10 @@ const saveOptionalServices = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('optional_insert_procedure', (err, result) => {
-            // ... error checks
-
-            // console.log(err, 'attending insert') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending insert') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // request.execute('optional_insert_procedure')
+        const result = await request.execute('optional_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1100,13 +1120,18 @@ const saveMiscellaneous = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('miscellenous_insert_procedure', (err, result) => {
-            // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('miscellenous_insert_procedure', (err, result) => {
+        //     // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('miscellenous_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1136,15 +1161,19 @@ const saveSalesNotes = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('sales_notes_insert_procedure', (err, result) => {
-            // ... error checks
+        // let resultData;
+        // request.execute('sales_notes_insert_procedure', (err, result) => {
+        //     // ... error checks
 
-            // console.log(err, 'saveSalesNotes error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'saveSalesNotes result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        //     // console.log(err, 'saveSalesNotes error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'saveSalesNotes result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+        const result = await request.execute('sales_notes_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1225,15 +1254,20 @@ const saveUpfrontCost = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('upfront_cost_insert_procedure', (err, result) => {
-            // ... error checks
+        // let resultData;
+        // request.execute('upfront_cost_insert_procedure', (err, result) => {
+        //     // ... error checks
 
-            // console.log(err, 'upfront_cost error') 
-            // console.log(result, 'upfront_cost result') 
-            resultData = result;
-        })
-        return resultData;
+        //     // console.log(err, 'upfront_cost error') 
+        //     // console.log(result, 'upfront_cost result') 
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('upfront_cost_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1291,15 +1325,20 @@ const saveOngoingMaintenance = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('ongoing_maintenance_insert_procedure', (err, result) => {
-            // ... error checks
+        // let resultData;
+        // request.execute('ongoing_maintenance_insert_procedure', (err, result) => {
+        //     // ... error checks
 
-            // console.log(err, 'ongoing_maintenance_insert_procedure error') 
-            // console.log(result, 'ongoing_maintenance_insert_procedure result') 
-            resultData = result;
-        })
-        return resultData;
+        //     // console.log(err, 'ongoing_maintenance_insert_procedure error') 
+        //     // console.log(result, 'ongoing_maintenance_insert_procedure result') 
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('ongoing_maintenance_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1332,12 +1371,17 @@ const saveRepaymentDiscount = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('repay_discount_insert_procedure', (err, result) => {
-            // ... error checks 
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('repay_discount_insert_procedure', (err, result) => {
+        //     // ... error checks 
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('repay_discount_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1378,12 +1422,13 @@ const saveRepaymentCalc = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('repay_soft_services_insert_procedure', (err, result) => {
-            // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
+        // let resultData;
+        // request.execute('repay_soft_services_insert_procedure', (err, result) => {
+        //     // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // })
+        const result1 = await request.execute('repay_soft_services_insert_procedure');
 
         const tvp2 = new sql.Table()
 
@@ -1402,12 +1447,13 @@ const saveRepaymentCalc = async (values) => {
         const request2 = new sql.Request()
         request2.input('tvp', tvp2)
         // let resultData;
-        request2.execute('repay_maintenance_insert_procedure', (err, result) => {
-            // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-
+        // request2.execute('repay_maintenance_insert_procedure', (err, result) => {
+        //     // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // })
+        const result2 = await request2.execute('repay_maintenance_insert_procedure');
+        
 
         const tvp3 = new sql.Table()
 
@@ -1483,12 +1529,15 @@ const saveRepaymentCalc = async (values) => {
         const request3 = new sql.Request()
         request3.input('tvp', tvp3)
         // let resultData;
-        request3.execute('repay_calculator_insert_procedure', (err, result) => {
-            // console.log(result, 'resultData of repay calc') 
-            resultData = result;
-        })
+        // request3.execute('repay_calculator_insert_procedure', (err, result) => {
+        //     // console.log(result, 'resultData of repay calc') 
+        //     resultData = result;
+        // })
+        // return resultData;
 
-        return resultData;
+        const result3 = await request3.execute('repay_calculator_insert_procedure');
+        // pool.close();
+        return result3;
     } catch (error) {
         return error.message;
     }
@@ -1504,6 +1553,7 @@ const saveAffinityMobilePopup = async (values) => {
         const data = await pool.request()
             .query(query);
 
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -1520,6 +1570,7 @@ const saveSettlementPopup = async (values) => {
         const data = await pool.request()
             .query(query);
 
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -1549,14 +1600,19 @@ const saveEmpowerPopup = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('empower_modules_insert_procedure', (err, result) => {
-            // console.log(err, 'empower_modules_insert_procedure error')
-            // console.log(result, 'empower_modules_insert_procedure result')
-            resultData = result;
-        })
+        // let resultData;
+        // request.execute('empower_modules_insert_procedure', (err, result) => {
+        //     // console.log(err, 'empower_modules_insert_procedure error')
+        //     // console.log(result, 'empower_modules_insert_procedure result')
+        //     resultData = result;
+        // //     pool.close();
+        // })
 
-        return data.rowsAffected;
+        // return data.rowsAffected;
+
+        const result = await request.execute('empower_modules_insert_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1572,6 +1628,7 @@ const saveScopingStudyPopup = async (values) => {
         const data = await pool.request()
             .query(query);
 
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -1588,6 +1645,7 @@ const saveAffinityServerPopup = async (values) => {
         const data = await pool.request()
             .query(query);
         // console.log(data,'affintty server cpu popup result')
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         console.log(error.message, 'affintty server cpu popup query error');
@@ -1626,6 +1684,7 @@ const editExample = async () => {
             // ... error checks
             console.log(err, result, 'example insert procedure')
             resultData = result;
+            // pool.close();
         })
         return resultData;
     } catch (error) {
@@ -1644,6 +1703,7 @@ const editProposalDetails = async (proposal_no, edited_by, edited_reason) => {
             .input('edited_reason', sql.VarChar(555), edited_reason)
             .query(sqlQueries.editProposalDetails);
         // console.log( new Date(), 'in edit proposal function')
+        // pool.close();
         return editDetails.rowsAffected;
     } catch (error) {
         return error.message;
@@ -1682,6 +1742,7 @@ const editClientProfile = async (values) => {
             .input('special_condition', sql.VarChar(555), values.specialConditions)
             .input('currency', sql.VarChar(10), values.currency)
             .query(sqlQueries.editClientProfile);
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -1707,14 +1768,19 @@ const editAttendingCourses = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('attending_edit_procedure', (err, result) => {
-            // ... error checks
-            // console.log(err, 'attending error')
-            // console.log(result, 'attending result')
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('attending_edit_procedure', (err, result) => {
+        //     // ... error checks
+        //     // console.log(err, 'attending error')
+        //     // console.log(result, 'attending result')
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('attending_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1776,14 +1842,19 @@ const editDefaultServices = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('default_edit_procedure', (err, result) => {
-            // ... error checks
-            // console.log(err, 'attending insert') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending insert') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('default_edit_procedure', (err, result) => {
+        //     // ... error checks
+        //     // console.log(err, 'attending insert') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending insert') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('default_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1871,14 +1942,19 @@ const editOptionalServices = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('optional_edit_procedure', (err, result) => {
-            // ... error checks
-            // console.log(err, 'attending insert') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending insert') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('optional_edit_procedure', (err, result) => {
+        //     // ... error checks
+        //     // console.log(err, 'attending insert') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending insert') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('optional_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1911,13 +1987,18 @@ const editMiscellaneous = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('miscellenous_edit_procedure', (err, result) => {
-            // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('miscellenous_edit_procedure', (err, result) => {
+        //     // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('miscellenous_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -1947,14 +2028,19 @@ const editSalesNotes = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('sales_notes_edit_procedure', (err, result) => {
-            // ... error checks
-            // console.log(err, 'saveSalesNotes error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'saveSalesNotes result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('sales_notes_edit_procedure', (err, result) => {
+        //     // ... error checks
+        //     // console.log(err, 'saveSalesNotes error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'saveSalesNotes result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('sales_notes_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -2035,14 +2121,19 @@ const editUpfrontCost = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('upfront_cost_edit_procedure', (err, result) => {
-            // ... error checks
-            // console.log(err, 'upfront_cost error') 
-            // console.log(result, 'upfront_cost result') 
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('upfront_cost_edit_procedure', (err, result) => {
+        //     // ... error checks
+        //     console.log(err, 'upfront_cost error') 
+        //     // console.log(result, 'upfront_cost result') 
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+
+        const result = await request.execute('upfront_cost_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -2100,14 +2191,18 @@ const editOngoingMaintenance = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('ongoing_maintenance_edit_procedure', (err, result) => {
-            // ... error checks
-            // console.log(err, 'ongoing_maintenance_insert_procedure error') 
-            // console.log(result, 'ongoing_maintenance_insert_procedure result') 
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('ongoing_maintenance_edit_procedure', (err, result) => {
+        //     // ... error checks
+        //     // console.log(err, 'ongoing_maintenance_insert_procedure error') 
+        //     // console.log(result, 'ongoing_maintenance_insert_procedure result') 
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+        const result = await request.execute('ongoing_maintenance_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -2141,12 +2236,16 @@ const editRepaymentDiscount = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('repay_discount_edit_procedure', (err, result) => {
-            // ... error checks 
-            resultData = result;
-        })
-        return resultData;
+        // let resultData;
+        // request.execute('repay_discount_edit_procedure', (err, result) => {
+        //     // ... error checks 
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return resultData;
+        const result = await request.execute('repay_discount_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -2187,15 +2286,15 @@ const editRepaymentCalc = async (values) => {
 
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('repay_soft_services_edit_procedure', (err, result) => {
-            // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
+        // let resultData;
+        // request.execute('repay_soft_services_edit_procedure', (err, result) => {
+        //     // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // })
+        const result = await request.execute('repay_soft_services_edit_procedure');
 
         const tvp2 = new sql.Table()
-
         tvp2.columns.add('proposal_no', sql.VarChar(50))
         tvp2.columns.add('label', sql.VarChar(550))
         tvp2.columns.add('cost', sql.VarChar(50))
@@ -2211,11 +2310,12 @@ const editRepaymentCalc = async (values) => {
         const request2 = new sql.Request()
         request2.input('tvp', tvp2)
         // let resultData;
-        request2.execute('repay_maintenance_edit_procedure', (err, result) => {
-            // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
-            // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
-            resultData = result;
-        })
+        // request2.execute('repay_maintenance_edit_procedure', (err, result) => {
+        //     // console.log(err, 'attending error') // {a: 'hello tvp', b: 777}
+        //     // console.log(result, 'attending result') // {a: 'hello tvp', b: 777}
+        //     resultData = result;
+        // })
+        const result2 = await request2.execute('repay_maintenance_edit_procedure');
 
 
         const tvp3 = new sql.Table()
@@ -2292,12 +2392,14 @@ const editRepaymentCalc = async (values) => {
         const request3 = new sql.Request()
         request3.input('tvp', tvp3)
         // let resultData;
-        request3.execute('repay_calculator_edit_procedure', (err, result) => {
-            // console.log(result, 'resultData of repay calc') 
-            resultData = result;
-        })
-
-        return resultData;
+        // request3.execute('repay_calculator_edit_procedure', (err, result) => {
+        //     // console.log(result, 'resultData of repay calc') 
+        //     resultData = result;
+        // })
+        // return resultData;
+        const result3 = await request3.execute('repay_calculator_edit_procedure');
+        // pool.close();
+        return result3;
     } catch (error) {
         return error.message;
     }
@@ -2313,6 +2415,7 @@ const editAffinityMobilePopup = async (values) => {
         const data = await pool.request()
             .query(query);
 
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -2329,6 +2432,7 @@ const editSettlementPopup = async (values) => {
         const data = await pool.request()
             .query(query);
 
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -2356,14 +2460,17 @@ const editEmpowerPopup = async (values) => {
         // console.log(empowerModules, 'empowermodules')
         const request = new sql.Request()
         request.input('tvp', tvp)
-        let resultData;
-        request.execute('empower_modules_edit_procedure', (err, result) => {
-            // console.log(err, 'empower_modules_insert_procedure error')
-            // console.log(result, 'empower_modules_insert_procedure result')
-            resultData = result;
-        })
-
-        return data.rowsAffected;
+        // let resultData;
+        // request.execute('empower_modules_edit_procedure', (err, result) => {
+        //     // console.log(err, 'empower_modules_insert_procedure error')
+        //     // console.log(result, 'empower_modules_insert_procedure result')
+        //     resultData = result;
+        // //     pool.close();
+        // })
+        // return data.rowsAffected;
+        const result = await request.execute('empower_modules_edit_procedure');
+        // pool.close();
+        return result;
     } catch (error) {
         return error.message;
     }
@@ -2379,6 +2486,7 @@ const editScopingStudyPopup = async (values) => {
         const data = await pool.request()
             .query(query);
 
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         return error.message;
@@ -2403,6 +2511,7 @@ const editAffinityServerPopup = async (values) => {
         const data = await pool.request()
             .query(query);
         // console.log(data,'affintty server cpu popup result')
+        // pool.close();
         return data.rowsAffected;
     } catch (error) {
         console.log(error.message, 'affintty server cpu popup query error');

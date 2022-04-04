@@ -50,7 +50,7 @@ const mailToOPSteamApproval = async (user_id,proposal_no) => {
             <br />
             <p>Please Approve the proposal.</p>
             <p>Proposal No. : ${proposal_no}</p>
-            <p>Approval Status : Pending for Ops Team Approval</p>
+            <p>Approval Status : Pending for Ops Team Verification</p>
             <p>Customer Name : ${clientProfile[0].client_name}</p>
             <p>Total Cost : $${total}</p>
             

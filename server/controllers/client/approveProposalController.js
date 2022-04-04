@@ -64,7 +64,7 @@ const approveProposal = async (req, res, next) => {
                 const mailResponse = await mailToOPSteamApproval.mailToOPSteamApproval(nextApproverId, proposal_no);
                 return {
                     status: 200,
-                    message: switchApprovalStatus[0] ? 'Pending for Ops Team Approval' : 'failed',
+                    message: switchApprovalStatus[0] ? 'Pending for Ops Team Verification' : 'failed',
                     mailResponse: mailResponse
                 };
 
@@ -105,7 +105,7 @@ const approveProposal = async (req, res, next) => {
                 const mailResponse = await mailToOPSteamApproval.mailToOPSteamApproval(newApproverId, proposal_no);
                 return {
                     status: 200,
-                    message: switchApprovalStatus[0] ? 'Pending for Ops Team Approval' : 'failed',
+                    message: switchApprovalStatus[0] ? 'Pending for Ops Team Verification' : 'failed',
                     mailResponse: mailResponse
                 };
 
@@ -126,7 +126,7 @@ const approveProposal = async (req, res, next) => {
                 const mailResponse = await mailToOPSteamApproval.mailToOPSteamApproval(newApproverId, proposal_no);
                 return {
                     status: 200,
-                    message: switchApprovalStatus[0] ? 'Pending for Ops Team Approval' : 'failed',
+                    message: switchApprovalStatus[0] ? 'Pending for Ops Team Verification' : 'failed',
                     mailResponse: mailResponse
                 };
 
@@ -204,7 +204,7 @@ const approveProposal = async (req, res, next) => {
             return;
         }
 
-        if (clientProfile[0]?.country === 'Australia' && discount > 20) {
+        if (discount > 20) {
             if (status === 4) {
                 if (discount > 30) {
                     const result = await salesToCommercial();
@@ -234,25 +234,25 @@ const approveProposal = async (req, res, next) => {
                 });
             }
         }
-        else if (clientProfile[0]?.country === 'New Zealand' && discount > 5) {
-            if (status === 4) {
-                if (discount > 30) {
-                    const result = await salesToCFO();
-                    res.send(result);
-                } else {
-                    const result = await approveProposal();
-                    res.send(result);
-                }
-            } else if (status === 6) {
-                const result = await approveProposal();
-                res.send(result);
-            } else {
-                res.send({
-                    status: 200,
-                    message: "Status id is not Correct for Proposal."
-                });
-            }
-        }
+        // else if (clientProfile[0]?.country === 'New Zealand' && discount > 20) {
+        //     if (status === 4) {
+        //         if (discount > 30) {
+        //             const result = await salesToCFO();
+        //             res.send(result);
+        //         } else {
+        //             const result = await approveProposal();
+        //             res.send(result);
+        //         }
+        //     } else if (status === 6) {
+        //         const result = await approveProposal();
+        //         res.send(result);
+        //     } else {
+        //         res.send({
+        //             status: 200,
+        //             message: "Status id is not Correct for Proposal."
+        //         });
+        //     }
+        // }
 
     } catch (error) {
         res.status(400).send(error.message);

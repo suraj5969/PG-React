@@ -367,7 +367,7 @@ function ViewProposal() {
                         '4': 'Pending for Sales Approval',
                         '5': 'Pending for Commercial Lead Approval',
                         '6': 'Pending for CFO Approval',
-                        '7': 'Pending for Ops Team Approval',
+                        '7': 'Pending for Ops Team Verification',
                         '8': 'Approved',
                     }
                     // const details = await getWorkflowDetailsAPI();
@@ -375,8 +375,8 @@ function ViewProposal() {
                         console.log('getUserDetailsAPI or getProposalDetailsAPI not working');
                     }
                     else {
-                        if (typeof allUsers.data === 'object' && allUsers.data.length > 0 &&
-                            typeof details.data === 'object' && details.data.length > 0) {
+                        if (allUsers.data instanceof Array && allUsers.data.length > 0 &&
+                            details.data instanceof Array && details.data.length > 0) {
                             const users = allUsers.data;
                             const propDetails = details.data[0];
                             const createdBy = getUserName(users, propDetails.created_by);
@@ -595,9 +595,9 @@ function ViewProposal() {
                                         {
                                             proposalLifecyce === 2 && // proposal lifecycle 2 means proposal is archived
                                                 (Number(sessionStorage.getItem('role')) === 1 ||
-                                                    String(sessionStorage.getItem('solution_specialist')).toLowerCase().includes('yes'))
+                                                    String(sessionStorage.getItem('solution_specialist')).trim().toLowerCase() === 'yes')
                                                 ? <Button onClick={activateProposal} disabled={activateClicked} variant="contained" color="primary" sx={{ m: 1 }}>
-                                                    Activate Proposal
+                                                    Active
                                                 </Button>
                                                 : null
                                         }

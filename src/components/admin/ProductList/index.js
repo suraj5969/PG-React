@@ -7,7 +7,7 @@ import DataTable from './DataTable';
 function ProductList(props) {
 
     React.useEffect(() => {
-        document.title = 'Products List'
+        document.title = 'Product List'
     }, []);
 
     const {setNavopen} = props;

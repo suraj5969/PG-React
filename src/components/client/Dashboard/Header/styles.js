@@ -19,5 +19,9 @@ export const useStyles = makeStyles({
             top: '38px',
             right: '25px',
         },
-    }
+    },
+
+    menuList: {
+        maxHeight: '350px',
+    },
 });

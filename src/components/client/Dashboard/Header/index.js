@@ -69,7 +69,7 @@ const StyledMenu = styled((props) => (
 
 export default function Header(props) {
 
-  const { setFilterOptions } = props;
+  const { setFilterOptions, countrySelected } = props;
 
   const history = useHistory();
 
@@ -80,6 +80,8 @@ export default function Header(props) {
     setApprovalStatusID(event.target.value);
   };
 
+  const [auNextApprover, setauNextApprover] = React.useState([]);
+  const [nzNextApprover, setnzNextApprover] = React.useState([]);
   const [allNextApprover, setAllNextApprover] = React.useState([]);
   const [nextApproverID, setnextApproverID] = React.useState(0);
   const handleNextApproverChange = (event) => {
@@ -112,32 +114,33 @@ export default function Header(props) {
       const workflow = await getWorkflowAPI();
       const users = await getUserDetailsAPI();
 
-      const country = sessionStorage.getItem('country') || '';
+      // const country = sessionStorage.getItem('country') || '';
       // console.log(country, users, 'users')
       if (workflow.status !== 200 || users.status !== 200) {
         console.log('getWorkflowAPI  or getUserDetailsAPI is not working');
       }
       else {
-        if (typeof workflow.data === 'object' && workflow.data.length > 0 &&
-          typeof users.data === 'object' && users.data.length > 0) {
+        if (workflow.data instanceof Array && workflow.data.length > 0 &&
+          users.data instanceof Array && users.data.length > 0) {
           // console.log('calling')
           if (isMounted) {
-            if (country === 'Australia') {
-              setAllNextApprover([
-                { user_id: workflow.data[0]?.aus_user_id, user_name: getUserName(users.data, workflow.data[0]?.aus_user_id) }, // 4 for pending for sales approval
-                { user_id: workflow.data[1]?.aus_user_id, user_name: getUserName(users.data, workflow.data[1]?.aus_user_id) }, // 5 for pending for commercial lead approval
-                { user_id: workflow.data[2]?.aus_user_id, user_name: getUserName(users.data, workflow.data[2]?.aus_user_id) }, // 6 for cfo approval
-                { user_id: workflow.data[3]?.aus_user_id, user_name: getUserName(users.data, workflow.data[3]?.aus_user_id) }, // 7 for ops approval
-              ])
-            }
-            else if (country === 'New Zealand') {
-              setAllNextApprover([
-                { user_id: workflow.data[0]?.nz_user_id, user_name: getUserName(users.data, workflow.data[0]?.nz_user_id) }, // 4 for pending for sales approval
-                { user_id: workflow.data[1]?.nz_user_id, user_name: getUserName(users.data, workflow.data[1]?.nz_user_id) }, // 5 for pending for commercial lead approval
-                { user_id: workflow.data[2]?.nz_user_id, user_name: getUserName(users.data, workflow.data[2]?.nz_user_id) }, // 6 for cfo approval
-                { user_id: workflow.data[3]?.nz_user_id, user_name: getUserName(users.data, workflow.data[3]?.nz_user_id) }, // 7 for ops approval
-              ])
-            }
+            setauNextApprover([
+              { user_id: workflow.data[0]?.aus_user_id, user_name: getUserName(users.data, workflow.data[0]?.aus_user_id) }, // 4 for pending for sales approval
+              { user_id: workflow.data[1]?.aus_user_id, user_name: getUserName(users.data, workflow.data[1]?.aus_user_id) }, // 5 for pending for commercial lead approval
+              { user_id: workflow.data[2]?.aus_user_id, user_name: getUserName(users.data, workflow.data[2]?.aus_user_id) }, // 6 for cfo approval
+              { user_id: workflow.data[3]?.aus_user_id, user_name: getUserName(users.data, workflow.data[3]?.aus_user_id) }, // 7 for ops approval
+            ])
+            setnzNextApprover([
+              { user_id: workflow.data[0]?.nz_user_id, user_name: getUserName(users.data, workflow.data[0]?.nz_user_id) }, // 4 for pending for sales approval
+              { user_id: workflow.data[1]?.nz_user_id, user_name: getUserName(users.data, workflow.data[1]?.nz_user_id) }, // 5 for pending for commercial lead approval
+              { user_id: workflow.data[2]?.nz_user_id, user_name: getUserName(users.data, workflow.data[2]?.nz_user_id) }, // 6 for cfo approval
+              { user_id: workflow.data[3]?.nz_user_id, user_name: getUserName(users.data, workflow.data[3]?.nz_user_id) }, // 7 for ops approval
+            ])
+            // if (country === 'Australia') {
+            // }
+            // else if (country === 'New Zealand') {
+              
+            // }
           }
         }
       }
@@ -148,6 +151,21 @@ export default function Header(props) {
       isMounted = false;
     }
   }, [])
+
+  React.useEffect(() => {
+    if (countrySelected === 'Australia') {
+      setAllNextApprover(auNextApprover);
+    }
+    else {
+      if (countrySelected === 'New Zealand') {
+        setAllNextApprover(nzNextApprover);
+      }
+      // else {
+      //   setAllNextApprover(allNextApprover);
+      // }
+    }
+
+  }, [countrySelected])
 
   React.useEffect(() => {
     let isMounted = true;
@@ -255,7 +273,7 @@ export default function Header(props) {
                     <MenuItem value={4}>Pending for Sales Approval</MenuItem>
                     <MenuItem value={5}>Pending for Commercial Lead Approval</MenuItem>
                     <MenuItem value={6}>Pending for CFO Approval</MenuItem>
-                    <MenuItem value={7}>Pending for Ops Team Approval</MenuItem>
+                    <MenuItem value={7}>Pending for Ops Team Verification</MenuItem>
                     <MenuItem value={8}>Approved</MenuItem>
                   </Select>
                 </FormControl>
@@ -291,6 +309,7 @@ export default function Header(props) {
                     value={solutionSpecialistID}
                     label="Solution Specialist"
                     onChange={handleSolutionSpecialistChange}
+                    MenuProps={{ classes: { list: styles.menuList } }}
                   >
                     <MenuItem value={0} >All</MenuItem>
                     {

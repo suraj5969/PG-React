@@ -953,7 +953,7 @@ function UpfrontCostLogic(props) {
                 console.log('getGSTPercentagesAPI not working');
             }
             else {
-                if (gst.data.length > 0) {
+                if (gst.data instanceof Array && gst.data.length > 0) {
                     setAllCountryGST(gst.data);
                 }
             }

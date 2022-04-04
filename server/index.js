@@ -219,9 +219,7 @@ cron.schedule('0 1 * * *', () => {
     archiveProposalJob()
         .then(result => console.log(`today ${new Date()} archived ${result} proposals`))
         .catch(error => console.log('error occured while archvingproposals', error))
-}, {
-    scheduled: true,
-});
+}, { scheduled: true, });
 
 app.listen(config.port, () => {
     console.log(`Example app listening at http://10.61.201.126:${config.port}`);

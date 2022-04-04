@@ -35,15 +35,25 @@ const rejectProposal = async (req, res, next) => {
         }
         else if (clientProfile[0]?.country === 'New Zealand') {
             approversIds['salesManager'] = workflow[0]?.nz_user_id;
-            approversIds['commLead'] = workflow[1]?.nz_user_id; //null
+            approversIds['commLead'] = workflow[1]?.nz_user_id;
             approversIds['cfo'] = workflow[2]?.nz_user_id;
-            approversIds['opsTeam'] = workflow[3]?.nz_user_id; //null
+            approversIds['opsTeam'] = workflow[3]?.nz_user_id;
 
             if (status === 4) {
                 designation = 'salesManager';
+            } else if (status === 5) {
+                designation = 'commLead';
             } else if (status === 6) {
                 designation = 'cfo';
+            } else if (status === 7) {
+                designation = 'opsTeam';
             }
+
+            // if (status === 4) {
+            //     designation = 'salesManager';
+            // } else if (status === 6) {
+            //     designation = 'cfo';
+            // }
         }
 
         if (status === 8 || status === 1 || status === 2 || status === 3) {
