@@ -222,5 +222,5 @@ cron.schedule('0 1 * * *', () => {
 }, { scheduled: true, });
 
 app.listen(config.port, () => {
-    console.log(`Example app listening at http://10.61.201.126:${config.port}`);
+    console.log(`App listening at ${config.port}`);
 });

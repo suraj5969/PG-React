@@ -3,7 +3,6 @@
 const crypto = require('crypto');
 const dotenv = require('dotenv');
 const nodemailer = require('nodemailer');
-const smtpTransport = require('nodemailer-smtp-transport');
 const eventData = require('../../data/events/admin');
 
 dotenv.config();

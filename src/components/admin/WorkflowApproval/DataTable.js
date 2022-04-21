@@ -20,7 +20,7 @@ function DataTable(props) {
     const [isData, setData] = React.useState(false);
     const [iskey, setkey] = React.useState(-1);
     const [popAUSuserId, setpopAUSuserId] = React.useState(-1);
-    const [popNZuserId, setpopNZuserId] = React.useState(-1);
+    // const [popNZuserId, setpopNZuserId] = React.useState(-1);
     const [popRole, setpopRole] = React.useState('');
     const [isPopsEntered, setPopsEntered] = React.useState(true);
 
@@ -32,7 +32,7 @@ function DataTable(props) {
         async function fetchData() {
             const users = await getUserDetailsAPI();
             let allUsers = [];
-            if (typeof users.data === 'object' && users.data.length > 0) {
+            if (users.data instanceof Array && users.data.length > 0) {
                 // console.log(users.data)
                 allUsers = users.data.filter(user => Boolean(user.can_approve));
                 setAllUsers(allUsers);
@@ -46,11 +46,11 @@ function DataTable(props) {
 
             const apiResponse = await getWorkflowDetailsAPI();
             // console.log(apiResponse);
-            if (typeof apiResponse.data === 'object' && apiResponse.data.length > 0) {
+            if (apiResponse.data instanceof Array && apiResponse.data.length > 0) {
                 let workflow = apiResponse.data;
                 for (let i = 0; i < workflow.length; i++) {
                     workflow[i]['aus_user_name'] = getUserName(workflow[i]['aus_user_id']);
-                    workflow[i]['nz_user_name'] = getUserName(workflow[i]['nz_user_id']);
+                    // workflow[i]['nz_user_name'] = getUserName(workflow[i]['nz_user_id']);
                 }
                 setValues(workflow);
                 setCopiedRows(workflow);
@@ -77,13 +77,13 @@ function DataTable(props) {
     }, [Values, isData, searchName]);
 
     React.useEffect(() => {
-        if (popAUSuserId !== -1 && popNZuserId !== -1 && popRole?.length > 0) {
+        if (popAUSuserId !== -1 && popRole?.length > 0) {
             setPopsEntered(true);
         }
         else {
             setPopsEntered(false);
         }
-    }, [popAUSuserId, popNZuserId, popRole])
+    }, [popAUSuserId, popRole])
 
     React.useEffect(() => {
         if (iskey !== -1) {
@@ -94,12 +94,6 @@ function DataTable(props) {
                 }
             }
             setpopAUSuserId(Values[pos].aus_user_id);
-            // if (iskey === 4 || iskey === 6) {
-            //     setpopNZuserId(-1);
-            // }
-            // else {
-                setpopNZuserId(Values[pos].nz_user_id);
-            // }
             setpopRole(Values[pos].role);
         }
     }, [iskey, Values])
@@ -112,7 +106,7 @@ function DataTable(props) {
 
     const updateTable = async (row_id, values) => {
         const apiResponse = await updateWorkflowAPI(row_id, values);
-        console.log(apiResponse)
+        // console.log(apiResponse)
         if (apiResponse.status === 200) {
             if (apiResponse.data?.status === 205) {
                 toast.error(apiResponse.data?.data, {
@@ -124,7 +118,7 @@ function DataTable(props) {
                 })
             }
         } else {
-            toast.error("Cannot connect to server. Please contact the Administrator", {
+            toast.error("Some Error Occurred. Please Try again later.", {
                 autoClose: 2000,
             });
         }
@@ -136,14 +130,14 @@ function DataTable(props) {
                 isData
                     ?
                     <>
-                        <TableContainer className={styles.tableOutlay} style={{ maxWidth: '800px' }}>
+                        <TableContainer className={styles.tableOutlay} style={{ maxWidth: '700px' }}>
                             <Table className={styles.table}>
                                 <TableHead className={styles.tableHead}>
                                     <TableRow>
                                         <TableCell align="center">Operations</TableCell>
                                         <TableCell align="center">Role</TableCell>
-                                        <TableCell align="center">Australia</TableCell>
-                                        <TableCell align="center">New Zealand</TableCell>
+                                        <TableCell align="center">Pacific</TableCell>
+                                        {/* <TableCell align="center">New Zealand</TableCell> */}
                                     </TableRow>
                                 </TableHead>
 
@@ -161,7 +155,6 @@ function DataTable(props) {
                                                                 let key = item.id;
                                                                 setPopOpen(true);
                                                                 setkey(key);
-                                                                //popRef.current.focus()
                                                             }}>Edit</Button>
                                                     </Box>
                                                 </TableCell>
@@ -173,11 +166,11 @@ function DataTable(props) {
                                                         item.aus_user_name
                                                     }
                                                 </TableCell>
-                                                <TableCell align="center">
+                                                {/* <TableCell align="center">
                                                     {
                                                         item.nz_user_name
                                                     }
-                                                </TableCell>
+                                                </TableCell> */}
                                             </TableRow>
                                         ))
                                     }
@@ -193,7 +186,7 @@ function DataTable(props) {
                                             onClick={() => {
                                                 setPopOpen(false);
                                                 setpopAUSuserId(-1);
-                                                setpopNZuserId(-1);
+                                                // setpopNZuserId(-1);
                                                 setpopRole('');
                                                 setkey(-1);
                                             }}
@@ -210,7 +203,7 @@ function DataTable(props) {
                                             disabled
                                         />
                                         <FormControl className={styles.formControl}>
-                                            <InputLabel id="input-ausrole">Australia</InputLabel>
+                                            <InputLabel id="input-ausrole">Pacific</InputLabel>
                                             <Select
                                                 labelId="input-ausrole-update"
                                                 id="input-ausrole-updtae"
@@ -235,7 +228,7 @@ function DataTable(props) {
                                                 }
                                             </Select>
                                         </FormControl>
-                                        {
+                                        {/* {
                                             <FormControl className={styles.formControl}>
                                                 <InputLabel id="input-nzrole">New Zealand</InputLabel>
                                                 <Select
@@ -243,17 +236,10 @@ function DataTable(props) {
                                                     id="input-nzrole-updtae"
                                                     value={popNZuserId}
                                                     onChange={(e) => {
-                                                        // for (let i = 0; i < Values.length; i++) {
-                                                        //     if (Values[i].aus_user_id === e.target.value || Values[i].nz_user_id === e.target.value) {
-                                                        //         alert('Selected user is already a approver. Please select some other person');
-                                                        //         return;
-                                                        //     }
-                                                        // }
                                                         setpopNZuserId(e.target.value)
                                                     }}
                                                     className={styles.inputPOP}
                                                     MenuProps={{ classes: { list: styles.menuList } }}
-                                                // disabled={country !== 'New Zealand'}
                                                 >
                                                     {
                                                         allUsers.map((user) => (
@@ -262,7 +248,7 @@ function DataTable(props) {
                                                     }
                                                 </Select>
                                             </FormControl>
-                                        }
+                                        } */}
                                         {
                                             isPopsEntered
                                                 ? <Button
@@ -277,21 +263,20 @@ function DataTable(props) {
                                                         let prevArr = Values.slice(0, pos);
                                                         let endArr = Values.slice(pos + 1, Values.length);
                                                         let resultArr = [...prevArr, {
-                                                            'role': popRole, 'id': iskey, 'aus_user_id': popAUSuserId,
-                                                            'nz_user_id': popNZuserId, 'aus_user_name': getUserName(popAUSuserId), 'nz_user_name': getUserName(popNZuserId)
+                                                            'role': popRole, 'id': iskey, 'aus_user_id': popAUSuserId, 'aus_user_name': getUserName(popAUSuserId)
                                                         }, ...endArr];
                                                         setValues(resultArr);
                                                         setPopOpen(false);
                                                         setpopAUSuserId(-1);
                                                         setpopRole('');
-                                                        setpopNZuserId(-1);
-                                                        updateTable(iskey, { aus_user_id: popAUSuserId, nz_user_id: popNZuserId })
+                                                        // setpopNZuserId(-1);
+                                                        updateTable(iskey, { aus_user_id: popAUSuserId })
                                                     }}
                                                 >save</Button>
                                                 : <Button
                                                     className={styles.ButtonPOPD}
                                                     onClick={() => {
-                                                        toast.error('Fill the required fields before saving the changes!', {
+                                                        toast.error('Cannot save the changes', {
                                                             autoClose: 2000,
                                                         })
                                                     }}

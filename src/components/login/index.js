@@ -132,7 +132,7 @@ function Login() {
                     {/* <Typography variant={'h6'}>Logo</Typography> */}
                 </Box>
                 <Box className={styles.innerinner}>
-                    <Typography className={styles.text} variant={'h3'}>Welcome</Typography>
+                    <Typography className={styles.text} variant={'h4'}>Proposal Generator </Typography>
                     {
                         //values.isValidated
                         //? ''

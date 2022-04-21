@@ -146,12 +146,12 @@ const setApprovalStatus = async (values) => {
         const workflow = await adminEventData.getWorkflow();
         // console.log(workflow,'workflow')
         let approversIds = {};
-        if (values.country === 'Australia') {
-            approversIds['salesManager'] = workflow[0]?.aus_user_id;
-        }
-        else if (values.country === 'New Zealand') {
-            approversIds['salesManager'] = workflow[0]?.nz_user_id;
-        }
+        approversIds['salesManager'] = workflow[0]?.aus_user_id;
+        // if (values.country === 'Australia') {
+        // }
+        // else if (values.country === 'New Zealand') {
+        //     approversIds['salesManager'] = workflow[0]?.nz_user_id;
+        // }
 
         let status = null;
         if (!values.clientFromGCRM) {

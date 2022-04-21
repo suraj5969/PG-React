@@ -144,12 +144,12 @@ const editApprovalStatus = async (values) => {
          }
         // console.log(workflow,'workflow')
         let approversIds = {};
-        if (values.country === 'Australia') {
-            approversIds['salesManager'] = workflow[0]?.aus_user_id;
-        }
-        else if (values.country === 'New Zealand') {
-            approversIds['salesManager'] = workflow[0]?.nz_user_id;
-        }
+        approversIds['salesManager'] = workflow[0]?.aus_user_id;
+        // if (values.country === 'Australia') {
+        // }
+        // else if (values.country === 'New Zealand') {
+        //     approversIds['salesManager'] = workflow[0]?.nz_user_id;
+        // }
 
         if (prevStatus === 3 && values.clientFromGCRM === null) {
             // status = 3; // for client not from gcrm

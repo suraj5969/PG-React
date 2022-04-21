@@ -81,8 +81,7 @@ export default function Header(props) {
   };
 
   const [auNextApprover, setauNextApprover] = React.useState([]);
-  const [nzNextApprover, setnzNextApprover] = React.useState([]);
-  const [allNextApprover, setAllNextApprover] = React.useState([]);
+  // const [nzNextApprover, setnzNextApprover] = React.useState([]);
   const [nextApproverID, setnextApproverID] = React.useState(0);
   const handleNextApproverChange = (event) => {
     setnextApproverID(event.target.value);
@@ -130,12 +129,12 @@ export default function Header(props) {
               { user_id: workflow.data[2]?.aus_user_id, user_name: getUserName(users.data, workflow.data[2]?.aus_user_id) }, // 6 for cfo approval
               { user_id: workflow.data[3]?.aus_user_id, user_name: getUserName(users.data, workflow.data[3]?.aus_user_id) }, // 7 for ops approval
             ])
-            setnzNextApprover([
-              { user_id: workflow.data[0]?.nz_user_id, user_name: getUserName(users.data, workflow.data[0]?.nz_user_id) }, // 4 for pending for sales approval
-              { user_id: workflow.data[1]?.nz_user_id, user_name: getUserName(users.data, workflow.data[1]?.nz_user_id) }, // 5 for pending for commercial lead approval
-              { user_id: workflow.data[2]?.nz_user_id, user_name: getUserName(users.data, workflow.data[2]?.nz_user_id) }, // 6 for cfo approval
-              { user_id: workflow.data[3]?.nz_user_id, user_name: getUserName(users.data, workflow.data[3]?.nz_user_id) }, // 7 for ops approval
-            ])
+            // setnzNextApprover([
+            //   { user_id: workflow.data[0]?.nz_user_id, user_name: getUserName(users.data, workflow.data[0]?.nz_user_id) }, // 4 for pending for sales approval
+            //   { user_id: workflow.data[1]?.nz_user_id, user_name: getUserName(users.data, workflow.data[1]?.nz_user_id) }, // 5 for pending for commercial lead approval
+            //   { user_id: workflow.data[2]?.nz_user_id, user_name: getUserName(users.data, workflow.data[2]?.nz_user_id) }, // 6 for cfo approval
+            //   { user_id: workflow.data[3]?.nz_user_id, user_name: getUserName(users.data, workflow.data[3]?.nz_user_id) }, // 7 for ops approval
+            // ])
             // if (country === 'Australia') {
             // }
             // else if (country === 'New Zealand') {
@@ -152,20 +151,6 @@ export default function Header(props) {
     }
   }, [])
 
-  React.useEffect(() => {
-    if (countrySelected === 'Australia') {
-      setAllNextApprover(auNextApprover);
-    }
-    else {
-      if (countrySelected === 'New Zealand') {
-        setAllNextApprover(nzNextApprover);
-      }
-      // else {
-      //   setAllNextApprover(allNextApprover);
-      // }
-    }
-
-  }, [countrySelected])
 
   React.useEffect(() => {
     let isMounted = true;
@@ -291,7 +276,7 @@ export default function Header(props) {
                   >
                     <MenuItem value={0} >All</MenuItem>
                     {
-                      allNextApprover.map((item) => (
+                      auNextApprover.map((item) => (
                         <MenuItem value={item.user_id} key={item.user_id}>{item.user_name}</MenuItem>
                       ))
                     }

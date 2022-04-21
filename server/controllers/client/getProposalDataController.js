@@ -184,62 +184,50 @@ const getProposalData = async (req, res, next) => {
         const status = Number(proposalInfo[0]?.status_id);
         let generateDoc = false, showLockProposal = false;
         let approversIds = {};
-        if (clientProfile[0]?.country === 'Australia') {
-            approversIds['salesManager'] = workflow[0]?.aus_user_id;
-            approversIds['commLead'] = workflow[1]?.aus_user_id;
-            approversIds['cfo'] = workflow[2]?.aus_user_id;
-            approversIds['opsTeam'] = workflow[3]?.aus_user_id;
+        approversIds['salesManager'] = workflow[0]?.aus_user_id;
+        approversIds['commLead'] = workflow[1]?.aus_user_id;
+        approversIds['cfo'] = workflow[2]?.aus_user_id;
+        approversIds['opsTeam'] = workflow[3]?.aus_user_id;
 
-            if (status === 4) {
-                nextApproverId = approversIds['salesManager'];
-            } else if (status === 5) {
-                nextApproverId = approversIds['commLead'];
-            } else if (status === 6) {
-                nextApproverId = approversIds['cfo'];
-            } else if (status === 7) {
-                nextApproverId = approversIds['opsTeam'];
-                generateDoc = true;
-            } else if (status === 8) {
-                generateDoc = true;
-                if (approversIds['opsTeam'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal))) {
-                    showLockProposal = true;
-                }
+        if (status === 4) {
+            nextApproverId = approversIds['salesManager'];
+        } else if (status === 5) {
+            nextApproverId = approversIds['commLead'];
+        } else if (status === 6) {
+            nextApproverId = approversIds['cfo'];
+        } else if (status === 7) {
+            nextApproverId = approversIds['opsTeam'];
+            generateDoc = true;
+        } else if (status === 8) {
+            generateDoc = true;
+            if (approversIds['opsTeam'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal))) {
+                showLockProposal = true;
             }
-
-        } else if (clientProfile[0]?.country === 'New Zealand') {
-            approversIds['salesManager'] = workflow[0]?.nz_user_id;
-            approversIds['commLead'] = workflow[1]?.nz_user_id;
-            approversIds['cfo'] = workflow[2]?.nz_user_id;
-            approversIds['opsTeam'] = workflow[3]?.nz_user_id;
-
-            if (status === 4) {
-                nextApproverId = approversIds['salesManager'];
-            } else if (status === 5) {
-                nextApproverId = approversIds['commLead'];
-            } else if (status === 6) {
-                nextApproverId = approversIds['cfo'];
-            } else if (status === 7) {
-                nextApproverId = approversIds['opsTeam'];
-                generateDoc = true;
-            } else if (status === 8) {
-                generateDoc = true;
-                if (approversIds['opsTeam'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal))) {
-                    showLockProposal = true;
-                }
-            }
-
-            // if (status === 4) {
-            //     nextApproverId = approversIds['salesManager'];
-            // } else if (status === 6) {
-            //     nextApproverId = approversIds['cfo'];
-            //     generateDoc = true;
-            // } else if (status === 8) {
-            //     generateDoc = true;
-            //     // if (approversIds['cfo'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal) {
-            //     //     showLockProposal = true;
-            //     // }
-            // }
         }
+        // if (clientProfile[0]?.country === 'Australia') {
+
+        // } else if (clientProfile[0]?.country === 'New Zealand') {
+        //     approversIds['salesManager'] = workflow[0]?.nz_user_id;
+        //     approversIds['commLead'] = workflow[1]?.nz_user_id;
+        //     approversIds['cfo'] = workflow[2]?.nz_user_id;
+        //     approversIds['opsTeam'] = workflow[3]?.nz_user_id;
+
+        //     if (status === 4) {
+        //         nextApproverId = approversIds['salesManager'];
+        //     } else if (status === 5) {
+        //         nextApproverId = approversIds['commLead'];
+        //     } else if (status === 6) {
+        //         nextApproverId = approversIds['cfo'];
+        //     } else if (status === 7) {
+        //         nextApproverId = approversIds['opsTeam'];
+        //         generateDoc = true;
+        //     } else if (status === 8) {
+        //         generateDoc = true;
+        //         if (approversIds['opsTeam'] === Number(user_id) && !Boolean(Number(proposalInfo[0]?.lock_proposal))) {
+        //             showLockProposal = true;
+        //         }
+        //     }
+        // }
 
         const propStatus = {
             '1': 'Rejected',

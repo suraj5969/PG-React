@@ -13,8 +13,9 @@ const mailToCFOApproval = async (user_id,proposal_no) => {
     const repay = await eventData.getRepaymentCalcDetails(proposal_no);
 
     let total = 'error occured while processing';
-    if(typeof repay === 'object' &&  repay.length > 0) {
+    if(repay instanceof Array &&  repay.length > 0) {
         total = Number(repay[repay.length - 1]?.payment) + Number(repay[repay.length - 1]?.lexis_care);
+        total = total.toFixed(2);
     }
     const email = emailResponse[0].email;
 
@@ -63,6 +64,7 @@ const mailToCFOApproval = async (user_id,proposal_no) => {
             console.log(error);
             return {status: 400,message: 'Server Problem,Please Try agian!'}
         }else{
+            transporter.close();
             return {status: 200,message: `Mail sent to Sales Manager`};
         }
     })

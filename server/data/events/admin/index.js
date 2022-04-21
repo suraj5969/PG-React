@@ -226,7 +226,7 @@ const updateWorkflow = async (row_id, values) => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const response = await pool.request()
             .input('aus_user_id', values.aus_user_id)
-            .input('nz_user_id', values.nz_user_id)
+            // .input('nz_user_id', values.nz_user_id)
             .input('row_id', row_id)
             .query(sqlQueries.updateWorkflow);
         // console.log(response);
@@ -576,7 +576,7 @@ const editDayConversions = async (id, values) => {
         const sqlQueries = await utils.loadSqlQueries('admin');
         const editDayConversions = await pool.request()
             .input('id', sql.BigInt, id)
-            .input('DAY_NAME', sql.VarChar(255), values.DAY_NAME)
+            // .input('DAY_NAME', sql.VarChar(255), values.DAY_NAME)
             .input('NO_OF_DAYS', sql.VarChar(255), values.NO_OF_DAYS)
             .query(sqlQueries.editDayConversions);
         // pool.close();

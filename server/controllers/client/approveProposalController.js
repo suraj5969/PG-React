@@ -23,18 +23,18 @@ const approveProposal = async (req, res, next) => {
         const discount = Number(getClientDiscount[0]?.discount_percent);
 
         let approversIds = {};
-        if (clientProfile[0]?.country === 'Australia') {
-            approversIds['salesManager'] = workflow[0]?.aus_user_id;
-            approversIds['commLead'] = workflow[1]?.aus_user_id;
-            approversIds['cfo'] = workflow[2]?.aus_user_id;
-            approversIds['opsTeam'] = workflow[3]?.aus_user_id;
-        }
-        else if (clientProfile[0]?.country === 'New Zealand') {
-            approversIds['salesManager'] = workflow[0]?.nz_user_id;
-            approversIds['commLead'] = workflow[1]?.nz_user_id;
-            approversIds['cfo'] = workflow[2]?.nz_user_id;
-            approversIds['opsTeam'] = workflow[3]?.nz_user_id;
-        }
+        approversIds['salesManager'] = workflow[0]?.aus_user_id;
+        approversIds['commLead'] = workflow[1]?.aus_user_id;
+        approversIds['cfo'] = workflow[2]?.aus_user_id;
+        approversIds['opsTeam'] = workflow[3]?.aus_user_id;
+        // if (clientProfile[0]?.country === 'Australia') {
+        // }
+        // else if (clientProfile[0]?.country === 'New Zealand') {
+        //     approversIds['salesManager'] = workflow[0]?.nz_user_id;
+        //     approversIds['commLead'] = workflow[1]?.nz_user_id;
+        //     approversIds['cfo'] = workflow[2]?.nz_user_id;
+        //     approversIds['opsTeam'] = workflow[3]?.nz_user_id;
+        // }
 
         const salesToCommercial = async () => {
             try {
@@ -122,7 +122,7 @@ const approveProposal = async (req, res, next) => {
                 //const nextApprover = approversList[0].next_approver;
                 const newApproverId = approversIds['opsTeam'];
                 const switchApprovalStatus = await eventData.updateApprovalStatus(proposal_no, 7, status,  Number(user_id));
-                console.log(switchApprovalStatus, 'switchApprovalStatus')
+                // console.log(switchApprovalStatus, 'switchApprovalStatus')
                 const mailResponse = await mailToOPSteamApproval.mailToOPSteamApproval(newApproverId, proposal_no);
                 return {
                     status: 200,

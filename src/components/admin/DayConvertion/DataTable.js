@@ -95,12 +95,12 @@ function DataTable(props) {
         if (conditions.isDayCorrect && conditions.isValueCorrect && popDay.length > 0 && popValue.length > 0) {
             const apiResponse = await editDayConversions(id, entries);
             if (apiResponse.status !== 200) {
-                toast.info('Something went wrong!', {
+                toast.error('Something went wrong! Please try again Later.', {
                     autoClose: 2000,
                 });
-                toast.error('Cannot connect to server. Please Contact the Administrator', {
-                    autoClose: 2000,
-                });
+                // toast.error('Cannot connect to server. Please Contact the Administrator', {
+                //     autoClose: 2000,
+                // });
 
                 setPopOpen(false);
                 setPopDay('');
@@ -216,6 +216,7 @@ function DataTable(props) {
                                                 className={styles.inputPOP}
                                                 id="input-day-update"
                                                 value={popDay}
+                                                disabled
                                                 onChange={(e) => {
                                                     setPopDay(e.target.value);
                                                     if (/^[a-zA-Z]+(([a-zA-Z ])?[a-zA-Z]*)*$/.test(e.target.value.toLowerCase()) && e.target.value.length > 3) {
@@ -225,7 +226,7 @@ function DataTable(props) {
                                                     }
                                                 }}
                                                 variant="outlined"
-                                                label="Enter new day"
+                                                label="Day Name"
                                                 inputProps={{ maxLength: 20, tabIndex: 1 }}
                                                 error={!conditions.isDayCorrect}
                                             />

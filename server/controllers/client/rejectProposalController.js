@@ -17,44 +17,38 @@ const rejectProposal = async (req, res, next) => {
         // console.log(reason,'RejectedReacson')
 
         let approversIds = {}, designation = null;
-        if (clientProfile[0]?.country === 'Australia') {
-            approversIds['salesManager'] = workflow[0]?.aus_user_id;
-            approversIds['commLead'] = workflow[1]?.aus_user_id;
-            approversIds['cfo'] = workflow[2]?.aus_user_id;
-            approversIds['opsTeam'] = workflow[3]?.aus_user_id;
+        approversIds['salesManager'] = workflow[0]?.aus_user_id;
+        approversIds['commLead'] = workflow[1]?.aus_user_id;
+        approversIds['cfo'] = workflow[2]?.aus_user_id;
+        approversIds['opsTeam'] = workflow[3]?.aus_user_id;
 
-            if (status === 4) {
-                designation = 'salesManager';
-            } else if (status === 5) {
-                designation = 'commLead';
-            } else if (status === 6) {
-                designation = 'cfo';
-            } else if (status === 7) {
-                designation = 'opsTeam';
-            }
+        if (status === 4) {
+            designation = 'salesManager';
+        } else if (status === 5) {
+            designation = 'commLead';
+        } else if (status === 6) {
+            designation = 'cfo';
+        } else if (status === 7) {
+            designation = 'opsTeam';
         }
-        else if (clientProfile[0]?.country === 'New Zealand') {
-            approversIds['salesManager'] = workflow[0]?.nz_user_id;
-            approversIds['commLead'] = workflow[1]?.nz_user_id;
-            approversIds['cfo'] = workflow[2]?.nz_user_id;
-            approversIds['opsTeam'] = workflow[3]?.nz_user_id;
+        // if (clientProfile[0]?.country === 'Australia') {
+        // }
+        // else if (clientProfile[0]?.country === 'New Zealand') {
+        //     approversIds['salesManager'] = workflow[0]?.nz_user_id;
+        //     approversIds['commLead'] = workflow[1]?.nz_user_id;
+        //     approversIds['cfo'] = workflow[2]?.nz_user_id;
+        //     approversIds['opsTeam'] = workflow[3]?.nz_user_id;
 
-            if (status === 4) {
-                designation = 'salesManager';
-            } else if (status === 5) {
-                designation = 'commLead';
-            } else if (status === 6) {
-                designation = 'cfo';
-            } else if (status === 7) {
-                designation = 'opsTeam';
-            }
-
-            // if (status === 4) {
-            //     designation = 'salesManager';
-            // } else if (status === 6) {
-            //     designation = 'cfo';
-            // }
-        }
+        //     if (status === 4) {
+        //         designation = 'salesManager';
+        //     } else if (status === 5) {
+        //         designation = 'commLead';
+        //     } else if (status === 6) {
+        //         designation = 'cfo';
+        //     } else if (status === 7) {
+        //         designation = 'opsTeam';
+        //     }
+        // }
 
         if (status === 8 || status === 1 || status === 2 || status === 3) {
             res.send({

@@ -127,7 +127,7 @@ export default function Table() {
         console.log('getDashboardDataAPI not working')
       }
       else {
-        if (result.data instanceof Array && result.data.length > 0) {
+        if (result.data instanceof Array) {
           if (isMounted) {
             setTableData(result.data);
             setAllData(result.data);

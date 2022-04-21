@@ -13,6 +13,7 @@ const mailToRejectProposal = async (proposal_no) => {
     let total = 'error occured while processing';
     if (repay instanceof Array && repay.length > 0) {
         total = Number(repay[repay.length - 1]?.payment) + Number(repay[repay.length - 1]?.lexis_care);
+        total = total.toFixed(2);
     }
     const proposalDetails = await eventData.getProposalDetails(proposal_no);
     const emailResponse = await eventData.getApproverMailID(proposalDetails[0]?.created_by);
@@ -67,6 +68,7 @@ const mailToRejectProposal = async (proposal_no) => {
             console.log(error);
             return { status: 400, message: 'Server Problem,Please Try agian!' }
         } else {
+            transporter.close();
             return { status: 200, message: `Mail sent to User who Created the proposal` };
         }
     })
