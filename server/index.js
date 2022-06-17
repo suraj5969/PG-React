@@ -103,7 +103,21 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: function (origin, callback) {
+        // allow requests with no origin 
+        // (like mobile apps or curl requests)
+        if(!origin) return callback(null, true);
+        // console.log(origin, 'oring of request')
+        if (config.FRONTEND_URL !== origin) {
+            let msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            console.log('origin is:' + origin);
+            return callback(msg, false);
+        }
+        return callback(null, true);
+    }
+}));
 app.use(logger);
 
 app.use('/login', (req, res) => {

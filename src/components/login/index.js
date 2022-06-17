@@ -15,6 +15,10 @@ toast.configure();
 
 function Login() {
 
+    React.useEffect(() => {
+        document.title = 'Login - Proposal Generator';
+    }, []);
+
     const history = useHistory();
     const styles = useStyles();
 

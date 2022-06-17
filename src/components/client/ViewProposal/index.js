@@ -5,6 +5,7 @@ import ApprovalDetails from './ApprovalDetails'
 import SubTabs from '../NewProposal/SubTabs';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 import getProposalDataAPI from '../../../apis/client/getProposalDataAPI';
@@ -22,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Loader from '../../admin/Loader';
 import { decrypt } from '../encryptURL';
 import DefaultValues from '../NewProposal/DefaultValues';
+import { CSVLink } from 'react-csv';
 
 toast.configure();
 
@@ -505,6 +507,27 @@ function ViewProposal() {
         history.push('/client/dashboard');
     }
 
+    // console.log(`${optionalServices.selfCustody.include}`);
+    const csvDefaultServices = [
+        ["", "", "", "", "Default Services"],
+        ["", "Team", "Include", "PM", "TSG", "Accounts Training", "Accounts Consulting", "BPA Consulting", "Travel", "Total Hrs"],
+        [`${defaultServicesValues.totalHrsBaseInstall.task}`, `${defaultServicesValues.totalHrsBaseInstall.team}`, `${defaultServicesValues.totalHrsBaseInstall.include}`, `${defaultServicesValues.totalHrsBaseInstall.PM}`, `${defaultServicesValues.totalHrsBaseInstall.TSG}`, `${defaultServicesValues.totalHrsBaseInstall.accountsTraining}`, `${defaultServicesValues.totalHrsBaseInstall.accountsConsulting}`, `${defaultServicesValues.totalHrsBaseInstall.BPAConsulting}`, `${defaultServicesValues.totalHrsBaseInstall.travel}`, `${defaultServicesValues.totalHrsBaseInstall.totalHrs}`],
+        [`${defaultServicesValues.totalDays.task}`, `${defaultServicesValues.totalDays.team}`, `${defaultServicesValues.totalDays.include}`, `${defaultServicesValues.totalDays.PM}`, `${defaultServicesValues.totalDays.TSG}`, `${defaultServicesValues.totalDays.accountsTraining}`, `${defaultServicesValues.totalDays.accountsConsulting}`, `${defaultServicesValues.totalDays.BPAConsulting}`, `${defaultServicesValues.totalDays.travel}`, `${defaultServicesValues.totalDays.totalHrs}`],
+        [""],
+        ["", "", "", "", "Optional Services"],
+        ["", "Team", "Include", "PM", "TSG", "Data Migration", "Accounts Training", "Accounts Consulting", "BPA Training", "BPA Consulting", "Travel", "Total Hrs"],
+        [`${optionalServices.totalHours.task}`, `${optionalServices.totalHours.team}`, `${optionalServices.totalHours.include}`, `${optionalServices.totalHours.PM}`, `${optionalServices.totalHours.TSG}`, `${optionalServices.totalHours.dataMigration}`, `${optionalServices.totalHours.accountsTraining}`, `${optionalServices.totalHours.accountsConsulting}`, `${optionalServices.totalHours.BPATraining}`, `${optionalServices.totalHours.BPAConsulting}`, `${optionalServices.totalHours.travel}`, `${optionalServices.totalHours.totalHrs}`],
+        [`${optionalServices.totalDays.task}`, `${optionalServices.totalDays.team}`, `${optionalServices.totalDays.include}`, `${optionalServices.totalDays.PM}`, `${optionalServices.totalDays.TSG}`, `${optionalServices.totalDays.dataMigration}`, `${optionalServices.totalDays.accountsTraining}`, `${optionalServices.totalDays.accountsConsulting}`, `${optionalServices.totalDays.BPATraining}`, `${optionalServices.totalDays.BPAConsulting}`, `${optionalServices.totalDays.travel}`, `${optionalServices.totalDays.totalHrs}`],
+        [`${optionalServices.grandTotalHours.task}`, `${optionalServices.grandTotalHours.team}`, `${optionalServices.grandTotalHours.include}`, `${optionalServices.grandTotalHours.PM}`, `${optionalServices.grandTotalHours.TSG}`, `${optionalServices.grandTotalHours.dataMigration}`, `${optionalServices.grandTotalHours.accountsTraining}`, `${optionalServices.grandTotalHours.accountsConsulting}`, `${optionalServices.grandTotalHours.BPATraining}`, `${optionalServices.grandTotalHours.BPAConsulting}`, `${optionalServices.grandTotalHours.travel}`, `${optionalServices.grandTotalHours.totalHrs}`],
+        [`${optionalServices.grandTotalDays.task}`, `${optionalServices.grandTotalDays.team}`, `${optionalServices.grandTotalDays.include}`, `${optionalServices.grandTotalDays.PM}`, `${optionalServices.grandTotalDays.TSG}`, `${optionalServices.grandTotalDays.dataMigration}`, `${optionalServices.grandTotalDays.accountsTraining}`, `${optionalServices.grandTotalDays.accountsConsulting}`, `${optionalServices.grandTotalDays.BPATraining}`, `${optionalServices.grandTotalDays.BPAConsulting}`, `${optionalServices.grandTotalDays.travel}`, `${optionalServices.grandTotalDays.totalHrs}`],
+    ]
+    // const csvOptionalServices = [
+    //     ["", "Team", "Include", "PM", "TSG", "Data Migration", "Accounts Training", "Accounts Consulting", "BPA Training", "BPA Consulting", "Travel", "Total Hrs"],
+    //     [`${optionalServices.totalHours.task}`, `${optionalServices.totalHours.team}`, `${optionalServices.totalHours.include}`, `${optionalServices.totalHours.PM}`, `${optionalServices.totalHours.TSG}`, `${optionalServices.totalHours.dataMigration}`, `${optionalServices.totalHours.accountsTraining}`, `${optionalServices.totalHours.accountsConsulting}`, `${optionalServices.totalHours.BPATraining}`, `${optionalServices.totalHours.BPAConsulting}`, `${optionalServices.totalHours.travel}`, `${optionalServices.totalHours.totalHrs}`],
+    //     [`${optionalServices.totalDays.task}`, `${optionalServices.totalDays.team}`, `${optionalServices.totalDays.include}`, `${optionalServices.totalDays.PM}`, `${optionalServices.totalDays.TSG}`, `${optionalServices.totalDays.dataMigration}`, `${optionalServices.totalDays.accountsTraining}`, `${optionalServices.totalDays.accountsConsulting}`, `${optionalServices.totalDays.BPATraining}`, `${optionalServices.totalDays.BPAConsulting}`, `${optionalServices.totalDays.travel}`, `${optionalServices.totalDays.totalHrs}`],
+    //     [`${optionalServices.grandTotalHours.task}`, `${optionalServices.grandTotalHours.team}`, `${optionalServices.grandTotalHours.include}`, `${optionalServices.grandTotalHours.PM}`, `${optionalServices.grandTotalHours.TSG}`, `${optionalServices.grandTotalHours.dataMigration}`, `${optionalServices.grandTotalHours.accountsTraining}`, `${optionalServices.grandTotalHours.accountsConsulting}`, `${optionalServices.grandTotalHours.BPATraining}`, `${optionalServices.grandTotalHours.BPAConsulting}`, `${optionalServices.grandTotalHours.travel}`, `${optionalServices.grandTotalHours.totalHrs}`],
+    //     [`${optionalServices.grandTotalDays.task}`, `${optionalServices.grandTotalDays.team}`, `${optionalServices.grandTotalDays.include}`, `${optionalServices.grandTotalDays.PM}`, `${optionalServices.grandTotalDays.TSG}`, `${optionalServices.grandTotalDays.dataMigration}`, `${optionalServices.grandTotalDays.accountsTraining}`, `${optionalServices.grandTotalDays.accountsConsulting}`, `${optionalServices.grandTotalDays.BPATraining}`, `${optionalServices.grandTotalDays.BPAConsulting}`, `${optionalServices.grandTotalDays.travel}`, `${optionalServices.grandTotalDays.totalHrs}`],
+    // ]
 
 
     return (
@@ -567,6 +590,7 @@ function ViewProposal() {
                                 discountTable={discountTable}
                                 setDiscountTable={setDiscountTable}
                             />
+
                             {
                                 Number(rights.can_approve) === 1
                                     ? <Box sx={{
@@ -604,30 +628,77 @@ function ViewProposal() {
                                     </Box>
                                     : null
                             }
-                            {
-                                generateDoc ?
-                                    <Box sx={{
-                                        marginTop: '7px',
-                                        marginLeft: { xs: '0', sm: '1.6rem' }
-                                    }}>
-                                        {
-                                            clientProfile.objective === 'New Business'
-                                                ? <a href={`${process.env.REACT_APP_SERVER_URL}/api/getDocfile/${proposalNo}`}>
-                                                    <Button variant="contained" color="primary" sx={{ m: 1 }}>
-                                                        Generate Proposal
-                                                    </Button>
-                                                </a>
-                                                : clientProfile.objective === 'Upsell'
-                                                    ? <a href={`${process.env.REACT_APP_SERVER_URL}/api/getUpsellDoc/${proposalNo}`}>
+                            <Stack direction="row">
+                                {
+                                    generateDoc ?
+                                        <Box sx={{
+                                            marginTop: '7px',
+                                            marginLeft: { xs: '0', sm: '1.6rem' }
+                                        }}>
+                                            {
+                                                clientProfile.objective === 'New Business'
+                                                    ? <a href={`${process.env.REACT_APP_SERVER_URL}/api/getDocfile/${proposalNo}`}>
                                                         <Button variant="contained" color="primary" sx={{ m: 1 }}>
                                                             Generate Proposal
                                                         </Button>
                                                     </a>
-                                                    : null
-                                        }
-                                    </Box>
-                                    : null
-                            }
+                                                    : clientProfile.objective === 'Upsell'
+                                                        ? <a href={`${process.env.REACT_APP_SERVER_URL}/api/getUpsellDoc/${proposalNo}`}>
+                                                            <Button variant="contained" color="primary" sx={{ m: 1 }}>
+                                                                Generate Proposal
+                                                            </Button>
+                                                        </a>
+                                                        : null
+                                            }
+                                        </Box>
+                                        : null
+                                }
+                                {
+                                    headerInfo.status === 'Approved'
+                                        ?
+                                        <>
+                                            <Box sx={{
+                                                // marginTop: '-20px',
+                                                // marginLeft: { xs: '0', sm: '1.6rem' }
+                                            }}>
+                                                <CSVLink filename='Services' data={csvDefaultServices}>
+                                                    <Button variant="contained" color="primary" sx={{ m: 1 }} disable="true">
+                                                        Export Services
+                                                    </Button>
+                                                </CSVLink>
+                                                {/* <CSVLink filename='Optional_Services' data={csvOptionalServices}>
+                                                <Button variant="contained" color="primary" sx={{ m: 1 }}>
+                                                    Export Optional Services
+                                                </Button>
+                                            </CSVLink> */}
+                                            </Box>
+                                        </>
+                                        : null
+                                }
+                                {
+                                    headerInfo.status === 'Pending for Ops Team Verification'
+                                        ?
+                                        <>
+                                            <Box sx={{
+                                                // marginTop: '-20px',
+                                                marginLeft: { xs: '0', sm: '1.6rem' }
+                                            }}>
+                                                <CSVLink filename='Services' data={csvDefaultServices}>
+                                                    <Button variant="contained" color="primary" sx={{ m: 1 }} disable="true">
+                                                        Export Services
+                                                    </Button>
+                                                </CSVLink>
+                                                {/* <CSVLink filename='Optional_Services' data={csvOptionalServices}>
+                                                <Button variant="contained" color="primary" sx={{ m: 1 }}>
+                                                    Export Optional Services
+                                                </Button>
+                                            </CSVLink> */}
+                                            </Box>
+                                        </>
+                                        : null
+                                }
+                            </Stack>
+
                         </Container>
                     </>
             }
