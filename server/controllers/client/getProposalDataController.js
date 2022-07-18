@@ -108,6 +108,15 @@ const getAffinityMobPopupValue = async (proposal_no) => {
         return error.message;
     }
 }
+const getMitimesPopupValue = async (proposal_no) => {
+    try {
+        const values = await eventData.getMitimesPopupValue(proposal_no);
+        console.log("values",values);
+        return values;
+    } catch (error) {
+        return error.message;
+    }
+}
 const getSettlementPopupValue = async (proposal_no) => {
     try {
         const values = await eventData.getSettlementPopupValue(proposal_no);
@@ -119,6 +128,7 @@ const getSettlementPopupValue = async (proposal_no) => {
 const getEmpowerModules = async (proposal_no) => {
     try {
         const values = await eventData.getEmpowerModuleDetails(proposal_no);
+        // console.log("getEmpowerModules",values);
         return values;
     } catch (error) {
         return error.message;
@@ -135,6 +145,24 @@ const getScopingPopupValue = async (proposal_no) => {
 const getAffinityServerPopupValues = async (proposal_no) => {
     try {
         const values = await eventData.getAffinityServerPopupValues(proposal_no);
+        return values;
+    } catch (error) {
+        return error.message;
+    }
+}
+const getPracticeAreaKitPopupValues = async (proposal_no) => {
+    try {
+        const values = await eventData.getPracticeAreaKitPopupValues(proposal_no);
+        console.log("getPracticeAreaKitPopupValues",values);
+        return values;
+    } catch (error) {
+        return error.message;
+    }
+}
+const getLnSearchPopupValues = async (proposal_no) => {
+    try {
+        const values = await eventData.getLnSearchPopupValue(proposal_no);
+        // console.log("getPracticeAreaKitPopupValues",values);
         return values;
     } catch (error) {
         return error.message;
@@ -170,10 +198,15 @@ const getProposalData = async (req, res, next) => {
         const discountTable = await getRepaymentDiscount(proposal_no);
 
         const affnityMobPopupValue = await getAffinityMobPopupValue(proposal_no);
+        const mitimesPopupValue = await getMitimesPopupValue(proposal_no);
         const settlementPopupValue = await getSettlementPopupValue(proposal_no);
         const empowerModules = await getEmpowerModules(proposal_no);
+        // console.log("empowerModules",empowerModules);
         const scopingPopupValue = await getScopingPopupValue(proposal_no);
         const affinityServerPopupValues = await getAffinityServerPopupValues(proposal_no);
+        const practiceAreaKitPopupValues = await getPracticeAreaKitPopupValues(proposal_no);
+        const lnSearchPopupValues = await getLnSearchPopupValues(proposal_no);
+        // console.log('practiceAreaKitPopupValues',practiceAreaKitPopupValues);
         const upfrontDiscounts = await getUpfrontDiscounts(proposal_no);
 
 
@@ -263,6 +296,7 @@ const getProposalData = async (req, res, next) => {
             discountTable: discountTable,
 
             affinityMobilePopUpValue: affnityMobPopupValue,
+            mitimesPopupValue: mitimesPopupValue,
             settlementPopUpValue: settlementPopupValue,
             empowerModules: {
                 empowerModules: empowerModules,
@@ -270,6 +304,8 @@ const getProposalData = async (req, res, next) => {
             },
             scopingStudyPopUpValue: scopingPopupValue,
             affinityServerPopupValues: affinityServerPopupValues,
+            practiceAreaKitPopupValues: practiceAreaKitPopupValues,
+            lnSearchPopupValues: lnSearchPopupValues,
             nextApproverId: nextApproverId,
             approversIds: approversIds,
             proposalStatus: propStatus[status],

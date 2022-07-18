@@ -10,20 +10,21 @@ import DataMigrationPopup from '../../../PopUps/DataMigrationPopup';
 import AffinityMobilePopup from '../../../PopUps/AffinityMobilePopup';
 import EmpowerPopup from '../../../PopUps/EmpowerPopup';
 import SettlementPopup from '../../../PopUps/SettlementPopup';
+import MitimesPopup from '../../../PopUps/MitimesPopup';
 
 export default function OptionalServices(props) {
 
 
     const { clientProfile, optionalServices, setOptionalServices, optionalPopupsState,
         setOptionalPopupsState, setImplementationTabValue, setUpfrontCost,
-        setAffinityMobilePopUpValue, setEmpowerModules, setSettlementPopUpValue, viewMode } = props;
+        setAffinityMobilePopUpValue, setEmpowerModules, setSettlementPopUpValue, viewMode, setMitimesPopupValue } = props;
 
     const { totalHours, totalDays, grandTotalHours, grandTotalDays,
         dataMigrationRow, selfCustody, multyPartyBilling, reportWriting,
         dataformsMax, scripting, workflow, BPAEndUser, BPAEssentials,
         dataformsPhoneBook, addPrecedent, BPAGoLive, exchangeIntegration,
         softdocsIntegration, clientPortal, worksiteIntegration,
-        affinityMobile, empower, settlementAdjuster, thirdPartyIT } = optionalServices;
+        affinityMobile, empower, settlementAdjuster, thirdPartyIT, mitimes } = optionalServices;
 
 
     function isStringInteger(value) {
@@ -100,6 +101,26 @@ export default function OptionalServices(props) {
                 ...prevValue,
                 affinityMobile: {
                     ...prevValue.affinityMobile,
+                    include: 'No',
+                }
+            }))
+        }
+    };
+
+    const handleCloseMitimesPopup = async (newValue) => {
+        setOptionalPopupsState((prevValue) => ({
+            ...prevValue,
+            mitimes: false,
+        }));
+        if (newValue !== false) {
+            setMitimesPopupValue(newValue);
+        }
+        else {
+            setMitimesPopupValue('');
+            setOptionalServices((prevValue) => ({
+                ...prevValue,
+                mitimes: {
+                    ...prevValue.mitimes,
                     include: 'No',
                 }
             }))
@@ -198,8 +219,7 @@ export default function OptionalServices(props) {
         }
     }
 
-
-
+   
     return (
         <Box >
 
@@ -215,6 +235,13 @@ export default function OptionalServices(props) {
                 <AffinityMobilePopup
                     open={optionalPopupsState.affinityMobile}
                     onClose={handleCloseAffinityPopup}
+                />
+            </Box>
+
+            <Box sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
+                <MitimesPopup
+                    open={optionalPopupsState.mitimes}
+                    onClose={handleCloseMitimesPopup}
                 />
             </Box>
 
@@ -1417,6 +1444,67 @@ export default function OptionalServices(props) {
                             <TableCell align="center">{thirdPartyIT.BPAConsulting}</TableCell>
                             <TableCell align="center">{thirdPartyIT.travel}</TableCell>
                             <TableCell align="center">{thirdPartyIT.totalHrs}</TableCell>
+                        </TableRow>
+
+                        <GreyTableRow >
+                            <TableCell><b>mitimes</b></TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                            <TableCell> </TableCell>
+                        </GreyTableRow>
+                        <TableRow >
+                            <TableCell component="th" scope="row">
+                                {mitimes.task}
+                            </TableCell>
+                            <TableCell align="center">
+                                <FormControl sx={{ minWidth: 60, p: 0 }}>
+                                    <Select sx={{ py: 0, width: '75px' }}
+                                        name="mitimes"
+                                        value={mitimes.include}
+                                        onChange={handleIncludeSelect}
+                                        disabled={viewMode}
+                                        displayEmpty
+                                        autoWidth={false}
+                                    >
+                                        <MenuItem value="No">No</MenuItem>
+                                        <MenuItem value="Yes">Yes</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </TableCell>
+                            <TableCell align="center">
+                                <FormControl sx={{ minWidth: 120, p: 0 }}>
+                                    <Select sx={{ py: 0, width: '140px' }}
+                                        name="mitimes"
+                                        value={mitimes.traningMethod}
+                                        onChange={handleTraningMethodSelect}
+                                        disabled={mitimes.include !== 'Yes' || viewMode}
+                                        displayEmpty
+                                        autoWidth={false}
+                                    >
+                                        <MenuItem value=''>Select</MenuItem>
+                                        <MenuItem value="Remote Traning">Remote Traning</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </TableCell>
+                            <TableCell align="center">{mitimes.team}</TableCell>
+                            <TableCell align="center">{mitimes.PM}</TableCell>
+                            <TableCell align="center">{mitimes.TSG}</TableCell>
+                            <TableCell align="center">{mitimes.dataMigration}</TableCell>
+                            <TableCell align="center">{mitimes.accountsTraining}</TableCell>
+                            <TableCell align="center">{mitimes.accountsConsulting}</TableCell>
+                            <TableCell align="center">{mitimes.BPATraining}</TableCell>
+                            <TableCell align="center">{mitimes.BPAConsulting}</TableCell>
+                            <TableCell align="center">{mitimes.travel}</TableCell>
+                            <TableCell align="center">{mitimes.totalHrs}</TableCell>
                         </TableRow>
 
                     </TableBody>

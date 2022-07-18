@@ -109,6 +109,7 @@ const defaultOptionalServices = {
     empower: { ...optionalServicesRow, team: 'BPA', task: 'Empower' },
     settlementAdjuster: { ...optionalServicesRow, team: 'TSG', task: 'Settlement Adjuster' },
     thirdPartyIT: { ...optionalServicesRow, team: 'TSG', task: 'Third-Party IT resources or infrastructure' },
+    mitimes: { ...optionalServicesRow, team: 'TSG', task: 'mitimes integration', transaction: 'Remote Traning' ,include: 'No', PM: 0, TSG: 0, dataMigration: 0, accountsTraining: 0, accountsConsulting: 0, BPATraining: 0, BPAConsulting: 0, travel: 0, totalHrs: 0 },
 
     totalHours: { ...optionalServicesRow, task: 'Total Hours', traningMethod: '', team: '', include: '', },
     totalDays: { ...optionalServicesRow, task: 'Total Days', traningMethod: '', team: '', include: '', },
@@ -129,6 +130,12 @@ const defaultMiscellaneous = {
     scopingStudy: { ...miscellaneousRow, miscellaneous: 'Is a scoping study required?', },
     additionalReturn: { ...miscellaneousRow, miscellaneous: 'Additional return trips required?', included: 0 },
     propertyPresidency: { ...miscellaneousRow, miscellaneous: 'Property Presidency Pack - NZ', hours: '', price: '' },
+    practiceAreaKit: { ...miscellaneousRow, miscellaneous: 'Practice area kit',},
+    lnSearch: { ...miscellaneousRow, miscellaneous: 'LexisNexis Search', hours: '', price: ''},
+    macrequineBank: { ...miscellaneousRow, miscellaneous: 'Macquarie Bank ',},
+    pexaIntegration: { ...miscellaneousRow, miscellaneous: 'PEXA Integration', hours: '', price: '' },
+    feeSynergy: { ...miscellaneousRow, miscellaneous: 'FeeSynergy', hours: '', price: '' },
+    fileman: { ...miscellaneousRow, miscellaneous: 'Fileman', hours: '', price: '' },
 }
 
 

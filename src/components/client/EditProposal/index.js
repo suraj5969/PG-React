@@ -12,7 +12,8 @@ import getProposalDetailsAPI from '../../../apis/client/getProposalDetailsAPI';
 import getUserDetailsAPI from '../../../apis/admin/getUserDetailsAPI';
 import { useParams, useHistory } from 'react-router-dom';
 import InfoPopup from '../PopUps/InfoPopup';
-import ConfirmationPopup from '../PopUps/ConfirmationPopup';
+// import ConfirmationPopup from '../PopUps/ConfirmationPopup';
+import SubmitProposalPopup from '../PopUps/SubmitProposalPopup';
 import ApprovalDetails from '../ViewProposal/ApprovalDetails';
 import moment from 'moment';
 import { toast } from 'react-toastify';
@@ -53,6 +54,7 @@ function EditProposal() {
     const [affinityMobilePopUpValue, setAffinityMobilePopUpValue] = React.useState('');
     const [settlementPopUpValue, setSettlementPopUpValue] = React.useState('');
     const [scopingStudyPopUpValue, setScopingStudyPopUpValue] = React.useState('');
+    const [mitimesPopUpValue, setMitimesPopupValue] = React.useState('');
     const [empowerModules, setEmpowerModules] = React.useState({
         empowerModules: [],
         numOfUsers: '',
@@ -67,6 +69,17 @@ function EditProposal() {
         maintenance: '',
         total: ''
     });
+    const [practiceAreaKitPopupValues, setpracticeAreaKitPopupValues] = React.useState({
+        practiceAreaKitModules: [],
+        numOfUsers: '',
+        modulesSelected: 0,
+    });
+    // console.log('practiceAreaKitPopupValues', practiceAreaKitPopupValues);
+    const [lnSearchPopUpValue, setlnSearchPopUpValue] = React.useState({
+        lnSearchPopUpValue: [],
+        modulesSelected: 0,
+    });
+    
     const [mandatoryFields, setMandatoryFields] = React.useState({
         clientName: true,
         opportunityNumber: true,
@@ -131,6 +144,7 @@ function EditProposal() {
             else {
                 if (typeof ProposalDetails.data === 'object' && ProposalDetails.data.length > 0) {
                     const data = ProposalDetails.data[0];
+                    console.log(data);
                     const rights = JSON.parse(sessionStorage.getItem('rights')) || {};
                     if (Number(rights.edit_other) !== 1 && Number(data.createdBy) !== user_id) {
                         toast.error("You cannot edit this proposal", {
@@ -197,7 +211,7 @@ function EditProposal() {
                     setDefaultServicesValues(defaultValues);
 
                     let optionalValues = {};
-                    const optionalServicesRows = ["dataMigrationRow", "selfCustody", "multyPartyBilling", "reportWriting", "dataformsMax", "scripting", "workflow", "BPAEndUser", "BPAEssentials", "dataformsPhoneBook", "addPrecedent", "BPAGoLive", "exchangeIntegration", "softdocsIntegration", "clientPortal", "worksiteIntegration", "affinityMobile", "empower", "settlementAdjuster", "thirdPartyIT", "totalHours", "totalDays", "grandTotalHours", "grandTotalDays"];
+                    const optionalServicesRows = ["dataMigrationRow", "selfCustody", "multyPartyBilling", "reportWriting", "dataformsMax", "scripting", "workflow", "BPAEndUser", "BPAEssentials", "dataformsPhoneBook", "addPrecedent", "BPAGoLive", "exchangeIntegration", "softdocsIntegration", "clientPortal", "worksiteIntegration", "affinityMobile", "empower", "settlementAdjuster", "thirdPartyIT", "totalHours", "totalDays", "grandTotalHours", "grandTotalDays", "mitimes"];
                     for (let i = 0; i < data.optionalServices?.length && i < optionalServicesRows.length; i++) {
                         optionalValues[optionalServicesRows[i]] = {};
                         optionalValues[optionalServicesRows[i]].task = data.optionalServices[i].task;
@@ -217,7 +231,7 @@ function EditProposal() {
                     setOptionalServices(optionalValues);
 
                     let miscValues = {};
-                    const miscellaneousRows = ["affinityServer", "lexisResearch", "scopingStudy", "additionalReturn", "propertyPresidency"];
+                    const miscellaneousRows = ["affinityServer", "lexisResearch", "scopingStudy", "additionalReturn", "propertyPresidency", "practiceAreaKit", "lnSearch", "macrequineBank", "pexaIntegration", "feeSynergy","fileman"];
                     for (let i = 0; i < data.miscellaneous?.length && i < miscellaneousRows.length; i++) {
                         miscValues[miscellaneousRows[i]] = {};
                         miscValues[miscellaneousRows[i]].miscellaneous = data.miscellaneous[i].miscellaneous;
@@ -313,11 +327,15 @@ function EditProposal() {
                     setAffinityMobilePopUpValue(Number(data.affinityMobilePopUpValue[0]?.num_of_users));
                     setSettlementPopUpValue(Number(data.settlementPopUpValue[0]?.no_of_licenses));
                     setScopingStudyPopUpValue(Number(data.scopingStudyPopUpValue[0]?.hrs_required));
+                    setMitimesPopupValue(Number(data.mitimesPopupValue[0]?.num_of_users));
+                    // console.log("mitimesPopupValue", data.mitimesPopupValue);
 
                     let modules = [], modulesSelected = 0;
+                    // console.log("data.modules", data.empowerModules);
                     for (let i = 0; i < data.empowerModules.empowerModules?.length; i++) {
                         let module = {};
                         module.id = data.empowerModules.empowerModules[i].id;
+                        // console.log('ID', data.empowerModules.empowerModules[i].id);
                         module.empower_name = data.empowerModules.empowerModules[i].module_name;
                         module.checked = Boolean(Number(data.empowerModules.empowerModules[i].selected));
                         if (module.checked) {
@@ -330,6 +348,55 @@ function EditProposal() {
                         numOfUsers: data.empowerModules?.numOfUsers,
                         modulesSelected: modulesSelected
                     });
+
+                    let practiceAreaModules = [], PracticeAreaModulesSelected = 0, numOfUsers = 0;
+                    // console.log('data.practiceAreaKitPopupValues', data.practiceAreaKitPopupValues);
+                    for (let i = 0; i < data.practiceAreaKitPopupValues?.length; i++){
+                        let module = {};
+                        // module.id = data.practiceAreaKitPopupValues[i].id;
+                        module.kitName = data.practiceAreaKitPopupValues[i].kitName;
+                        // console.log(' module.practice_area_name ', data.practiceAreaKitPopupValues[i].module_name);
+                        module.num_of_users = data.practiceAreaKitPopupValues[i].num_of_users;
+                        module.checked = Boolean(Number(data.practiceAreaKitPopupValues[i].selected));
+                        // console.log('selected', module.checked);
+                        if (module.checked) {
+                            PracticeAreaModulesSelected++;
+                        }
+                        if (module.num_of_users){
+                            numOfUsers = module.num_of_users;
+                        }
+                        // console.log('module{}',module);
+                        practiceAreaModules.push(module);
+                    }
+                    // console.log('practiceAreaModules', practiceAreaModules);
+                    // console.log('PracticeAreaModulesSelected',PracticeAreaModulesSelected);
+                    // console.log('no of user', numOfUsers);
+                    setpracticeAreaKitPopupValues({
+                        practiceAreaKitModules: practiceAreaModules,
+                        numOfUsers: numOfUsers,
+                        modulesSelected: PracticeAreaModulesSelected
+                    });
+
+                    let lnSearchModules = [], LnsearchModulesSelected = 0;
+                    // console.log('data.lnSearchPopupValues', data.lnSearchPopupValues);
+                    for (let i = 0; i < data.lnSearchPopupValues?.length; i++) {
+                        let module = {};
+                        // module.id = data.practiceAreaKitPopupValues[i].id;
+                        module.kitName = data.lnSearchPopupValues[i].kitName;
+                        // console.log('module', data.lnSearchPopupValues[i].kitName);
+                        module.checked = Boolean(Number(data.lnSearchPopupValues[i].selected));
+                        // console.log('selected', Boolean(Number(data.lnSearchPopupValues[i].selected)));
+                        if (module.checked) {
+                            LnsearchModulesSelected++;
+                        }
+                        lnSearchModules.push(module);
+                    }
+                    // console.log('lnSearchModules', lnSearchModules);
+                    setlnSearchPopUpValue({
+                        lnSearchPopUpValue: lnSearchModules,
+                        modulesSelected: LnsearchModulesSelected
+                    });
+
                     setAffinityServerPopupValues({
                         typeOfLicense: data.affinityServerPopupValues[0].type_of_oracle_license,
                         numOfUsers: data.affinityServerPopupValues[0].num_of_users,
@@ -522,6 +589,8 @@ function EditProposal() {
     const [submitForApprovalPopup, setSubmitForApprovalPopup] = React.useState(false);
     const CloseSubmitForApprovalPopup = async (confirmValue) => {
         setSubmitForApprovalPopup(false);
+        if (confirmValue === 'close')
+            return
         let workflow = false;
         if (confirmValue) {
             workflow = true;
@@ -546,7 +615,10 @@ function EditProposal() {
             empowerModules: empowerModules,
             settlementPopUpValue: settlementPopUpValue,
             scopingStudyPopUpValue: scopingStudyPopUpValue,
+            mitimesPopUpValue: mitimesPopUpValue,
             affinityServerPopupValues: affinityServerPopupValues,
+            practiceAreaKitPopupValues: practiceAreaKitPopupValues,
+            lnSearchPopUpValue: lnSearchPopUpValue,
         });
         // console.log(result)
         if (result.status !== 200) {
@@ -562,6 +634,8 @@ function EditProposal() {
             if (clientFromGCRM !== null && clientFromGCRM === false) {
                 const user_id = sessionStorage.getItem('user_id');
                 const proposalNo = decrypt(proposal_no);
+                // console.log('practiceAreaKitPopupValues', practiceAreaKitPopupValues);
+                
                 const result = await editProposalDataAPI(proposalNo, {
                     user_id: Number(user_id),
                     clientFromGCRM: clientFromGCRM,
@@ -579,7 +653,10 @@ function EditProposal() {
                     empowerModules: empowerModules,
                     settlementPopUpValue: settlementPopUpValue,
                     scopingStudyPopUpValue: scopingStudyPopUpValue,
+                    mitimesPopUpValue: mitimesPopUpValue,
                     affinityServerPopupValues: affinityServerPopupValues,
+                    practiceAreaKitPopupValues: practiceAreaKitPopupValues,
+                    lnSearchPopUpValue: lnSearchPopUpValue,
                 });
                 // console.log(result)
                 if (result.status !== 200) {
@@ -595,6 +672,7 @@ function EditProposal() {
         }
     }
 
+    // console.log('practiceAreaKitPopupValues', practiceAreaKitPopupValues);
 
     return (
         <>
@@ -610,7 +688,7 @@ function EditProposal() {
                                 bodyText="Please Fill the Include Field of Affinity Server CPU from Miscellaneous Table"
                             />
 
-                            <ConfirmationPopup open={submitForApprovalPopup} onClose={CloseSubmitForApprovalPopup}
+                            <SubmitProposalPopup open={submitForApprovalPopup} onClose={CloseSubmitForApprovalPopup}
                                 title="Submit Proposal"
                                 bodyText='Do you want to submit the proposal. If you click on Yes then it will be going for the approval cycle. If you select "No" the proposal will be saved and can be edited again but Wont go for the Approval Cycle for now.'
                             />
@@ -661,8 +739,14 @@ function EditProposal() {
                                 setSettlementPopUpValue={setSettlementPopUpValue}
                                 scopingStudyPopUpValue={scopingStudyPopUpValue}
                                 setScopingStudyPopUpValue={setScopingStudyPopUpValue}
+                                mitimesPopUpValue={mitimesPopUpValue}
+                                setMitimesPopupValue={setMitimesPopupValue}
                                 affinityServerPopupValues={affinityServerPopupValues}
                                 setAffinityServerPopupValues={setAffinityServerPopupValues}
+                                practiceAreaKitPopupValues={practiceAreaKitPopupValues}
+                                setpracticeAreaKitPopupValues={setpracticeAreaKitPopupValues}
+                                lnSearchPopUpValue={lnSearchPopUpValue}
+                                setlnSearchPopUpValue={setlnSearchPopUpValue}
                                 discountTable={discountTable}
                                 setDiscountTable={setDiscountTable}
                             />

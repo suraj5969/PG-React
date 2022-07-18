@@ -92,6 +92,7 @@ const saveRepaymentDiscount = async (values) => {
 }
 
 const saveAffinityMobPopupValue = async (values) => {
+    // console.log('saveAffinityMobPopupValue', values);
     try {
         const result = await eventData.saveAffinityMobilePopup(values);
         return result;
@@ -99,6 +100,17 @@ const saveAffinityMobPopupValue = async (values) => {
         return error.message;
     }
 }
+
+const saveMitimesPopupValue = async (values) => {
+    // console.log('saveMitimesPopupValue', values);
+    try {
+        const result = await eventData.saveMitimesPopup(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const saveSettlementPopupValue = async (values) => {
     try {
         const result = await eventData.saveSettlementPopup(values);
@@ -108,6 +120,7 @@ const saveSettlementPopupValue = async (values) => {
     }
 }
 const saveEmpowerModules = async (values) => {
+    // console.log('saveEmpowerModules', values);
     try {
         const result = await eventData.saveEmpowerPopup(values);
         return result;
@@ -126,6 +139,24 @@ const saveScopingPopupValue = async (values) => {
 const saveAffinityServerPopupValues = async (values) => {
     try {
         const result = await eventData.saveAffinityServerPopup(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
+const savePracticeAreaKitValues = async (values) => {
+    // console.log('savePracticeAreaKitValues',values);
+    try {
+        const result = await eventData.savePracticeAreaKitPopup(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
+const saveLnSearchPopupValue = async (values) => {
+    // console.log('saveLnSearchPopupValue',values);
+    try {
+        const result = await eventData.saveLnSearchPopup(values);
         return result;
     } catch (error) {
         return error.message;
@@ -184,9 +215,12 @@ const saveProposalData = async (req, res, next) => {
     try {
         // const proposal_no = req.params.proposal_no;
         const values = req.body;
+        // console.log('mitimes', values.mitimesPopUpValue);
+        // console.log('affinity', values.affinityMobilePopUpValue);
+        // console.log('values', values.lnSearchPopUpValue);
+        
         const count = await eventData.getProposalCounter();
-        const proposalNo = `LNPROP${count[0].counter}`;
-
+        const proposalNo = `LNPROP${count[0].counter}`;        
         const ProposalDetails = {
             proposalNo: proposalNo,
             createdBy: Number(values.createdBy),
@@ -198,7 +232,6 @@ const saveProposalData = async (req, res, next) => {
 
         // console.log(values);
         const saveProposalData = await saveProposalDetails(ProposalDetails);
-        // console.log(saveProposalData,'saveProposalData');
         const clientProfile = await saveClientProfile({ proposalNo, ...values.clientProfile });
         const attendingCourses = await saveAttendingCourses({ proposalNo, ...values.attendingCourses });
         const defaultServices = await saveDefaultServices({ proposalNo, ...values.defaultServices });
@@ -212,10 +245,13 @@ const saveProposalData = async (req, res, next) => {
         // console.log(repaymentCalc,'repaymentCalc');
 
         const affnityMobPopupValue = await saveAffinityMobPopupValue({ proposalNo, affinityMobilePopUpValue: values.affinityMobilePopUpValue });
+        const mitimesPopupValue = await saveMitimesPopupValue({ proposalNo, mitimesPopupValue: values.mitimesPopUpValue });
         const settlementPopupValue = await saveSettlementPopupValue({ proposalNo, settlementPopUpValue: values.settlementPopUpValue });
         const empowerModules = await saveEmpowerModules({ proposalNo, empowerModules: values.empowerModules });
         const scopingPopupValue = await saveScopingPopupValue({ proposalNo, scopingStudyPopUpValue: values.scopingStudyPopUpValue });
         const affinityServerPopupValues = await saveAffinityServerPopupValues({ proposalNo, ...values.affinityServerPopupValues });
+        const practiceAreaKitValues = await savePracticeAreaKitValues({ proposalNo, practiceAreaKitPopupValues: values.practiceAreaKitPopupValues });
+        const lnSearchPopupValue = await saveLnSearchPopupValue({ proposalNo, ...values.lnSearchPopUpValue });
 
         const status = setApprovalStatus({
             proposalNo: proposalNo,

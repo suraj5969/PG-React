@@ -97,6 +97,15 @@ const editAffinityMobPopupValue = async (values) => {
         return error.message;
     }
 }
+const editMitimesPopupValue = async (values) => {
+    // console.log('values',values);
+    try {
+        const result = await eventData.editMitimesPopup(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
 const editSettlementPopupValue = async (values) => {
     try {
         const result = await eventData.editSettlementPopup(values);
@@ -108,6 +117,24 @@ const editSettlementPopupValue = async (values) => {
 const editEmpowerModules = async (values) => {
     try {
         const result = await eventData.editEmpowerPopup(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
+const editPracticeAreaKitModules = async (values) => {
+    // console.log('editPracticeAreaKitModules',values);
+    try {
+        const result = await eventData.editPracticeAreaKitPopup(values);
+        return result;
+    } catch (error) {
+        return error.message;
+    }
+}
+const editLnSearchModules = async (values) => {
+    // console.log('editLnSearchModules',values);
+    try {
+        const result = await eventData.editLnSearchPopup(values);
         return result;
     } catch (error) {
         return error.message;
@@ -186,7 +213,8 @@ const editProposalData = async (req, res, next) => {
     try {
         const proposalNo = req.params.proposal_no;
         const values = req.body;
-
+        // console.log('editProposalData', values);
+        
         // console.log(saveProposalData,'saveProposalData');
         const clientProfile = await editClientProfile({ proposalNo, ...values.clientProfile });
         const attendingCourses = await editAttendingCourses({ proposalNo, ...values.attendingCourses });
@@ -201,8 +229,11 @@ const editProposalData = async (req, res, next) => {
         // console.log(clientProfile,attendingCourses, defaultServices, repaymentCalc,'repaymentCalc');
 
         const affnityMobPopupValue = await editAffinityMobPopupValue({ proposalNo, affinityMobilePopUpValue: values.affinityMobilePopUpValue });
+        const mitimesPopupValue = await editMitimesPopupValue({ proposalNo, mitimesPopUpValue: values.mitimesPopUpValue });
         const settlementPopupValue = await editSettlementPopupValue({ proposalNo, settlementPopUpValue: values.settlementPopUpValue });
         const empowerModules = await editEmpowerModules({ proposalNo, empowerModules: values.empowerModules });
+        const practiceAreaKitModules = await editPracticeAreaKitModules({ proposalNo, practiceAreaKitModules: values.practiceAreaKitPopupValues });
+        const lnSearchModules = await editLnSearchModules({ proposalNo, lnSearchPopUpValue: values.lnSearchPopUpValue });
         const scopingPopupValue = await editScopingPopupValue({ proposalNo, scopingStudyPopUpValue: values.scopingStudyPopUpValue });
         const affinityServerPopupValues = await editAffinityServerPopupValues({ proposalNo, ...values.affinityServerPopupValues });
 

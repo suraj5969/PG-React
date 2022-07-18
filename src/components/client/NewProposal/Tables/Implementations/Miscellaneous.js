@@ -7,6 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { tableCellClasses } from '@mui/material/TableCell';
 import ScopingStudyPopup from '../../../PopUps/ScopingStudyPopup';
 import AffinityServerCpuPopup from '../../../PopUps/AffinityServerCpuPopup';
+import PracticeAreaKitPopup from '../../../PopUps/PracticeAreaKitPopup';
+import LnSearchPopup from '../../../PopUps/LnSearchPopup';
 import { styled } from '@mui/material/styles';
 
 export default function Miscellaneous(props) {
@@ -14,10 +16,10 @@ export default function Miscellaneous(props) {
     const { clientProfile, miscellaneous, setMiscellaneous,
         miscellaneousPopupsState, setMiscellenousPopupsState,
         setScopingStudyPopUpValue, setValue, viewMode,
-         setAffinityServerPopupValues } = props;
+        setAffinityServerPopupValues, setpracticeAreaKitPopupValues, setlnSearchPopUpValue } = props;
 
     const { affinityServer, lexisResearch, scopingStudy,
-        additionalReturn, propertyPresidency } = miscellaneous;
+        additionalReturn, propertyPresidency, practiceAreaKit, lnSearch, macrequineBank, pexaIntegration, feeSynergy, fileman } = miscellaneous;
 
     const StyledHeadCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -56,6 +58,57 @@ export default function Miscellaneous(props) {
             setMiscellenousPopupsState((prevValue) => ({
                 ...prevValue,
                 scopingStudy: true
+            }));
+        }
+    }
+
+    const handelPracticeAreaKitIncluded = (e) => {
+        setMiscellaneous((prevValue) => ({
+            ...prevValue,
+            practiceAreaKit: {
+                ...prevValue.practiceAreaKit,
+                included: e.target.value,
+            }
+        }))
+
+        if (e.target.value === 'Yes') {
+            setMiscellenousPopupsState((prevValue) => ({
+                ...prevValue,
+                practiceAreaKit: true
+            }));
+        }
+    }
+
+    const handelLnSearchIncluded = (e) => {
+        setMiscellaneous((prevValue) => ({
+            ...prevValue,
+            lnSearch: {
+                ...prevValue.lnSearch,
+                included: e.target.value,
+            }
+        }))
+
+        if (e.target.value === 'Yes') {
+            setMiscellenousPopupsState((prevValue) => ({
+                ...prevValue,
+                lnSearch: true
+            }));
+        }
+    }
+
+    const handelMacrequineBankIncluded = (e) => {
+        setMiscellaneous((prevValue) => ({
+            ...prevValue,
+            macrequineBank: {
+                ...prevValue.macrequineBank,
+                macrequineBank: e.target.value,
+            }
+        }))
+
+        if (e.target.value === 'Yes') {
+            setMiscellenousPopupsState((prevValue) => ({
+                ...prevValue,
+                macrequineBank: true
             }));
         }
     }
@@ -132,6 +185,74 @@ export default function Miscellaneous(props) {
         }
     }
 
+    const handelCloseLnSearchPopup = (value) => {
+        setMiscellenousPopupsState((prevValue) => ({
+            ...prevValue,
+            lnSearch: false
+        }));
+
+        if (value !== false) {
+            setMiscellaneous((prevValue) => ({
+                ...prevValue,
+                lnSearch: {
+                    ...prevValue.lnSearch,
+                    // hours: value,
+                }
+            }))
+
+            setlnSearchPopUpValue(value);
+            // console.log(prevValue.lnSearch);
+        }
+        else {
+            setMiscellaneous((prevValue) => ({
+                ...prevValue,
+                lnSearch: {
+                    ...prevValue.lnSearch,
+                    included: 'No'
+                }
+            }))
+
+            setlnSearchPopUpValue({
+                lnSearchPopUpValue: [],
+                modulesSelected: 0,
+            });
+        }
+    }
+
+    const handleClosePracticeAreaKitPopup = (value) => {
+        setMiscellenousPopupsState((prevValue) => ({
+            ...prevValue,
+            practiceAreaKit: false
+        }));
+
+        if (value !== false) {
+            setMiscellaneous((prevValue) => ({
+                ...prevValue,
+                practiceAreaKit: {
+                    ...prevValue.practiceAreaKit,
+                    price: value,
+                }
+            }))
+
+            setpracticeAreaKitPopupValues(value);
+        }
+        else {
+            setMiscellaneous((prevValue) => ({
+                ...prevValue,
+                practiceAreaKit: {
+                    ...prevValue.practiceAreaKit,
+                    included: 'No'
+                }
+            }))
+
+            setpracticeAreaKitPopupValues({
+                practiceAreaKitModules: [],
+                numOfUsers: '',
+                modulesSelected: 0,
+            });
+        }
+    }
+
     const handelCloseAffinityPopup = (value) => {
         setMiscellenousPopupsState((prevValue) => ({
             ...prevValue,
@@ -177,6 +298,17 @@ export default function Miscellaneous(props) {
                 open={miscellaneousPopupsState.scopingStudy}
                 onClose={handelCloseScopingPopup}
             />
+
+            <PracticeAreaKitPopup
+                open={miscellaneousPopupsState.practiceAreaKit}
+                onClose={handleClosePracticeAreaKitPopup}
+            />
+
+            <LnSearchPopup
+                open={miscellaneousPopupsState.lnSearch}
+                onClose={handelCloseLnSearchPopup}
+            />
+
 
             <Box sx={{ maxWidth: '850px' }}>
                 <TableContainer>
@@ -313,6 +445,144 @@ export default function Miscellaneous(props) {
                                         />
                                     </FormControl>
                                 </TableCell>
+                            </TableRow>
+
+                            <TableRow >
+                                <TableCell component="th" scope="row">
+                                    {practiceAreaKit.miscellaneous}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <FormControl sx={{ minWidth: 100, p: 0 }}>
+                                        <Select
+                                            name="practiceAreaKit"
+                                            value={practiceAreaKit.included}
+                                            onChange={handelPracticeAreaKitIncluded}
+                                            disabled={viewMode}
+                                            displayEmpty
+                                            autoWidth={false}
+                                        >
+                                            <MenuItem value="Yes">Yes</MenuItem>
+                                            <MenuItem value="No">No</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell align="center">{practiceAreaKit.hours}</TableCell>
+                                <TableCell align="center">{practiceAreaKit.hours}</TableCell>
+                            </TableRow>
+
+                            <TableRow >
+                                <TableCell component="th" scope="row">
+                                    {lnSearch.miscellaneous}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <FormControl sx={{ minWidth: 100, p: 0 }}>
+                                        <Select
+                                            name="lnSearch"
+                                            value={lnSearch.included}
+                                            onChange={handelLnSearchIncluded}
+                                            disabled={viewMode}
+                                            displayEmpty
+                                            autoWidth={false}
+                                        >
+                                            <MenuItem value="Yes">Yes</MenuItem>
+                                            <MenuItem value="No">No</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell align="center">{lnSearch.hours}</TableCell>
+                                <TableCell align="center">{lnSearch.price}</TableCell>
+                            </TableRow>
+
+                            <TableRow >
+                                <TableCell component="th" scope="row">
+                                    {macrequineBank.miscellaneous}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <FormControl sx={{ minWidth: 100, p: 0 }}>
+                                        <Select
+                                            name="macrequineBank"
+                                            value={macrequineBank.included}
+                                            onChange={handelIncludedSelect}
+                                            disabled={viewMode}
+                                            displayEmpty
+                                            autoWidth={false}
+                                        >
+                                            <MenuItem value="Yes">Yes</MenuItem>
+                                            <MenuItem value="No">No</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell align="center">{macrequineBank.hours}</TableCell>
+                                <TableCell align="center">{macrequineBank.price}</TableCell>
+                            </TableRow>
+
+                            <TableRow >
+                                <TableCell component="th" scope="row">
+                                    {pexaIntegration.miscellaneous}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <FormControl sx={{ minWidth: 100, p: 0 }}>
+                                        <Select
+                                            name="pexaIntegration"
+                                            value={pexaIntegration.included}
+                                            onChange={handelIncludedSelect}
+                                            disabled={viewMode}
+                                            displayEmpty
+                                            autoWidth={false}
+                                        >
+                                            <MenuItem value="Yes">Yes</MenuItem>
+                                            <MenuItem value="No">No</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell align="center">{pexaIntegration.hours}</TableCell>
+                                <TableCell align="center">{pexaIntegration.price}</TableCell>
+                            </TableRow>
+
+                            <TableRow >
+                                <TableCell component="th" scope="row">
+                                    {feeSynergy.miscellaneous}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <FormControl sx={{ minWidth: 100, p: 0 }}>
+                                        <Select
+                                            name="feeSynergy"
+                                            value={feeSynergy.included}
+                                            onChange={handelIncludedSelect}
+                                            disabled={viewMode}
+                                            displayEmpty
+                                            autoWidth={false}
+                                        >
+                                            <MenuItem value="Yes">Yes</MenuItem>
+                                            <MenuItem value="No">No</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell align="center">{feeSynergy.hours}</TableCell>
+                                <TableCell align="center">{feeSynergy.price}</TableCell>
+                            </TableRow>
+
+                            <TableRow >
+                                <TableCell component="th" scope="row">
+                                    {fileman.miscellaneous}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <FormControl sx={{ minWidth: 100, p: 0 }}>
+                                        <Select
+                                            name="fileman"
+                                            value={fileman.included}
+                                            onChange={handelIncludedSelect}
+                                            disabled={viewMode}
+                                            displayEmpty
+                                            autoWidth={false}
+                                        >
+                                            <MenuItem value="Yes">Yes</MenuItem>
+                                            <MenuItem value="No">No</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </TableCell>
+                                <TableCell align="center">{fileman.hours}</TableCell>
+                                <TableCell align="center">{fileman.price}</TableCell>
                             </TableRow>
 
                         </TableBody>

@@ -421,6 +421,45 @@ const getAffinityServerPopupValues = async (proposal_no) => {
     }
 }
 
+const getPracticeAreaKitPopupValues = async (proposal_no) => {
+    try {
+        const query = `SELECT
+    [practiceAreaKit_popup_modules].module_name AS kitName,
+    [practiceAreaKit_popup_modules].selected,
+    [practiceAreaKit_popup_users_value].num_of_users
+    from [dbo].[practiceAreaKit_popup_modules] 
+    inner join [dbo].[practiceAreaKit_popup_users_value]
+    on  [practiceAreaKit_popup_modules].[proposal_no] =  [practiceAreaKit_popup_users_value].[proposal_no]
+    where  [practiceAreaKit_popup_modules].[proposal_no] = @proposal_no`;
+        let pool = await sql.connect(config.sql);
+        // const sqlQueries = await utils.loadSqlQueries('client');
+        const values = await pool.request()
+            .input('proposal_no', sql.VarChar(50), proposal_no)
+            .query(query);
+        // pool.close()
+        // console.log('getPracticeAreaKitPopupValues', values.recordset);
+        return values.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const getLnSearchPopupValue = async (proposal_no) => {
+    try {
+        const query = `SELECT provider AS kitName, selected FROM [dbo].[lexisnexis_search_popup_values] WHERE [proposal_no]=@proposal_no`;
+        let pool = await sql.connect(config.sql);
+        // const sqlQueries = await utils.loadSqlQueries('client');
+        const values = await pool.request()
+            .input('proposal_no', sql.VarChar(50), proposal_no)
+            .query(query);
+        // pool.close()
+        // console.log('getLnSearchPopupValue', values.recordset);
+        return values.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 
 const getClientProfile = async (proposal_no) => {
     try {
@@ -486,6 +525,23 @@ const getAffinityMobPopupValue = async (proposal_no) => {
             .input('proposal_no', sql.VarChar(50), proposal_no)
             .query(sqlQueries.getAffinityMobilePopupValue);
         // pool.close()
+        // console.log('affinity value',value.recordset)
+        return value.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const getMitimesPopupValue = async (proposal_no) => {
+    try {
+        const query = `SELECT num_of_users FROM [dbo].[mitimes_popup_value] WHERE [proposal_no]=@proposal_no`;
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('client');
+        const value = await pool.request()
+            .input('proposal_no', sql.VarChar(50), proposal_no)
+            .query(query);
+        // pool.close()
+        // console.log('mitimes value',value.recordset);
         return value.recordset;
     } catch (error) {
         return error.message;
@@ -774,6 +830,7 @@ const getDashboardData = async (country) => {
             .input('country', sql.VarChar(50), country)
             .query(sqlQueries.getDashboardData);
         // pool.close()
+        // console.log(data);
         return data.recordset;
     } catch (error) {
         return error.message;
@@ -1009,7 +1066,7 @@ const saveOptionalServices = async (values) => {
             dataformsMax, scripting, workflow, BPAEndUser, BPAEssentials,
             dataformsPhoneBook, addPrecedent, BPAGoLive, exchangeIntegration,
             softdocsIntegration, clientPortal, worksiteIntegration,
-            affinityMobile, empower, settlementAdjuster, thirdPartyIT } = values;
+            affinityMobile, empower, settlementAdjuster, thirdPartyIT, mitimes } = values;
         // console.log('events called')
         let pool = await sql.connect(config.sql);
 
@@ -1081,6 +1138,7 @@ const saveOptionalServices = async (values) => {
 
         tvp.rows.add(proposalNo, grandTotalDays.task, grandTotalDays.include, grandTotalDays.traningMethod, grandTotalDays.team, grandTotalDays.PM, grandTotalDays.TSG, grandTotalDays.dataMigration, grandTotalDays.accountsTraining, grandTotalDays.accountsConsulting, grandTotalDays.BPATraining, grandTotalDays.BPAConsulting, grandTotalDays.travel, grandTotalDays.totalHrs)
 
+        tvp.rows.add(proposalNo, mitimes.task, mitimes.include, mitimes.traningMethod, mitimes.team, mitimes.PM, mitimes.TSG, mitimes.dataMigration, mitimes.accountsTraining, mitimes.accountsConsulting, mitimes.BPATraining, mitimes.BPAConsulting, mitimes.travel, mitimes.totalHrs)
 
         const request = new sql.Request()
         request.input('tvp', tvp)
@@ -1097,7 +1155,7 @@ const saveMiscellaneous = async (values) => {
     try {
         // console.log('events called')
         const { proposalNo, affinityServer, lexisResearch, scopingStudy,
-            additionalReturn, propertyPresidency } = values;
+            additionalReturn, propertyPresidency, practiceAreaKit, lnSearch, macrequineBank, pexaIntegration, feeSynergy, fileman } = values;
         let pool = await sql.connect(config.sql);
 
         const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
@@ -1114,6 +1172,12 @@ const saveMiscellaneous = async (values) => {
         tvp.rows.add(proposalNo, scopingStudy.miscellaneous, scopingStudy.included, scopingStudy.hours, scopingStudy.price)
         tvp.rows.add(proposalNo, additionalReturn.miscellaneous, additionalReturn.included, additionalReturn.hours, additionalReturn.price)
         tvp.rows.add(proposalNo, propertyPresidency.miscellaneous, propertyPresidency.included, propertyPresidency.hours, propertyPresidency.price)
+        tvp.rows.add(proposalNo, practiceAreaKit.miscellaneous, practiceAreaKit.included, practiceAreaKit.hours, practiceAreaKit.price)
+        tvp.rows.add(proposalNo, lnSearch.miscellaneous, lnSearch.included, lnSearch.hours, lnSearch.price)
+        tvp.rows.add(proposalNo, macrequineBank.miscellaneous, macrequineBank.included, macrequineBank.hours, macrequineBank.price)
+        tvp.rows.add(proposalNo, pexaIntegration.miscellaneous, pexaIntegration.included, pexaIntegration.hours, pexaIntegration.price)
+        tvp.rows.add(proposalNo, feeSynergy.miscellaneous, feeSynergy.included, feeSynergy.hours, feeSynergy.price)
+        tvp.rows.add(proposalNo, fileman.miscellaneous, fileman.included, fileman.hours, fileman.price)
         // for (const i of Object.values(other)) {
         //     tvp.rows.add(proposalNo, i.miscellaneous, i.included, i.hours, i.price)
         // }
@@ -1453,7 +1517,7 @@ const saveRepaymentCalc = async (values) => {
         //     resultData = result;
         // })
         const result2 = await request2.execute('repay_maintenance_insert_procedure');
-        
+
 
         const tvp3 = new sql.Table()
 
@@ -1559,6 +1623,23 @@ const saveAffinityMobilePopup = async (values) => {
         return error.message;
     }
 }
+const saveMitimesPopup = async (values) => {
+    // console.log('mitimes called', values)
+    try {
+        // console.log('events called')
+        const { proposalNo, mitimesPopupValue } = values;
+        const query = `INSERT INTO [dbo].[mitimes_popup_value] VALUES ('${proposalNo}', '${mitimesPopupValue}')`
+
+        let pool = await sql.connect(config.sql);
+        const data = await pool.request()
+            .query(query);
+
+        // pool.close();
+        return data.rowsAffected;
+    } catch (error) {
+        return error.message;
+    }
+}
 
 const saveSettlementPopup = async (values) => {
     try {
@@ -1586,7 +1667,6 @@ const saveEmpowerPopup = async (values) => {
         let pool = await sql.connect(config.sql);
         const data = await pool.request()
             .query(query);
-
 
         const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
         // Columns must correspond with type we have created in database.
@@ -1640,7 +1720,7 @@ const saveAffinityServerPopup = async (values) => {
         // console.log('affintty server cpu popup query called')
         const { proposalNo, typeOfLicense, numOfUsers, edition, serverLicense, oracleLicense, maintenance, total } = values;
         const query = `INSERT INTO [dbo].[affinity_server_popup_values] VALUES ('${proposalNo}', '${typeOfLicense}', '${numOfUsers}', '${edition}', '${serverLicense}', '${oracleLicense}', '${maintenance}', '${total}')`
-
+        // console.log('Affinity query', query);
         let pool = await sql.connect(config.sql);
         const data = await pool.request()
             .query(query);
@@ -1649,6 +1729,78 @@ const saveAffinityServerPopup = async (values) => {
         return data.rowsAffected;
     } catch (error) {
         console.log(error.message, 'affintty server cpu popup query error');
+        return error.message;
+    }
+}
+
+const savePracticeAreaKitPopup = async (values) => {
+    // console.log("values",values);
+    try {
+        // console.log('affintty server cpu popup query called')
+        const { proposalNo, practiceAreaKitPopupValues } = values;
+        // console.log('number of user', practiceAreaKitPopupValues);
+
+        const query = `INSERT INTO [dbo].[practiceAreaKit_popup_users_value] VALUES ('${proposalNo}', '${practiceAreaKitPopupValues.numOfUsers}')`
+        let pool = await sql.connect(config.sql);
+        const data = await pool.request()
+            .query(query);
+
+        const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
+        // Columns must correspond with type we have created in database.
+        tvp.columns.add('proposal_no', sql.VarChar(50))
+        tvp.columns.add('module_name', sql.VarChar(500))
+        tvp.columns.add('selected', sql.VarChar(10))
+
+        for (const i of Object.values(practiceAreaKitPopupValues.practiceAreaKitModules)) {
+            // console.log(proposalNo,i.kitName, i.checked);
+            tvp.rows.add(proposalNo, i.kitName, Number(i.checked))
+        }
+
+        const request = new sql.Request()
+        request.input('tvp', tvp)
+        const result = await request.execute('practiceAreaKit_modules_insert_procedure');
+        // pool.close();
+        return result;
+
+        // return data.rowsAffected;
+    } catch (error) {
+        console.log(error.message, 'practiceAreaKit search popup query error');
+        return error.message;
+    }
+}
+
+const saveLnSearchPopup = async (values) => {
+    // console.log("values",values);
+    try {
+        // console.log('affintty server cpu popup query called')
+        const { proposalNo, lnSearchModules } = values;
+
+        // const query = `INSERT INTO [dbo].[lexisnexis_search_popup_values] VALUES ('${proposalNo}', '${provider}', '${selected}')`
+        // let pool = await sql.connect(config.sql);
+        // const data = await pool.request()
+        //     .query(query);
+        // pool.close();
+
+        const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
+        // Columns must correspond with type we have created in database.
+        tvp.columns.add('proposal_no', sql.VarChar(50))
+        tvp.columns.add('provider', sql.VarChar(500))
+        tvp.columns.add('selected', sql.VarChar(10))
+
+        for (const i of Object.values(lnSearchModules)) {
+            // console.log(proposalNo,i.kitName, i.checked);
+            tvp.rows.add(proposalNo, i.kitName, Number(i.checked))
+        }
+
+        const request = new sql.Request()
+        request.input('tvp', tvp)
+        const result = await request.execute('lnsearch_modules_insert_procedure');
+        // pool.close();
+        return result;
+
+        // return data.rowsAffected;
+    } catch (error) {
+        console.log(error.message, 'lexisnexis search popup query error');
         return error.message;
     }
 }
@@ -1867,7 +2019,7 @@ const editOptionalServices = async (values) => {
             dataformsMax, scripting, workflow, BPAEndUser, BPAEssentials,
             dataformsPhoneBook, addPrecedent, BPAGoLive, exchangeIntegration,
             softdocsIntegration, clientPortal, worksiteIntegration,
-            affinityMobile, empower, settlementAdjuster, thirdPartyIT } = values;
+            affinityMobile, empower, settlementAdjuster, thirdPartyIT, mitimes } = values;
         // console.log('events called')
         let pool = await sql.connect(config.sql);
 
@@ -1939,6 +2091,7 @@ const editOptionalServices = async (values) => {
 
         tvp.rows.add(proposalNo, grandTotalDays.task, grandTotalDays.include, grandTotalDays.traningMethod, grandTotalDays.team, grandTotalDays.PM, grandTotalDays.TSG, grandTotalDays.dataMigration, grandTotalDays.accountsTraining, grandTotalDays.accountsConsulting, grandTotalDays.BPATraining, grandTotalDays.BPAConsulting, grandTotalDays.travel, grandTotalDays.totalHrs)
 
+        tvp.rows.add(proposalNo, mitimes.task, mitimes.include, mitimes.traningMethod, mitimes.team, mitimes.PM, mitimes.TSG, mitimes.dataMigration, mitimes.accountsTraining, mitimes.accountsConsulting, mitimes.BPATraining, mitimes.BPAConsulting, mitimes.travel, mitimes.totalHrs)
 
         const request = new sql.Request()
         request.input('tvp', tvp)
@@ -1964,7 +2117,7 @@ const editMiscellaneous = async (values) => {
     try {
         // console.log('events called')
         const { proposalNo, affinityServer, lexisResearch, scopingStudy,
-            additionalReturn, propertyPresidency } = values;
+            additionalReturn, propertyPresidency, practiceAreaKit, lnSearch, macrequineBank, pexaIntegration, feeSynergy, fileman } = values;
         let pool = await sql.connect(config.sql);
 
         const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
@@ -1981,6 +2134,12 @@ const editMiscellaneous = async (values) => {
         tvp.rows.add(proposalNo, scopingStudy.miscellaneous, scopingStudy.included, scopingStudy.hours, scopingStudy.price)
         tvp.rows.add(proposalNo, additionalReturn.miscellaneous, additionalReturn.included, additionalReturn.hours, additionalReturn.price)
         tvp.rows.add(proposalNo, propertyPresidency.miscellaneous, propertyPresidency.included, propertyPresidency.hours, propertyPresidency.price)
+        tvp.rows.add(proposalNo, practiceAreaKit.miscellaneous, practiceAreaKit.included, practiceAreaKit.hours, practiceAreaKit.price)
+        tvp.rows.add(proposalNo, lnSearch.miscellaneous, lnSearch.included, lnSearch.hours, lnSearch.price)
+        tvp.rows.add(proposalNo, macrequineBank.miscellaneous, macrequineBank.included, macrequineBank.hours, macrequineBank.price)
+        tvp.rows.add(proposalNo, pexaIntegration.miscellaneous, pexaIntegration.included, pexaIntegration.hours, pexaIntegration.price)
+        tvp.rows.add(proposalNo, feeSynergy.miscellaneous, feeSynergy.included, feeSynergy.hours, feeSynergy.price)
+        tvp.rows.add(proposalNo, fileman.miscellaneous, fileman.included, fileman.hours, fileman.price)
         // for (const i of Object.values(other)) {
         //     tvp.rows.add(proposalNo, i.miscellaneous, i.included, i.hours, i.price)
         // }
@@ -2422,6 +2581,24 @@ const editAffinityMobilePopup = async (values) => {
     }
 }
 
+const editMitimesPopup = async (values) => {
+    // console.log('editMitimesPopup called',values);
+    try {
+        // console.log('events called')
+        const { proposalNo, mitimesPopUpValue } = values;
+        const query = `UPDATE [dbo].[mitimes_popup_value] SET [num_of_users] = '${mitimesPopUpValue}'  WHERE [proposal_no] = '${proposalNo}'`;
+
+        let pool = await sql.connect(config.sql);
+        const data = await pool.request()
+            .query(query);
+
+        // pool.close();
+        return data.rowsAffected;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const editSettlementPopup = async (values) => {
     try {
         // console.log('events called')
@@ -2472,6 +2649,73 @@ const editEmpowerPopup = async (values) => {
         // pool.close();
         return result;
     } catch (error) {
+        return error.message;
+    }
+}
+
+const editPracticeAreaKitPopup = async (values) => {
+    // console.log("editPracticeAreaKitPopup",values);
+    try {
+        // console.log('affintty server cpu popup query called')
+        const { proposalNo, practiceAreaKitModules } = values;
+        // console.log('modules', practiceAreaKitModules);
+
+        const query = `UPDATE [dbo].[practiceAreaKit_popup_users_value] SET [num_of_users] = '${practiceAreaKitModules.numOfUsers}' WHERE [proposal_no] = '${proposalNo}'`
+        let pool = await sql.connect(config.sql);
+        const data = await pool.request()
+            .query(query);
+
+        const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
+        // Columns must correspond with type we have created in database.
+        tvp.columns.add('proposal_no', sql.VarChar(50))
+        tvp.columns.add('module_name', sql.VarChar(500))
+        tvp.columns.add('selected', sql.VarChar(10))
+
+        for (const i of Object.values(practiceAreaKitModules.practiceAreaKitModules)) {
+            // console.log('editPracticeAreaKitPopup',proposalNo,i.kitName, i.checked);
+            tvp.rows.add(proposalNo, i.kitName, Number(i.checked))
+        }
+
+        const request = new sql.Request()
+        request.input('tvp', tvp)
+        const result = await request.execute('practiceAreaKit_modules_edit_procedure');
+        // pool.close();
+        return result;
+
+        // return data.rowsAffected;
+    } catch (error) {
+        console.log(error.message, 'edit practiceAreaKit search popup query error');
+        return error.message;
+    }
+}
+
+const editLnSearchPopup = async (values) => {
+    // console.log("edit LnSearch Popup ",values);
+    try {
+        // console.log('affintty server cpu popup query called')
+        const { proposalNo, lnSearchPopUpValue } = values;
+        // console.log('modules', lnSearchPopUpValue);
+        
+        const tvp = new sql.Table() // You can optionally specify table type name in the first argument.
+        // Columns must correspond with type we have created in database.
+        tvp.columns.add('proposal_no', sql.VarChar(50))
+        tvp.columns.add('provider', sql.VarChar(500))
+        tvp.columns.add('selected', sql.VarChar(10))
+
+        for (const i of Object.values(lnSearchPopUpValue.lnSearchModules)) {
+            // console.log('editLnSearchPopup',proposalNo,i.kitName, i.checked);
+            tvp.rows.add(proposalNo, i.kitName, Number(i.checked))
+        }
+
+        const request = new sql.Request()
+        request.input('tvp', tvp)
+        const result = await request.execute('lnsearch_modules_edit_procedure');
+        // pool.close();
+        return result;
+
+        // return data.rowsAffected;
+    } catch (error) {
+        console.log(error.message, 'edit lexisnexis search popup query error');
         return error.message;
     }
 }
@@ -2547,10 +2791,13 @@ module.exports = {
     getRepaymentSoftwareServices,
     getMiscellaneous,
     getAffinityServerPopupValues,
+    getPracticeAreaKitPopupValues,
+    getLnSearchPopupValue,
     getClientProfile,
     getAttendingCourses,
     getSalesNotes,
     getAffinityMobPopupValue,
+    getMitimesPopupValue,
     getSettlementPopupValue,
     getScopingStudyPopupValue,
     getUpfrontDiscounts,
@@ -2591,10 +2838,13 @@ module.exports = {
     saveRepaymentCalc,
     saveRepaymentDiscount,
     saveAffinityMobilePopup,
+    saveMitimesPopup,
     saveSettlementPopup,
     saveEmpowerPopup,
     saveScopingStudyPopup,
     saveAffinityServerPopup,
+    savePracticeAreaKitPopup,
+    saveLnSearchPopup,
 
     editProposalDetails,
     editClientProfile,
@@ -2608,8 +2858,11 @@ module.exports = {
     editRepaymentDiscount,
     editRepaymentCalc,
     editAffinityMobilePopup,
+    editMitimesPopup,
     editSettlementPopup,
     editEmpowerPopup,
+    editPracticeAreaKitPopup,
+    editLnSearchPopup,
     editScopingStudyPopup,
     editAffinityServerPopup,
 }

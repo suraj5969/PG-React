@@ -69,14 +69,16 @@ export default function Table() {
   const [tableData, setTableData] = React.useState([]);
   const [allData, setAllData] = React.useState([]);
   const [isData, setIsData] = React.useState(false);
-  const [countrySelected, setCountrySelected] = React.useState('Australia');
+  // const filterCountry = sessionStorage.getItem('countryFilter');
+  // const [countrySelected, setCountrySelected] = React.useState(filterCountry !== null ? filterCountry :'All');
   const [reRender, setReRender] = React.useState(false);
-
+  console.log(sessionStorage.getItem('countryFilter'));
   const [filterOptions, setFilterOptions] = React.useState({
     approvalStatusID: 0,
     nextApproverID: 0,
     solutionSpecialistID: 0,
-    lifecycleID: 1
+    lifecycleID: 1,
+    countrySelected: 'All',
   });
 
 
@@ -102,20 +104,20 @@ export default function Table() {
         filters['lifecycle_id'] = filterOptions.lifecycleID;
         count++;
       }
-      filters['country'] = countrySelected;
-      // if (countrySelected !== '') {
-      //   count++;
-      // }
+      if (filterOptions.countrySelected !== 'All') {
+        filters['country'] = filterOptions.countrySelected;
+        count++;
+      }
 
-      const FilteredData = lodashFilter(allData, filters);
-      setTableData(FilteredData);
-      // if (count > 0) {
-      // }
-      // else {
-      //   setTableData(allData);
-      // }
+      if (count > 0) {
+        const FilteredData = lodashFilter(allData, filters);
+        setTableData(FilteredData);
+      }
+      else {
+        setTableData(allData);
+      }
     }
-  }, [filterOptions, isData, allData, countrySelected])
+  }, [filterOptions, isData, allData])
 
 
   React.useEffect(() => {
@@ -209,7 +211,7 @@ export default function Table() {
               statusType={statusType}
             />
 
-            <Header setFilterOptions={setFilterOptions} countrySelected={countrySelected} />
+            <Header setFilterOptions={setFilterOptions} />
             <div style={{ width: "100%", maxWidth: '1500px', margin: '0 auto' }}>
               <MaterialTable
                 icons={tableIcons}
@@ -218,20 +220,20 @@ export default function Table() {
                     // let _props = { ...props, toolbarButtonAlignment: "right" }
                     return (
                       <>
-                        <FormControl style={{ position: 'absolute', zIndex: '10', top: '15px' }} sx={{ mx: 2, width: 150 }}>
-                          <InputLabel id="country-select">Country</InputLabel>
+                        {/* <FormControl style={{ position: 'absolute', zIndex: '10', top: '15px' }} sx={{ mx: 2, width: 150 }}>
+                          <InputLabel id="country-select">Country Filter</InputLabel>
                           <Select
                             id="country-select"
                             value={countrySelected}
-                            label="Country"
+                            label="Country Filter"
                             variant="outlined"
-                            onChange={(e) => setCountrySelected(e.target.value)}
+                            onChange={(e) => {sessionStorage.setItem('countryFilter', e.target.value); setCountrySelected(e.target.value)}}
                           >
-                            {/* <MenuItem value=''>All</MenuItem> */}
+                            <MenuItem value='All'>All</MenuItem>
                             <MenuItem value="Australia">Australia</MenuItem>
                             <MenuItem value="New Zealand">New Zealand</MenuItem>
                           </Select>
-                        </FormControl>
+                        </FormControl> */}
                         <MTableToolbar {...props} />
                       </>
                     )

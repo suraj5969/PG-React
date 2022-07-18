@@ -149,6 +149,7 @@ export default function SubTabs(props) {
                                 setEmpowerModules={props.setEmpowerModules}
                                 // settlementPopUpValue={props.settlementPopUpValue}
                                 setSettlementPopUpValue={props.setSettlementPopUpValue}
+                                setMitimesPopupValue={props.setMitimesPopupValue}
                                 viewMode={props.viewMode}
                             />
                         </TabPanel>
@@ -161,6 +162,8 @@ export default function SubTabs(props) {
                                 setMiscellenousPopupsState={setMiscellenousPopupsState}
                                 scopingStudyPopUpValue={props.scopingStudyPopUpValue}
                                 setScopingStudyPopUpValue={props.setScopingStudyPopUpValue}
+                                setpracticeAreaKitPopupValues={props.setpracticeAreaKitPopupValues}
+                                setlnSearchPopUpValue={props.setlnSearchPopUpValue}
                                 setValue={setValue}
                                 viewMode={props.viewMode}
                                 affinityServerPopupValues={props.affinityServerPopupValues}
@@ -250,6 +253,7 @@ export default function SubTabs(props) {
                             setEmpowerModules={props.setEmpowerModules}
                             setSettlementPopUpValue={props.setSettlementPopUpValue}
                             settlementPopUpValue={props.settlementPopUpValue}
+                            setMitimesPopupValue={props.setMitimesPopupValue}
                             affinityServerPopupValues={props.affinityServerPopupValues}
                             setAffinityServerPopupValues={props.setAffinityServerPopupValues}
                         />

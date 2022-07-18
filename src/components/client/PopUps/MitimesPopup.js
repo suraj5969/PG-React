@@ -12,13 +12,14 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-export default function AffinityMobilePopup(props) {
+export default function MitimesPopup(props) {
     const { onClose, open, ...other } = props;
     const [value, setValue] = React.useState(5);
+
     const [valueRequired, setValueRequired] = React.useState(false);
 
     React.useEffect(() => {
-        // console.log(value, 'affinity mobile popup')
+        // console.log(value, 'mitimes popup')
         if (!open) {
             setValue(5);
         }
@@ -29,7 +30,7 @@ export default function AffinityMobilePopup(props) {
     };
 
     const handleOk = () => {
-        if(value === '') {
+        if (value === '') {
             setValueRequired(true);
             return;
         }
@@ -43,19 +44,21 @@ export default function AffinityMobilePopup(props) {
 
     return (
         <Dialog
-            sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '300px', maxWidth: '500px'} }}
+            sx={{ '& .MuiDialog-paper': { width: '80%', maxHeight: '300px', maxWidth: '500px' } }}
             maxWidth="sm"
             open={open}
             {...other}
         >
-            <DialogTitle>Affinity Mobile</DialogTitle>
+            <DialogTitle>mitimes Integration</DialogTitle>
             <DialogContent dividers>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap',
-                 alignItems: 'center', justifyContent: 'center'}}>
+                <Box sx={{
+                    display: 'flex', flexWrap: 'wrap',
+                    alignItems: 'center', justifyContent: 'center'
+                }}>
 
                     <Stack spacing={1}>
-                        <Typography variant="body">How Many Users Require Mobility License</Typography>
-                        <FormControl sx={{ m: 1, maxWidth: 250 }}>
+                        <Typography variant="body">How Many Users</Typography>
+                        <FormControl sx={{ m: 1, minWidth: 250 }}>
                             <Select
                                 value={value}
                                 onChange={handleChange}
@@ -98,7 +101,7 @@ export default function AffinityMobilePopup(props) {
     );
 }
 
-AffinityMobilePopup.propTypes = {
+MitimesPopup.propTypes = {
     onClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
 };

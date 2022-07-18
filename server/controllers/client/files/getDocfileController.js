@@ -7,7 +7,6 @@ const path = require("path");
 const moment = require('moment');
 
 const eventData = require('../../data/events/client');
-const { log } = require("console");
 
 const getDocfile = async (req, res, next) => {
 
@@ -66,7 +65,7 @@ const getDocfile = async (req, res, next) => {
 
             return {
                 heading: 'Affinity Server and Workstation software ',
-                text: `Lexis Affinity with ${users} concurrent user licenses.`
+                text: `Lexis Affinity with ${users} concurrent user licenses. Professional Services to assist your team in configuring, implementing and using the solution. Ongoing online and remote technical support and maintenance, including software updates.`
             }
         }
         const oracleDBSoftware = () => {
@@ -84,27 +83,6 @@ const getDocfile = async (req, res, next) => {
             }
         }
 
-        const professionalServices = () => {
-            return {
-                heading: 'Professional Services',
-                text: 'Professional Services to assist your team in configuring, implementing and using the solution.'
-            }
-        }
-
-        const supportUpdates = () => {
-            return {
-                heading: 'Support, Updates and Maintenance',
-                text: 'Ongoing online and remote technical support and maintenance, including software updates.'
-            }
-        }
-
-        const onlineEducation = () => {
-            return {
-                heading: 'Online Education',
-                text: 'Access to our Lexis Learning, online learning platform to help all staff become familiar with and stay up to date with best practice in using Affinity.'
-            }
-        }
-
         const clientPortal = () => {
             return {
                 heading: 'Client Portal',
@@ -115,42 +93,42 @@ const getDocfile = async (req, res, next) => {
         const affinityMobile = () => {
             return {
                 heading: 'Affinity Mobile',
-                text: 'Affinity Mobile enables Lawyers securely to record time and access contacts, matters and documents they need on the go.'
+                text: 'Affinity Mobile will enable you to increase your efficiency and productivity by securely giving your staff access to the contacts, matters and documents they need on the go.'
             }
         }
 
         const empower = () => {
             return {
                 heading: 'Lexis emPower',
-                text: 'Lexis emPower provides pre-coded Forms and Precedents to help automate your legal document production and includes regular updates to precedents and court forms.'
+                text: 'Lexis emPower will make you more efficient by automating your legal document production and includes regular updates to precedents and court forms. '
             }
         }
 
-        const lixisSearch = () => {
+        const globalX = () => {
             return {
-                heading: 'LexisNexis Searches',
-                text: 'LexisNexis Searches integrates with Dye & Durham and/or InfoTrack for all your property, business and consumer regulatory information.  Order searches from within matters to avoid re-keying matter details with automated saving of documents and posting of disbursements.'
+                heading: 'LexisNexis Searches (GlobalX)',
+                text: 'LexisNexis Searches integrates with GlobalX for all your property, business and consumer regulatory information. Order searches from within matters to avoid re-keying matter details with automated saving of documents and posting of disbursements.'
             }
         }
 
-        // const infoTrack = () => {
-        //     return {
-        //         heading: 'LexisNexis Searches (InfoTrack)',
-        //         text: 'LexisNexis Searches integrates with InfoTrack for all your property, business and consumer regulatory information.  Order searches from within matters to avoid re-keying matter details with automated saving of documents and posting of disbursements.'
-        //     }
-        // }
+        const infoTrack = () => {
+            return {
+                heading: 'LexisNexis Searches (InfoTrack)',
+                text: 'LexisNexis Searches integrates with InfoTrack for all your property, business and consumer regulatory information.  Order searches from within matters to avoid re-keying matter details with automated saving of documents and posting of disbursements.'
+            }
+        }
 
-        // const dyeDurham = () => {
-        //     return {
-        //         heading: 'Dye & Durham Integration',
-        //         text: 'Affinity integrates with Dye & Durham Property for property, business and consumer regulatory information. Order searches from within matters to avoid re-keying matter details with automated saving of documents and posting of disbursements.'
-        //     }
-        // }
+        const dyeDurham = () => {
+            return {
+                heading: 'Dye & Durham Integration',
+                text: 'Affinity integrates with Dye & Durham Property for property, business and consumer regulatory information. Order searches from within matters to avoid re-keying matter details with automated saving of documents and posting of disbursements.'
+            }
+        }
 
         const pexaIntegration = () => {
             return {
                 heading: 'PEXA Integration',
-                text: 'Affinity integrates with PEXA for real-time online lodgement and settlement of property matters. Link and access your PEXA workspace from within your Affinity matters.'
+                text: 'Affinity integrates with PEXA for real-time online lodgement and settlement of property matters.  Link and access your PEXA workspace from within your Affinity matters.'
             }
         }
 
@@ -202,11 +180,6 @@ const getDocfile = async (req, res, next) => {
             if (miscellaneous[0]?.included !== '') {
                 section.push(oracleDBSoftware());
             }
-
-            section.push(professionalServices());
-            section.push(supportUpdates());
-            section.push(onlineEducation());
-
             if (optionalServices[14]?.include === 'Yes') {
                 section.push(clientPortal());
             }
@@ -216,35 +189,23 @@ const getDocfile = async (req, res, next) => {
             if (optionalServices[17]?.include === 'Yes') {
                 section.push(empower());
             }
-            if (optionalServices[24]?.include === 'Yes') {
-                section.push(mitimes());
-            }
-            if(miscellaneous[6]?.include === 'Yes') {
-                section.push(lixisSearch());
-            }
+
+            section.push(globalX());
+            section.push(infoTrack());
+            section.push(dyeDurham());
+            section.push(pexaIntegration());
+            section.push(macquarieBank());
 
             if (optionalServices[18]?.include === 'Yes') {
                 section.push(settlementAdjuster());
             }
+
+            section.push(mitimes());
+            section.push(feeSynergy());
+            section.push(fileman());
+
             if (optionalServices[13]?.include === 'Yes') {
                 section.push(softdocs());
-            }
-            // section.push(infoTrack());
-            if(miscellaneous[8]?.included === 'Yes') {
-                section.push(pexaIntegration());
-            }
-            // section.push(dyeDurham());
-            if(miscellaneous[7]?.included === 'Yes') {
-                section.push(macquarieBank());
-            }
-
-            // section.push(mitimes());
-            if(miscellaneous[9]?.included === 'Yes') {
-                section.push(feeSynergy());
-            }
-            
-            if(miscellaneous[10]?.included === 'Yes') {
-                section.push(fileman());
             }
 
             return section;
@@ -304,16 +265,6 @@ const getDocfile = async (req, res, next) => {
             }
         }
 
-        //add new section in optional services for mitimes
-        const inves_mitimesIntegration = () => {
-            const price = Number(upfrontCostDetails[3]?.cost);
-            return {
-                label: `Mitimes integration for 10 users`,
-                price: `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-                modules_selected: false
-            }
-        }
-
         const inves_clientPortal = () => {
             const price = Number(upfrontCostDetails[3]?.cost);
             return {
@@ -370,9 +321,6 @@ const getDocfile = async (req, res, next) => {
             if (optionalServices[17]?.include === 'Yes') {
                 section.push(inves_empower());
             }
-            // if (optionalServices[24]?.include === 'Yes') {
-            //     section.push(inves_mitimesIntegration());
-            // }
             if (optionalServices[14]?.include === 'Yes') {
                 section.push(inves_clientPortal());
             }
@@ -391,36 +339,6 @@ const getDocfile = async (req, res, next) => {
             return section;
         }
 
-        //Software installation and configuration
-        const prof_softwareInstallation = () => {
-            const price = Number(upfrontCostDetails[12]?.cost);
-            return {
-                label: `Software installation and configuration`,
-                price: `$123.123`,
-                module: false
-            }
-        }
-
-        //only include if Client Portal, Affinity Mobile, or Both are selected in Optional Services
-        const prof_webApp = () => {
-            const price = Number(upfrontCostDetails[12]?.cost);
-            return {
-                label: `Installation and configuration of Affinity Web Apps on your Web Server`,
-                price: `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-                module: false
-            }
-        }
-
-        //	Project Management
-        const prof_projectManagement = () => {
-            const price = Number(upfrontCostDetails[12]?.cost);
-            return {
-                label: `Project Management`,
-                price: `$123.123`,
-                module: false
-            }
-        }
-
         const prof_DM = () => {
             const price = Number(upfrontCostDetails[12]?.cost);
             return {
@@ -429,7 +347,6 @@ const getDocfile = async (req, res, next) => {
                 module: false
             }
         }
-
 
         const prof_staff_traning = () => {
             const price = Number(upfrontCostDetails[9]?.cost);
@@ -489,17 +406,6 @@ const getDocfile = async (req, res, next) => {
 
         const proffesional_services = () => {
             const section = [];
-
-            //Software installation and configuration
-            section.push(prof_softwareInstallation());
-
-            if (optionalServices[14]?.include === 'Yes' || optionalServices[16]?.include === 'Yes') {
-                section.push(prof_webApp());
-            }
-
-            //Project Management
-            section.push(prof_projectManagement());
-
             if (optionalServices[0]?.include === 'Yes') {
                 section.push(prof_DM());
             }
@@ -601,20 +507,6 @@ const getDocfile = async (req, res, next) => {
             return section;
         }
 
-        //mitimes Annual subscriuption fees
-        const annual_mitimes_time_capture = () => {
-            const price = Number(ongoingMainDetails[0]?.cost);
-            return {
-                label: `Mitimes time capture`,
-                price: `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            }
-        }
-
-        const annula_mitimes_values = () => {
-            const section = [];
-            section.push(annual_mitimes_time_capture());
-            return section;
-        }
 
         const inves_notes1 = () => {
 
@@ -647,24 +539,10 @@ const getDocfile = async (req, res, next) => {
                 inves_selected: false,
             }
         }
-        
+
         const inves_notes4 = () => {
             return {
-                text: `mitimes subscription commences from Go-Live date.`,
-                inves_selected: false,
-            }
-        }
-
-        const inves_notes5 = () => {
-            return {
                 text: `Please note, the pricing in this proposal is valid until 5:00pm (AEST) on ${moment(clientProfile[0]?.end_valid_date).format('DD-MMM-YYYY')}`,
-                inves_selected: false,
-            }
-        }
-
-        const inves_notes6 = () => {
-            return {
-                text: `Offer is subject to approval by our Finance Director`,
                 inves_selected: false,
             }
         }
@@ -673,15 +551,11 @@ const getDocfile = async (req, res, next) => {
         const notes_inves_sum = () => {
             const section = [];
             section.push(inves_notes1());
-            section.push(inves_notes6());
             if (clientProfile[0]?.duration !== 'Upfront') {
                 section.push(inves_notes2());
             }
             section.push(inves_notes3());
-            if (optionalServices[24]?.include === 'Yes'){
-                section.push(inves_notes4());
-            }
-            section.push(inves_notes5());
+            section.push(inves_notes4());
 
             return section;
         }
@@ -790,9 +664,6 @@ const getDocfile = async (req, res, next) => {
         }
         // console.log(checkOnlinetraning(),'checkOnlinetraning')
 
-        // console.log(miscellaneous[5]);
-        // console.log(miscellaneous[5]?.included === 'Yes')
-        // console.log(optionalServices[13]?.include === 'No')
         doc.render({
             client_name: clientProfile[0].client_name,
             pro_date: proposalDetails[0].edited_date
@@ -815,7 +686,7 @@ const getDocfile = async (req, res, next) => {
             ServicesSubTotal: `$${Number(repaySoftwareServicesValues[1]?.cost).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
 
             UpfrontInvestment: Number(upfrontCostDetails[16]?.percent_discount) > 0
-                ? 'Up-front Investment (including confidential discount - see notes below)'
+                ? 'Up-front Investment (including confidential discount – see notes below)'
                 : 'Up-front Investment',
             TotalCostExcl: `$${Number(upfrontCostDetails[18]?.cost).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
             GST_percentage: function () {
@@ -833,14 +704,8 @@ const getDocfile = async (req, res, next) => {
             CareGST: `$${Number(ongoingMainDetails[10]?.cost).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
             CareTotalIncGST: `$${Number(ongoingMainDetails[11]?.cost).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
             disc_maint: ongoingMainDetails[7]?.percent_discount,
-            isMitimesYES: false,
             notes_on_inves_sum: notes_inves_sum(),
 
-            annual_subscription: annula_mitimes_values(),
-            TotalAnnualSubscriptionFees: `Total Annual Subscription Fees`,
-            SubTotalExGST: `$10,000`,
-            SubGST: `$5,000`,
-            SubTotalIncGST: `$15,000`,
             upfront_selected: function () {
                 if (clientProfile[0]?.duration === 'Upfront') {
                     return false;
@@ -908,9 +773,9 @@ const getDocfile = async (req, res, next) => {
             isOnlineLearningSelected: checkOnlinetraning(),
             onsiteOrRemote: checkOnsiteRemoteTraining(),
             blendedLearning: clientProfile[0]?.traning_method.toLowerCase() === 'blended learning',
-            isPracticeAreaKitsYES: true,
+            isPracticeAreaKitsYES: miscellaneous[8]?.include === 'Yes',
             isAdditionalPresedentYES: optionalServices[10]?.include === 'Yes',
-            isLnSearchYES: true,
+            isLnSearchYES: miscellaneous[8]?.include === 'Yes',
             softDocsSelected: optionalServices[13]?.include === 'Yes',
 
             proposal_expiry_date: moment(clientProfile[0]?.end_valid_date).format('DD-MMM-YYYY'),
@@ -1059,7 +924,7 @@ const getDocfile = async (req, res, next) => {
             // errorMessages is a humanly readable message looking like this:
             // 'The tag beginning with "foobar" is unopened'
         }
-        // throw error;
+        throw error;
     }
 }
 

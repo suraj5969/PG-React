@@ -69,7 +69,7 @@ const StyledMenu = styled((props) => (
 
 export default function Header(props) {
 
-  const { setFilterOptions, countrySelected } = props;
+  const { setFilterOptions } = props;
 
   const history = useHistory();
 
@@ -86,6 +86,9 @@ export default function Header(props) {
   const handleNextApproverChange = (event) => {
     setnextApproverID(event.target.value);
   };
+
+  const filterCountry = sessionStorage.getItem('countryFilter');
+  const [countrySelected, setCountrySelected] = React.useState(filterCountry ? filterCountry : 'All');
 
   const [AllsolutionSpecialist, setAllSolutionSpecialist] = React.useState([]);
   const [solutionSpecialistID, setSolutionSpecialistID] = React.useState(0);
@@ -180,9 +183,10 @@ export default function Header(props) {
       approvalStatusID: approvalStatusID,
       nextApproverID: nextApproverID,
       solutionSpecialistID: solutionSpecialistID,
-      lifecycleID: lifecycleID
+      lifecycleID: lifecycleID,
+      countrySelected: countrySelected
     })
-  }, [approvalStatusID, nextApproverID, solutionSpecialistID, lifecycleID, setFilterOptions])
+  }, [approvalStatusID, nextApproverID, solutionSpecialistID, lifecycleID, countrySelected ,setFilterOptions])
 
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -230,7 +234,7 @@ export default function Header(props) {
                 <img src="/lexisnexis.png" alt="logo" style={{ width: '100%', maxWidth: '160px', paddingLeft: '0' }} />
               </Link>
             </Grid>
-            <Grid item container spacing={2} xl={2.1} md={2.5} sm={5} sx={{ marginLeft: { xs: 0 }, marginTop: { sm: 0, md: 1 } }}>
+            <Grid item container spacing={0} xl={1.7} md={1.8} sm={5} sx={{ marginLeft: { xs: 0 }, marginTop: { sm: 0, md: 1 } }}>
               <Button
                 disabled={Number(rights.can_create) !== 1}
                 variant="contained" className="header-button" title='Create New Proposal'
@@ -240,7 +244,7 @@ export default function Header(props) {
               {/* <Button variant="contained" className="header-button" title='export records to excel'>Export</Button> */}
             </Grid>
 
-            <Grid item container xl={7.2} md={7} sm={11.5} xs={12} spacing={2} style={{ display: 'flex', justifyContent: 'around' }} wrap="wrap" >
+            <Grid item container xl={7.2} md={7} sm={11.5} xs={12} spacing={2} style={{ display: 'flex', justifyContent: 'around' }} wrap="nowrap" >
               <Grid item xl={3.6} md={3.1} sm={4} xs={12} >
                 <FormControl fullWidth>
                   <InputLabel id="approval-status" style={{ color: 'black' }}>Approval Status</InputLabel>
@@ -323,6 +327,24 @@ export default function Header(props) {
                   </Select>
                 </FormControl>
               </Grid>
+
+              <Grid item xl={2.6} md={2.7} sm={3.8} xs={12}>
+                <FormControl sx={{ width: 130 }}>
+                  <InputLabel id="country-select">Country Filter</InputLabel>
+                  <Select
+                    id="country-select"
+                    value={countrySelected}
+                    label="Country Filter"
+                    variant="outlined"
+                    onChange={(e) => { sessionStorage.setItem('countryFilter', e.target.value); setCountrySelected(e.target.value) }}
+                  >
+                    <MenuItem value='All'>All</MenuItem>
+                    <MenuItem value="Australia">Australia</MenuItem>
+                    <MenuItem value="New Zealand">New Zealand</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
             </Grid>
 
           </Grid>

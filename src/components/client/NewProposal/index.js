@@ -10,7 +10,8 @@ import ClientInfo from './ClientInfo';
 import getAllEmpowerModulesAPI from '../../../apis/client/getAllEmpowerModulesAPI';
 import saveProposalDataAPI from '../../../apis/client/saveProposalDataAPI';
 import InfoPopup from '../PopUps/InfoPopup';
-import ConfirmationPopup from '../PopUps/ConfirmationPopup';
+// import ConfirmationPopup from '../PopUps/ConfirmationPopup';
+import SubmitProposalPopup from '../PopUps/SubmitProposalPopup';
 import DefaultValues from './DefaultValues';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,6 +47,8 @@ export default function NewProposal() {
     const [optionalServices, setOptionalServices] = React.useState(defaultOptionalServices);
     const [affinityMobilePopUpValue, setAffinityMobilePopUpValue] = React.useState('');
     const [settlementPopUpValue, setSettlementPopUpValue] = React.useState('');
+    const [mitimesPopUpValue, setMitimesPopupValue] = React.useState('');
+    
     const [empowerModules, setEmpowerModules] = React.useState({
         empowerModules: [],
         numOfUsers: '',
@@ -73,6 +76,16 @@ export default function NewProposal() {
 
 
     const [scopingStudyPopUpValue, setScopingStudyPopUpValue] = React.useState('');
+    const [practiceAreaKitPopupValues, setpracticeAreaKitPopupValues] = React.useState({
+        practiceAreaKitModules: [],
+        numOfUsers: '',
+        modulesSelected: 0,
+    });
+    const [lnSearchPopUpValue, setlnSearchPopUpValue] = React.useState({
+        lnSearchPopUpValue: [],
+        modulesSelected: 0,
+    });
+    
     const [affinityServerPopupValues, setAffinityServerPopupValues] = React.useState({
         typeOfLicense: '',
         numOfUsers: '',
@@ -233,11 +246,14 @@ export default function NewProposal() {
     const [submitForApprovalPopup, setSubmitForApprovalPopup] = React.useState(false);
     const CloseSubmitForApprovalPopup = async (confirmValue) => {
         setSubmitForApprovalPopup(false);
+        if (confirmValue === 'close')
+            return
         let workflow = false;
         if (confirmValue) {
             workflow = true;
         }
 
+        // console.log(practiceAreaKitPopupValues,"practiceAreaKitPopupValues")
         const result = await saveProposalDataAPI({
             clientFromGCRM: clientFromGCRM,
             createdBy: sessionStorage.getItem('user_id'),
@@ -255,7 +271,10 @@ export default function NewProposal() {
             affinityMobilePopUpValue: affinityMobilePopUpValue,
             empowerModules: empowerModules,
             settlementPopUpValue: settlementPopUpValue,
+            mitimesPopUpValue: mitimesPopUpValue,
             scopingStudyPopUpValue: scopingStudyPopUpValue,
+            practiceAreaKitPopupValues: practiceAreaKitPopupValues,
+            lnSearchPopUpValue: lnSearchPopUpValue,
             affinityServerPopupValues: affinityServerPopupValues,
         });
 
@@ -293,7 +312,10 @@ export default function NewProposal() {
                     affinityMobilePopUpValue: affinityMobilePopUpValue,
                     empowerModules: empowerModules,
                     settlementPopUpValue: settlementPopUpValue,
+                    mitimesPopUpValue: mitimesPopUpValue,
                     scopingStudyPopUpValue: scopingStudyPopUpValue,
+                    practiceAreaKitPopupValues: practiceAreaKitPopupValues,
+                    lnSearchPopUpValue: lnSearchPopUpValue,
                     affinityServerPopupValues: affinityServerPopupValues,
                 });
                 if (result.status !== 200) {
@@ -327,7 +349,17 @@ export default function NewProposal() {
             modulesSelected: 0,
         });
         setSettlementPopUpValue(0);
+        setMitimesPopupValue(0);
         setScopingStudyPopUpValue('');
+        setpracticeAreaKitPopupValues({
+            practiceAreaKitModules: [],
+            numOfUsers: '',
+            modulesSelected: 0,
+        });
+        setlnSearchPopUpValue({
+            lnSearchPopUpValue: [],
+            modulesSelected: 0,
+        });
         setAffinityServerPopupValues({
             typeOfLicense: '',
             numOfUsers: '',
@@ -339,7 +371,9 @@ export default function NewProposal() {
         });
         //set all popups state to default
     }
-
+    // console.log('lnsearch values', lnSearchPopUpValue);
+    console.log('practice area kit values', practiceAreaKitPopupValues);
+    
     return (
         <>
             <CssBaseline />
@@ -351,7 +385,7 @@ export default function NewProposal() {
                     bodyText="Please Fill the Include Field of Affinity Server CPU from Miscellaneous Table"
                 />
 
-                <ConfirmationPopup open={submitForApprovalPopup} onClose={CloseSubmitForApprovalPopup}
+                <SubmitProposalPopup open={submitForApprovalPopup} onClose={CloseSubmitForApprovalPopup}
                     title="Submit Proposal"
                     bodyText='Do you want to submit the proposal. If you click on Yes then it will be going for the approval cycle. If you select "No" the proposal will be saved and can be edited again but Wont go for the Approval Cycle for now.'
                 />
@@ -395,8 +429,14 @@ export default function NewProposal() {
                     setEmpowerModules={setEmpowerModules}
                     settlementPopUpValue={settlementPopUpValue}
                     setSettlementPopUpValue={setSettlementPopUpValue}
+                    mitimesPopUpValue={mitimesPopUpValue}
+                    setMitimesPopupValue={setMitimesPopupValue}
                     scopingStudyPopUpValue={scopingStudyPopUpValue}
                     setScopingStudyPopUpValue={setScopingStudyPopUpValue}
+                    practiceAreaKitPopupValues={practiceAreaKitPopupValues}
+                    setpracticeAreaKitPopupValues={setpracticeAreaKitPopupValues}
+                    lnSearchPopUpValue={lnSearchPopUpValue}
+                    setlnSearchPopUpValue={setlnSearchPopUpValue}
                     affinityServerPopupValues={affinityServerPopupValues}
                     setAffinityServerPopupValues={setAffinityServerPopupValues}
                     discountTable={discountTable}

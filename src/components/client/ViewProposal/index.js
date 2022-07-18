@@ -210,7 +210,7 @@ function ViewProposal() {
                     setDefaultServicesValues(defaultValues);
 
                     let optionalValues = {};
-                    const optionalServicesRows = ["dataMigrationRow", "selfCustody", "multyPartyBilling", "reportWriting", "dataformsMax", "scripting", "workflow", "BPAEndUser", "BPAEssentials", "dataformsPhoneBook", "addPrecedent", "BPAGoLive", "exchangeIntegration", "softdocsIntegration", "clientPortal", "worksiteIntegration", "affinityMobile", "empower", "settlementAdjuster", "thirdPartyIT", "totalHours", "totalDays", "grandTotalHours", "grandTotalDays"];
+                    const optionalServicesRows = ["dataMigrationRow", "selfCustody", "multyPartyBilling", "reportWriting", "dataformsMax", "scripting", "workflow", "BPAEndUser", "BPAEssentials", "dataformsPhoneBook", "addPrecedent", "BPAGoLive", "exchangeIntegration", "softdocsIntegration", "clientPortal", "worksiteIntegration", "affinityMobile", "empower", "settlementAdjuster", "thirdPartyIT", "totalHours", "totalDays", "grandTotalHours", "grandTotalDays" ,"mitimes"];
                     for (let i = 0; i < data.optionalServices?.length && i < optionalServicesRows.length; i++) {
                         optionalValues[optionalServicesRows[i]] = {};
                         optionalValues[optionalServicesRows[i]].task = data.optionalServices[i].task;
@@ -227,16 +227,73 @@ function ViewProposal() {
                         optionalValues[optionalServicesRows[i]].travel = data.optionalServices[i].travel;
                         optionalValues[optionalServicesRows[i]].totalHrs = data.optionalServices[i].total_hrs;
                     }
+
+                    if (data.optionalServices?.length <= 24){
+                        //to support old proposal that does not have this column
+                        optionalValues["mitimes"] = {};
+                        optionalValues["mitimes"].task = "mitimes integration";
+                        optionalValues["mitimes"].traningMethod = "Select";
+                        optionalValues["mitimes"].team = "TSG";
+                        optionalValues["mitimes"].include = "No";
+                        optionalValues["mitimes"].PM = "";
+                        optionalValues["mitimes"].TSG = "";
+                        optionalValues["mitimes"].dataMigration = "";
+                        optionalValues["mitimes"].accountsTraining = "";
+                        optionalValues["mitimes"].accountsConsulting = "";
+                        optionalValues["mitimes"].BPATraining = "";
+                        optionalValues["mitimes"].BPAConsulting = "";
+                        optionalValues["mitimes"].travel = "";
+                        optionalValues["mitimes"].totalHrs = "";
+                    }
                     setOptionalServices(optionalValues);
 
                     let miscValues = {};
-                    const miscellaneousRows = ["affinityServer", "lexisResearch", "scopingStudy", "additionalReturn", "propertyPresidency"];
+                    const miscellaneousRows = ["affinityServer", "lexisResearch", "scopingStudy", "additionalReturn", "propertyPresidency", "practiceAreaKit", "lnSearch", "macrequineBank", "pexaIntegration", "feeSynergy", "fileman"];
                     for (let i = 0; i < data.miscellaneous?.length && i < miscellaneousRows.length; i++) {
                         miscValues[miscellaneousRows[i]] = {};
                         miscValues[miscellaneousRows[i]].miscellaneous = data.miscellaneous[i].miscellaneous;
                         miscValues[miscellaneousRows[i]].included = data.miscellaneous[i].included;
                         miscValues[miscellaneousRows[i]].hours = data.miscellaneous[i].hours;
                         miscValues[miscellaneousRows[i]].price = data.miscellaneous[i].price;
+                    }
+                    
+                    if (data.miscellaneous?.length <= 5){
+                        //to support old proposal that does not have this column
+                        miscValues["practiceAreaKit"] = {};
+                        miscValues["practiceAreaKit"].miscellaneous = "Practice area kit";
+                        miscValues["practiceAreaKit"].included = "No";
+                        miscValues["practiceAreaKit"].hours = '';
+                        miscValues["practiceAreaKit"].price = '';
+    
+                        miscValues["lnSearch"] = {};
+                        miscValues["lnSearch"].miscellaneous = "LexisNexis Search";
+                        miscValues["lnSearch"].included = "No";
+                        miscValues["lnSearch"].hours = '';
+                        miscValues["lnSearch"].price = '';
+    
+                        miscValues["macrequineBank"] = {};
+                        miscValues["macrequineBank"].miscellaneous = "Macquarie Bank";
+                        miscValues["macrequineBank"].included = "No";
+                        miscValues["macrequineBank"].hours = '';
+                        miscValues["macrequineBank"].price = '';
+    
+                        miscValues["pexaIntegration"] = {};
+                        miscValues["pexaIntegration"].miscellaneous = "PEXA Integration";
+                        miscValues["pexaIntegration"].included = "No";
+                        miscValues["pexaIntegration"].hours = '';
+                        miscValues["pexaIntegration"].price = '';
+    
+                        miscValues["feeSynergy"] = {};
+                        miscValues["feeSynergy"].miscellaneous = "FeeSynergy";
+                        miscValues["feeSynergy"].included = "No";
+                        miscValues["feeSynergy"].hours = '';
+                        miscValues["feeSynergy"].price = '';
+    
+                        miscValues["fileman"] = {};
+                        miscValues["fileman"].miscellaneous = "Fileman";
+                        miscValues["fileman"].included = "No";
+                        miscValues["fileman"].hours = '';
+                        miscValues["fileman"].price = '';
                     }
                     setMiscellaneous(miscValues);
 
@@ -662,7 +719,7 @@ function ViewProposal() {
                                                 // marginLeft: { xs: '0', sm: '1.6rem' }
                                             }}>
                                                 <CSVLink filename='Services' data={csvDefaultServices}>
-                                                    <Button variant="contained" color="primary" sx={{ m: 1 }} disable="true">
+                                                    <Button variant="contained" color="primary" sx={{ m: 1, mt: '15px' }} disable="true">
                                                         Export Services
                                                     </Button>
                                                 </CSVLink>
@@ -684,7 +741,7 @@ function ViewProposal() {
                                                 marginLeft: { xs: '0', sm: '1.6rem' }
                                             }}>
                                                 <CSVLink filename='Services' data={csvDefaultServices}>
-                                                    <Button variant="contained" color="primary" sx={{ m: 1 }} disable="true">
+                                                    <Button variant="contained" color="primary" sx={{ m: 1, mt: '15px' }} disable="true">
                                                         Export Services
                                                     </Button>
                                                 </CSVLink>
